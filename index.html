@@ -8143,46 +8143,62 @@ if('serviceWorker' in navigator){
 
 // === Office Finder Data ===
 var OFFICES=[
-{name:'CRI Head Office',type:'CRI',lat:7.3522,lng:79.8917,addr:'Bandirippuwa Estate, Lunuwila 61150',phone:'031-2255300',icon:'🔬'},
-{name:'CRI Ratmalagara Station',type:'CRI',lat:7.9830,lng:80.4050,addr:'Ratmalagara, Kurunegala',phone:'027-3279344',icon:'🔬'},
-{name:'CRI Ambakelle Station',type:'CRI',lat:7.7550,lng:80.2050,addr:'Ambakelle, Kurunegala',phone:'032-5779408',icon:'🔬'},
-{name:'CRI Makandura Station',type:'CRI',lat:7.3200,lng:79.9700,addr:'Makandura, Gampaha',phone:'033-2272870',icon:'🔬'},
+// === CRI - Coconut Research Institute ===
+{name:'CRI Head Office',type:'CRI',lat:7.3436,lng:79.8617,addr:'Bandirippuwa Estate, Lunuwila 61150',phone:'031-2255001',email:'director@cri.gov.lk',icon:'🔬'},
+{name:'CRI Ratmalagara Research Centre',type:'CRI',lat:7.9830,lng:80.4050,addr:'Ratmalagara, Panirendawa, Madampe',phone:'032-2263280',icon:'🔬'},
+{name:'CRI Ambakelle Seed Garden',type:'CRI',lat:7.7550,lng:80.2050,addr:'Bogaswewa, Kashyapapura, Ambakelle, Anuradhapura',phone:'025-2279408',icon:'🔬'},
+{name:'CRI Pothukulama Research Station',type:'CRI',lat:7.5700,lng:79.9200,addr:'Magarankadawala, Pallama',phone:'032-2250780',icon:'🔬'},
+{name:'CRI Makandura Research Centre',type:'CRI',lat:7.3200,lng:79.9700,addr:'Makandura, Gampaha',phone:'033-2272870',icon:'🔬'},
 {name:'CRI Walpita Station',type:'CRI',lat:7.2800,lng:79.9600,addr:'Walpita, Gampaha',phone:'031-3319993',icon:'🔬'},
-{name:'CRI Hirimbura Station',type:'CRI',lat:6.0700,lng:80.4500,addr:'Hirimbura, Galle',phone:'047-3624646',icon:'🔬'},
-{name:'CCB Head Office',type:'CCB',lat:6.9010,lng:79.9180,addr:'9/428, Battaramulla',phone:'011-2861331',icon:'🏛️'},
-{name:'CCB Kurunegala',type:'CCB',lat:7.4867,lng:80.3647,addr:'Kurunegala Regional Office',phone:'037-2222384',icon:'🏛️'},
-{name:'CCB Kuliyapitiya',type:'CCB',lat:7.4690,lng:80.0420,addr:'Kuliyapitiya Regional Office',phone:'037-2281282',icon:'🏛️'},
-{name:'CCB Marawila',type:'CCB',lat:7.3500,lng:79.8500,addr:'Marawila Regional Office',phone:'032-2254254',icon:'🏛️'},
-{name:'CCB Gampaha',type:'CCB',lat:7.0873,lng:80.0144,addr:'Gampaha Regional Office',phone:'033-2222452',icon:'🏛️'},
-{name:'CCB Kegalle',type:'CCB',lat:7.2514,lng:80.3469,addr:'Kegalle Regional Office',phone:'035-2222365',icon:'🏛️'},
-{name:'CCB Matale',type:'CCB',lat:7.4698,lng:80.6234,addr:'Matale Regional Office',phone:'066-2222358',icon:'🏛️'},
-{name:'CCB Ratnapura',type:'CCB',lat:6.6828,lng:80.3994,addr:'Ratnapura Regional Office',phone:'045-2222987',icon:'🏛️'},
-{name:'CCB Kalutara',type:'CCB',lat:6.5854,lng:79.9607,addr:'Kalutara Regional Office',phone:'034-2222175',icon:'🏛️'},
-{name:'CCB Galle',type:'CCB',lat:6.0535,lng:80.2210,addr:'Galle Regional Office',phone:'091-2234358',icon:'🏛️'},
-{name:'CCB Matara',type:'CCB',lat:5.9485,lng:80.5353,addr:'Matara Regional Office',phone:'041-2222358',icon:'🏛️'},
-{name:'CCB Anuradhapura',type:'CCB',lat:8.3114,lng:80.4037,addr:'Anuradhapura Regional Office',phone:'025-2222458',icon:'🏛️'},
-{name:'CCB Polonnaruwa',type:'CCB',lat:7.9400,lng:81.0010,addr:'Polonnaruwa Regional Office',phone:'027-2222358',icon:'🏛️'},
-{name:'CCB Hambantota',type:'CCB',lat:6.1429,lng:81.1212,addr:'Hambantota Regional Office',phone:'047-2256358',icon:'🏛️'},
+{name:'CRI Hirimbura Station',type:'CRI',lat:6.0700,lng:80.4500,addr:'Hirimbura, Galle',phone:'091-3624646',icon:'🔬'},
+{name:'CRI Margret Estate Gene Bank',type:'CRI',lat:7.3500,lng:79.8700,addr:'Margret Estate, Lunuwila',phone:'031-2255001',icon:'🔬'},
+// === CCB - Coconut Cultivation Board ===
+{name:'CCB Head Office',type:'CCB',lat:6.9010,lng:79.9180,addr:'9/428 Denzil Kobbakaduwa Mw, Battaramulla',phone:'011-2861331',email:'ccb@sltnet.lk',icon:'🏛️'},
+{name:'CCB Kurunegala',type:'CCB',lat:7.4867,lng:80.3647,addr:'Wehera, Kurunegala',phone:'037-2222534',email:'ccbrm-kurune@sltnet.lk',icon:'🏛️'},
+{name:'CCB Gampaha',type:'CCB',lat:7.0873,lng:80.0144,addr:'Bandiyamulla, Gampaha',phone:'033-2222037',email:'ccbrm-gampaha@sltnet.lk',icon:'🏛️'},
+{name:'CCB Marawila',type:'CCB',lat:7.3500,lng:79.8500,addr:'Marawila Regional Office',phone:'032-2254237',icon:'🏛️'},
+{name:'CCB Matale',type:'CCB',lat:7.4698,lng:80.6234,addr:'Kachcheri Complex, Matale',phone:'066-2222047',email:'ccbrm-matale@sltnet.lk',icon:'🏛️'},
+{name:'CCB Kegalle',type:'CCB',lat:7.2514,lng:80.3469,addr:'Karandupana, Kandy Rd, Kegalle',phone:'035-2222120',email:'ccbrm-kegalla@sltnet.lk',icon:'🏛️'},
+{name:'CCB Ratnapura',type:'CCB',lat:6.6828,lng:80.3994,addr:'New Town, Main St, Ratnapura',phone:'045-2228561',email:'ccbrm-rapura@sltnet.lk',icon:'🏛️'},
+{name:'CCB Kalutara',type:'CCB',lat:6.5854,lng:79.9607,addr:'Nagoda, Kalutara',phone:'034-2222732',email:'ccbrm-kalutara@sltnet.lk',icon:'🏛️'},
+{name:'CCB Galle',type:'CCB',lat:6.0535,lng:80.2210,addr:'Labuduwa, Akmeemana, Galle',phone:'091-2234501',email:'ccbrm-galle@sltnet.lk',icon:'🏛️'},
+{name:'CCB Anuradhapura',type:'CCB',lat:8.3114,lng:80.4037,addr:'3rd Step, Dahaiyagama Junction, Anuradhapura',phone:'025-2222543',email:'ccbrm-apura@sltnet.lk',icon:'🏛️'},
+{name:'CCB Polonnaruwa',type:'CCB',lat:7.9400,lng:81.0010,addr:'New Town, Polonnaruwa',phone:'027-2222377',icon:'🏛️'},
+{name:'CCB Hambantota',type:'CCB',lat:6.1429,lng:81.1212,addr:'No. 27, Tangalla Rd, Hambantota',phone:'047-2220144',email:'ccbrm-hamban@sltnet.lk',icon:'🏛️'},
 {name:'CCB Moneragala',type:'CCB',lat:6.8736,lng:81.3487,addr:'Moneragala Regional Office',phone:'055-2276358',icon:'🏛️'},
-{name:'CCB Batticaloa',type:'CCB',lat:7.7310,lng:81.6926,addr:'Batticaloa Regional Office',phone:'065-2222958',icon:'🏛️'},
+{name:'CCB Batticaloa',type:'CCB',lat:7.7310,lng:81.6926,addr:'Mylambaweli, Thannamune, Batticaloa',phone:'065-2240103',email:'ccbrm-battico@sltnet.lk',icon:'🏛️'},
+{name:'CCB Ampara',type:'CCB',lat:7.2970,lng:81.6720,addr:'Darmapala Mawatha, Opp. Kachcheri, Ampara',phone:'063-2222358',icon:'🏛️'},
+{name:'CCB Jaffna',type:'CCB',lat:9.6615,lng:80.0255,addr:'No. 595/10, Nawalar Rd, Nallur, Jaffna',phone:'021-2226014',icon:'🏛️'},
+{name:'CCB Matara',type:'CCB',lat:5.9485,lng:80.5353,addr:'Matara Regional Office',phone:'041-2222358',icon:'🏛️'},
 {name:'CCB Nursery - Bandirippuwa',type:'CCB',lat:7.3530,lng:79.8900,addr:'Bandirippuwa, Lunuwila',phone:'031-2255300',icon:'🌱'},
-{name:'CCB Nursery - Ambakelle',type:'CCB',lat:7.7560,lng:80.2060,addr:'Ambakelle, Kurunegala',phone:'032-5779408',icon:'🌱'},
-{name:'Govijana Sewa - Kurunegala',type:'Govijana',lat:7.4867,lng:80.3647,addr:'Dept. of Agrarian Services, Kurunegala',phone:'037-2222382',icon:'🌾'},
-{name:'Govijana Sewa - Gampaha',type:'Govijana',lat:7.0873,lng:80.0144,addr:'Dept. of Agrarian Services, Gampaha',phone:'033-2222351',icon:'🌾'},
-{name:'Govijana Sewa - Puttalam',type:'Govijana',lat:8.0362,lng:79.8283,addr:'Dept. of Agrarian Services, Puttalam',phone:'032-2265260',icon:'🌾'},
-{name:'Govijana Sewa - Matale',type:'Govijana',lat:7.4698,lng:80.6234,addr:'Dept. of Agrarian Services, Matale',phone:'066-2222342',icon:'🌾'},
-{name:'Govijana Sewa - Kandy',type:'Govijana',lat:7.2906,lng:80.6337,addr:'Dept. of Agrarian Services, Kandy',phone:'081-2224342',icon:'🌾'},
-{name:'Govijana Sewa - Kalutara',type:'Govijana',lat:6.5854,lng:79.9607,addr:'Dept. of Agrarian Services, Kalutara',phone:'034-2222678',icon:'🌾'},
-{name:'Govijana Sewa - Galle',type:'Govijana',lat:6.0535,lng:80.2210,addr:'Dept. of Agrarian Services, Galle',phone:'091-2234267',icon:'🌾'},
-{name:'Govijana Sewa - Matara',type:'Govijana',lat:5.9485,lng:80.5353,addr:'Dept. of Agrarian Services, Matara',phone:'041-2222267',icon:'🌾'},
-{name:'Govijana Sewa - Hambantota',type:'Govijana',lat:6.1429,lng:81.1212,addr:'Dept. of Agrarian Services, Hambantota',phone:'047-2256267',icon:'🌾'},
-{name:'Govijana Sewa - Ratnapura',type:'Govijana',lat:6.6828,lng:80.3994,addr:'Dept. of Agrarian Services, Ratnapura',phone:'045-2222267',icon:'🌾'},
-{name:'Govijana Sewa - Kegalle',type:'Govijana',lat:7.2514,lng:80.3469,addr:'Dept. of Agrarian Services, Kegalle',phone:'035-2222267',icon:'🌾'},
-{name:'Govijana Sewa - Anuradhapura',type:'Govijana',lat:8.3114,lng:80.4037,addr:'Dept. of Agrarian Services, Anuradhapura',phone:'025-2222267',icon:'🌾'},
-{name:'Govijana Sewa - Polonnaruwa',type:'Govijana',lat:7.9400,lng:81.0010,addr:'Dept. of Agrarian Services, Polonnaruwa',phone:'027-2222267',icon:'🌾'},
-{name:'Govijana Sewa - Batticaloa',type:'Govijana',lat:7.7310,lng:81.6926,addr:'Dept. of Agrarian Services, Batticaloa',phone:'065-2222267',icon:'🌾'},
-{name:'Govijana Sewa - Jaffna',type:'Govijana',lat:9.6615,lng:80.0255,addr:'Dept. of Agrarian Services, Jaffna',phone:'021-2222267',icon:'🌾'},
-{name:'Govijana Sewa - Trincomalee',type:'Govijana',lat:8.5874,lng:81.2152,addr:'Dept. of Agrarian Services, Trincomalee',phone:'026-2222267',icon:'🌾'}
+{name:'CCB Nursery - Ambakelle',type:'CCB',lat:7.7560,lng:80.2060,addr:'Ambakelle, Anuradhapura',phone:'025-2279408',icon:'🌱'},
+// === Dept. of Agrarian Development - Govijana Seva ===
+{name:'Agrarian HQ (Colombo)',type:'Govijana',lat:6.9147,lng:79.8654,addr:'No. 42, Sri Marcus Fernando Mw, Colombo 07',phone:'011-2691060',email:'info@agrariandept.gov.lk',icon:'🌾'},
+{name:'Govijana Sewa - Kurunegala',type:'Govijana',lat:7.4867,lng:80.3647,addr:'District Office, Kurunegala',phone:'037-2222382',icon:'🌾'},
+{name:'Govijana Sewa - Gampaha',type:'Govijana',lat:7.0873,lng:80.0144,addr:'District Office, Gampaha',phone:'033-2222351',icon:'🌾'},
+{name:'Govijana Sewa - Puttalam',type:'Govijana',lat:8.0362,lng:79.8283,addr:'District Office, Puttalam',phone:'032-2265260',icon:'🌾'},
+{name:'Govijana Sewa - Matale',type:'Govijana',lat:7.4698,lng:80.6234,addr:'District Office, Matale',phone:'066-2222342',icon:'🌾'},
+{name:'Govijana Sewa - Kandy',type:'Govijana',lat:7.2906,lng:80.6337,addr:'District Office, Kandy',phone:'081-2224342',icon:'🌾'},
+{name:'Govijana Sewa - Nuwara Eliya',type:'Govijana',lat:6.9497,lng:80.7891,addr:'District Office, Nuwara Eliya',phone:'052-2222267',icon:'🌾'},
+{name:'Govijana Sewa - Kalutara',type:'Govijana',lat:6.5854,lng:79.9607,addr:'District Office, Kalutara',phone:'034-2222678',icon:'🌾'},
+{name:'Govijana Sewa - Colombo',type:'Govijana',lat:6.9271,lng:79.8612,addr:'District Office, Colombo',phone:'011-2694231',icon:'🌾'},
+{name:'Govijana Sewa - Galle',type:'Govijana',lat:6.0535,lng:80.2210,addr:'District Office, Galle',phone:'091-2234267',icon:'🌾'},
+{name:'Govijana Sewa - Matara',type:'Govijana',lat:5.9485,lng:80.5353,addr:'District Office, Matara',phone:'041-2222267',icon:'🌾'},
+{name:'Govijana Sewa - Hambantota',type:'Govijana',lat:6.1429,lng:81.1212,addr:'District Office, Hambantota',phone:'047-2256267',icon:'🌾'},
+{name:'Govijana Sewa - Ratnapura',type:'Govijana',lat:6.6828,lng:80.3994,addr:'District Office, Ratnapura',phone:'045-2222267',icon:'🌾'},
+{name:'Govijana Sewa - Kegalle',type:'Govijana',lat:7.2514,lng:80.3469,addr:'District Office, Kegalle',phone:'035-2222267',icon:'🌾'},
+{name:'Govijana Sewa - Anuradhapura',type:'Govijana',lat:8.3114,lng:80.4037,addr:'District Office, Anuradhapura',phone:'025-2222267',icon:'🌾'},
+{name:'Govijana Sewa - Polonnaruwa',type:'Govijana',lat:7.9400,lng:81.0010,addr:'District Office, Polonnaruwa',phone:'027-2222267',icon:'🌾'},
+{name:'Govijana Sewa - Batticaloa',type:'Govijana',lat:7.7310,lng:81.6926,addr:'District Office, Batticaloa',phone:'065-2222267',icon:'🌾'},
+{name:'Govijana Sewa - Ampara',type:'Govijana',lat:7.2970,lng:81.6720,addr:'District Office, Ampara',phone:'063-2222267',icon:'🌾'},
+{name:'Govijana Sewa - Trincomalee',type:'Govijana',lat:8.5874,lng:81.2152,addr:'District Office, Trincomalee',phone:'026-2222267',icon:'🌾'},
+{name:'Govijana Sewa - Jaffna',type:'Govijana',lat:9.6615,lng:80.0255,addr:'District Office, Jaffna',phone:'021-2222267',icon:'🌾'},
+{name:'Govijana Sewa - Kilinochchi',type:'Govijana',lat:9.3803,lng:80.3770,addr:'District Office, Kilinochchi',phone:'021-2285267',icon:'🌾'},
+{name:'Govijana Sewa - Mullaitivu',type:'Govijana',lat:9.2671,lng:80.8142,addr:'District Office, Mullaitivu',phone:'021-2290267',icon:'🌾'},
+{name:'Govijana Sewa - Vavuniya',type:'Govijana',lat:8.7514,lng:80.4971,addr:'District Office, Vavuniya',phone:'024-2222267',icon:'🌾'},
+{name:'Govijana Sewa - Mannar',type:'Govijana',lat:8.9810,lng:79.9044,addr:'District Office, Mannar',phone:'023-2222267',icon:'🌾'},
+{name:'Govijana Sewa - Badulla',type:'Govijana',lat:6.9934,lng:81.0550,addr:'District Office, Badulla',phone:'055-2222267',icon:'🌾'},
+{name:'Govijana Sewa - Moneragala',type:'Govijana',lat:6.8736,lng:81.3487,addr:'District Office, Moneragala',phone:'055-2276267',icon:'🌾'}
 ];
 var ofcUserLat=null,ofcUserLng=null,ofcFilter='All';
 function haversine(lat1,lng1,lat2,lng2){
@@ -8211,10 +8227,12 @@ function renderOffices(){
     html+='<div class="ofc-type">'+o.type+'</div>';
     html+='<div class="ofc-addr">'+o.addr+'</div>';
     html+='<div class="ofc-phone">📞 '+o.phone+'</div>';
+    if(o.email)html+='<div class="ofc-email" style="font-size:11px;color:#2196F3;margin-top:2px">✉️ '+o.email+'</div>';
     if(o._dist!==undefined)html+='<div class="ofc-dist">📍 '+o._dist.toFixed(1)+' '+t('ofcKmAway')+'</div>';
     html+='<div class="ofc-actions">';
     html+='<a href="https://www.google.com/maps/dir/?api=1&destination='+o.lat+','+o.lng+'" target="_blank" rel="noopener">'+t('ofcDirections')+'</a>';
     html+='<a href="tel:'+o.phone.replace(/[^+\d]/g,'')+'">'+t('ofcCall')+'</a>';
+    if(o.email)html+='<a href="mailto:'+o.email+'">✉️ Email</a>';
     html+='</div></div></div>';
   });
   html+='</div>';
