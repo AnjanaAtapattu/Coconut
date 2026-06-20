@@ -217,8 +217,7 @@ nav.tabs button{flex:0 0 auto;min-width:60px;min-height:44px;padding:9px 10px 7p
 .rain-legend .dot{width:10px;height:10px;border-radius:2px;}
 /* === Price Ticker === */
 .price-ticker{background:var(--green);color:#fff;padding:6px 0;overflow:hidden;white-space:nowrap;font-size:12px;font-weight:600;}
-.price-ticker .scroll{display:inline-block;padding-left:100%;animation:tickScroll 120s linear infinite;will-change:transform;}
-@keyframes tickScroll{0%{transform:translateX(0);}100%{transform:translateX(-100%);}}
+.price-ticker .scroll{display:inline-block;padding-left:100%;will-change:transform;}
 .price-ticker .item{display:inline;margin:0 24px;}
 .price-ticker .item .pname{opacity:.8;}
 .price-ticker .item .pprice{margin-left:4px;}
@@ -7979,8 +7978,18 @@ function renderWeather(){
   prices.forEach(function(p){
     html+='<span class="item"><span class="pname">'+p.name+'</span> <span class="pprice">'+p.price+'</span></span>';
   });
-  document.getElementById('priceScroll').innerHTML=html+html;
+  var scrollEl=document.getElementById('priceScroll');
+  scrollEl.innerHTML=html+html;
+  requestAnimationFrame(function(){
+    var w=scrollEl.scrollWidth;
+    var speed=30;
+    var dur=w/speed;
+    scrollEl.style.animation='tickScroll '+dur+'s linear infinite';
+  });
 })();
+var _tsEl=document.createElement('style');
+_tsEl.textContent='@keyframes tickScroll{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}';
+document.head.appendChild(_tsEl);
 // ====== FEATURE: Pest Gallery ======
 var PESTS=[
   {icon:'🪲',nameKey:'pestRPW',symKey:'pestRPWsym',txKey:'pestRPWtx'},
