@@ -217,7 +217,8 @@ nav.tabs button{flex:0 0 auto;min-width:60px;min-height:44px;padding:9px 10px 7p
 .rain-legend .dot{width:10px;height:10px;border-radius:2px;}
 /* === Price Ticker === */
 .price-ticker{background:var(--green);color:#fff;padding:6px 0;overflow:hidden;white-space:nowrap;font-size:12px;font-weight:600;}
-.price-ticker .scroll{display:inline-block;will-change:transform;}
+.price-ticker .scroll{display:inline-block;}
+.price-ticker::-webkit-scrollbar{display:none;}
 .price-ticker .item{display:inline;margin:0 24px;}
 .price-ticker .item .pname{opacity:.8;}
 .price-ticker .item .pprice{margin-left:4px;}
@@ -7978,18 +7979,17 @@ function renderWeather(){
   prices.forEach(function(p){
     html+='<span class="item"><span class="pname">'+p.name+'</span> <span class="pprice">'+p.price+'</span></span>';
   });
+  var ticker=document.getElementById('priceTicker');
   var scrollEl=document.getElementById('priceScroll');
   scrollEl.innerHTML=html+html;
-  var tickerPos=0;
-  var tickerSpeed=0.15;
-  function tickerFrame(){
+  ticker.style.overflow='scroll';
+  ticker.style.scrollbarWidth='none';
+  ticker.style.msOverflowStyle='none';
+  setInterval(function(){
+    ticker.scrollLeft+=1;
     var half=scrollEl.scrollWidth/2;
-    tickerPos-=tickerSpeed;
-    if(tickerPos<=-half) tickerPos=0;
-    scrollEl.style.transform='translateX('+tickerPos+'px)';
-    requestAnimationFrame(tickerFrame);
-  }
-  requestAnimationFrame(tickerFrame);
+    if(ticker.scrollLeft>=half) ticker.scrollLeft=0;
+  },50);
 })();
 // ====== FEATURE: Pest Gallery ======
 var PESTS=[
