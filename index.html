@@ -207,7 +207,7 @@ nav.tabs button{flex:0 0 auto;min-width:60px;padding:9px 10px 7px;}
 .rain-legend .dot{width:10px;height:10px;border-radius:2px;}
 /* === Price Ticker === */
 .price-ticker{background:var(--green);color:#fff;padding:6px 0;overflow:hidden;white-space:nowrap;font-size:12px;font-weight:600;}
-.price-ticker .scroll{display:inline-block;animation:tickScroll 25s linear infinite;}
+.price-ticker .scroll{display:inline-block;animation:tickScroll 45s linear infinite;}
 @keyframes tickScroll{0%{transform:translateX(100%);}100%{transform:translateX(-100%);}}
 .price-ticker .item{display:inline;margin:0 24px;}
 .price-ticker .item .pname{opacity:.8;}
@@ -7949,7 +7949,13 @@ function renderWeather(){
 // ====== FEATURE: Price Ticker ======
 (function initPriceTicker(){
   var prices=[
-    {name:'Fresh Nut',price:'Rs. 75–85/nut'},
+    {name:'Kuliyapitiya',price:'Rs. 75/nut'},
+    {name:'Mawathagama',price:'Rs. 85/nut'},
+    {name:'Melsiripura',price:'Rs. 82.50/nut'},
+    {name:'Puttalam',price:'Rs. 80/nut'},
+    {name:'Dunagaha',price:'Rs. 78.50/nut'},
+    {name:'Minuwangoda',price:'Rs. 76.50/nut'},
+    {name:'Weliweriya',price:'Rs. 78.50/nut'},
     {name:'Fresh Nut Husked',price:'Rs. 150/kg'},
     {name:'DC Fine',price:'Rs. 700/kg'},
     {name:'DC Medium',price:'Rs. 800–810/kg'},
