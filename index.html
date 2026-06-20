@@ -319,9 +319,9 @@ body.dark .ofc-locate-bar select{background:#2d2d44;color:#e0e0e0;border-color:#
 .pest-photo-section{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:12px;}
 body.dark .pest-photo-section{background:#2d2d44;border-color:#3a3a50;}
 .pest-photo-section h3{margin:0 0 8px;font-size:14px;color:var(--green);}
-.pest-capture{display:flex;gap:8px;margin-bottom:10px;}
+.pest-capture{display:flex;gap:8px;margin-bottom:10px;justify-content:center;}
 .pest-capture button{background:var(--green);color:#fff;border:none;border-radius:12px;padding:10px 16px;font-family:'Space Grotesk';font-weight:700;font-size:13px;cursor:pointer;display:flex;align-items:center;gap:6px;}
-.pest-preview{width:100%;max-width:300px;border-radius:10px;margin:8px 0;display:none;}
+.pest-preview{width:100%;max-width:300px;border-radius:10px;margin:8px auto;display:none;}
 .pest-compare{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px;}
 .pest-compare-card{border:2px solid var(--line);border-radius:10px;padding:10px;text-align:center;cursor:pointer;transition:all .2s;}
 .pest-compare-card:hover,.pest-compare-card.selected{border-color:var(--green);background:rgba(45,74,34,.08);}
@@ -8244,9 +8244,9 @@ function renderPestPhotoSection(){
     '<div class="pest-capture"><button onclick="document.getElementById(\'pestPhotoInput\').click()">'+t('pestCapture')+'</button></div>'+
     '<img class="pest-preview" id="pestPreview">'+
     '<div class="pest-compare" id="pestCompareGrid"></div>';
-  var parent=el.querySelector('div')||el;
-  var firstCard=el.querySelector('.pest-card');
-  if(firstCard)parent.insertBefore(section,firstCard);else parent.appendChild(section);
+  section.style.textAlign='center';
+  var splitGrid=el.querySelector('.pest-split');
+  if(splitGrid)el.insertBefore(section,splitGrid);else el.appendChild(section);
   renderPestCompareGrid();
   document.getElementById('pestPhotoInput').onchange=function(e){
     var file=e.target.files[0];if(!file)return;
