@@ -104,27 +104,53 @@ table.dt tr:last-child td{border-bottom:none;}
 .leaflet-popup-content{font-family:'Manrope';font-size:13px;}
 .leaflet-popup-content b{font-family:'Space Grotesk';color:var(--green);}
 /* ---- Chatbot ---- */
-#chatFab{position:fixed;right:16px;bottom:70px;z-index:900;width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#2196F3,#00BCD4);color:#fff;border:none;font-size:26px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 14px rgba(0,0,0,.3);cursor:pointer;animation:chatPulse 2s infinite;}
+#chatFab{position:fixed;right:16px;bottom:70px;z-index:900;width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#2196F3,#00BCD4);color:#fff;border:none;font-size:26px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 14px rgba(0,0,0,.3);cursor:pointer;animation:chatPulse 2s infinite;transition:transform .2s;}
+#chatFab:hover{transform:scale(1.1);}
+#chatFab:active{transform:scale(0.95);}
 @keyframes chatPulse{0%{box-shadow:0 4px 14px rgba(0,0,0,.3),0 0 0 0 rgba(45,74,34,.45);}70%{box-shadow:0 4px 14px rgba(0,0,0,.3),0 0 0 14px rgba(45,74,34,0);}100%{box-shadow:0 4px 14px rgba(0,0,0,.3),0 0 0 0 rgba(45,74,34,0);}}
-#chatPanel{position:fixed;right:0;bottom:0;left:0;z-index:950;max-width:400px;height:600px;max-height:85vh;margin:0 auto;background:var(--sand);border-radius:16px 16px 0 0;box-shadow:0 -4px 24px rgba(0,0,0,.3);transform:translateY(110%);transition:transform .35s cubic-bezier(.3,.8,.3,1);display:flex;flex-direction:column;overflow:hidden;}
+#chatPanel{position:fixed;right:0;bottom:0;left:0;z-index:950;max-width:420px;height:620px;max-height:85vh;margin:0 auto;background:var(--sand);border-radius:16px 16px 0 0;box-shadow:0 -4px 24px rgba(0,0,0,.3);transform:translateY(110%);transition:transform .35s cubic-bezier(.3,.8,.3,1);display:flex;flex-direction:column;overflow:hidden;}
 #chatPanel.open{transform:translateY(0);}
 @media(min-width:440px){#chatPanel{right:16px;left:auto;bottom:16px;border-radius:16px;}}
-.chead{background:var(--green);color:#fff;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;flex:0 0 auto;}
+.chead{background:linear-gradient(135deg,var(--green),#3a7d2c);color:#fff;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;flex:0 0 auto;}
+.chead-left{display:flex;align-items:center;gap:10px;}
+.chead-avatar{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:20px;}
 .chead h3{margin:0;font-family:'Space Grotesk';font-size:15px;}
-.chead .csub{font-size:11px;opacity:.85;}
-.chead .cclose{background:none;border:none;color:#fff;font-size:24px;line-height:1;cursor:pointer;}
-.cmsgs{flex:1 1 auto;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:10px;}
-.cbubble{max-width:85%;padding:9px 12px;border-radius:14px;font-size:13.5px;line-height:1.45;white-space:pre-wrap;word-wrap:break-word;}
-.cbubble.bot{align-self:flex-start;background:#e6efe0;color:var(--ink);border-bottom-left-radius:4px;}
-.cbubble.user{align-self:flex-end;background:var(--int);color:#fff;border-bottom-right-radius:4px;}
+.chead .csub{font-size:11px;opacity:.85;display:flex;align-items:center;gap:4px;}
+.conline-dot{width:6px;height:6px;border-radius:50%;background:#4caf50;display:inline-block;animation:dotPulse 2s infinite;}
+@keyframes dotPulse{0%,100%{opacity:1;}50%{opacity:.4;}}
+.chead-actions{display:flex;align-items:center;gap:4px;}
+.chead .cclose,.chead .cclear{background:none;border:none;color:#fff;font-size:20px;line-height:1;cursor:pointer;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:background .2s;}
+.chead .cclose:hover,.chead .cclear:hover{background:rgba(255,255,255,.2);}
+.cmsgs{flex:1 1 auto;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:6px;scroll-behavior:smooth;}
+.cmsg-row{display:flex;flex-direction:column;gap:2px;animation:msgIn .3s ease-out;}
+.cmsg-row.user{align-items:flex-end;}
+.cmsg-row.bot{align-items:flex-start;}
+@keyframes msgIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+.cbubble{max-width:85%;padding:10px 14px;border-radius:14px;font-size:13.5px;line-height:1.5;white-space:pre-wrap;word-wrap:break-word;}
+.cbubble.bot{background:#e6efe0;color:var(--ink);border-bottom-left-radius:4px;}
+.cbubble.user{background:var(--int);color:#fff;border-bottom-right-radius:4px;}
 .cbubble b,.cbubble strong{color:var(--green);}
 .cbubble.user b,.cbubble.user strong{color:#fff;}
+.cmsg-time{font-size:10px;color:#999;padding:0 4px;}
+.ctyping{display:flex;align-items:center;gap:4px;padding:10px 14px;background:#e6efe0;border-radius:14px;border-bottom-left-radius:4px;align-self:flex-start;animation:msgIn .3s ease-out;}
+.ctyping span{width:7px;height:7px;border-radius:50%;background:#8aba7f;animation:typeDot 1.4s infinite;}
+.ctyping span:nth-child(2){animation-delay:.2s;}
+.ctyping span:nth-child(3){animation-delay:.4s;}
+@keyframes typeDot{0%,60%,100%{opacity:.3;transform:scale(.8);}30%{opacity:1;transform:scale(1.1);}}
+.crelated{display:flex;flex-wrap:wrap;gap:6px;padding:4px 0;animation:msgIn .3s ease-out;}
+.crelated button{background:#fff;border:1px solid var(--line);border-radius:16px;padding:6px 12px;font-size:12px;color:var(--green);font-family:'Manrope';cursor:pointer;transition:all .2s;}
+.crelated button:hover{background:var(--green);color:#fff;border-color:var(--green);}
 .cexamples{display:flex;flex-direction:column;gap:7px;padding:2px 4px;}
 .cexamples .clabel{font-size:11px;color:#666;font-weight:700;text-transform:uppercase;letter-spacing:.4px;}
-.cexamples button{text-align:left;background:#fff;border:1px solid var(--line);border-radius:12px;padding:9px 12px;font-size:13px;color:var(--green);font-family:'Manrope';cursor:pointer;}
+.cexamples button{text-align:left;background:#fff;border:1px solid var(--line);border-radius:12px;padding:9px 12px;font-size:13px;color:var(--green);font-family:'Manrope';cursor:pointer;transition:all .2s;}
+.cexamples button:hover{background:var(--green);color:#fff;border-color:var(--green);}
 .cinput{flex:0 0 auto;display:flex;gap:8px;padding:10px;border-top:1px solid var(--line);background:#fff;}
-.cinput input{flex:1;border:1px solid var(--line);border-radius:20px;padding:10px 14px;font-size:14px;font-family:'Manrope';outline:none;}
-.cinput button{background:var(--green);color:#fff;border:none;border-radius:50%;width:42px;height:42px;font-size:18px;cursor:pointer;flex:0 0 auto;}
+.cinput input{flex:1;border:1px solid var(--line);border-radius:20px;padding:10px 14px;font-size:14px;font-family:'Manrope';outline:none;transition:border-color .2s;}
+.cinput input:focus{border-color:var(--green);}
+.cinput button{background:var(--green);color:#fff;border:none;border-radius:50%;width:42px;height:42px;font-size:18px;cursor:pointer;flex:0 0 auto;transition:all .2s;}
+.cinput button:hover{background:#3a7d2c;}
+.cinput button:disabled{opacity:.5;cursor:not-allowed;}
+.cpowered{text-align:center;font-size:9px;color:#aaa;padding:2px 10px 6px;background:#fff;}
 </style>
 </head>
 <body>
@@ -180,16 +206,23 @@ table.dt tr:last-child td{border-bottom:none;}
 </div>
 
 <button id="chatFab" aria-label="chat"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="36" height="36"><circle cx="38" cy="12" r="4" fill="#fff"/><line x1="38" y1="16" x2="38" y2="28" stroke="#fff" stroke-width="3" stroke-linecap="round"/><circle cx="62" cy="12" r="4" fill="#fff"/><line x1="62" y1="16" x2="62" y2="28" stroke="#fff" stroke-width="3" stroke-linecap="round"/><rect x="12" y="28" rx="22" ry="22" width="76" height="48" fill="none" stroke="#fff" stroke-width="5"/><circle cx="37" cy="52" r="7" fill="#fff"/><circle cx="63" cy="52" r="7" fill="#fff"/><polygon points="22,76 32,76 18,92" fill="#fff"/></svg></button>
-<div id="chatPanel">
+<div id="chatPanel" role="dialog" aria-label="Coconut Advisor Chat">
   <div class="chead">
-    <div><h3 id="chatTitle">Coconut Advisor</h3><div class="csub" id="chatSubtitle"></div></div>
-    <button class="cclose" id="chatClose">×</button>
+    <div class="chead-left">
+      <div class="chead-avatar">🌴</div>
+      <div><h3 id="chatTitle">Coconut Advisor</h3><div class="csub" id="chatSubtitle"><span class="conline-dot"></span> <span id="chatStatus">Online</span></div></div>
+    </div>
+    <div class="chead-actions">
+      <button class="cclear" id="chatClear" aria-label="New conversation" title="New conversation">⟳</button>
+      <button class="cclose" id="chatClose" aria-label="Close chat">×</button>
+    </div>
   </div>
-  <div class="cmsgs" id="chatMsgs"></div>
+  <div class="cmsgs" id="chatMsgs" role="log" aria-live="polite"></div>
   <div class="cinput">
-    <input id="chatInput" type="text" autocomplete="off">
-    <button id="chatSend">➤</button>
+    <input id="chatInput" type="text" autocomplete="off" maxlength="300" aria-label="Type your question">
+    <button id="chatSend" aria-label="Send message">➤</button>
   </div>
+  <div class="cpowered" id="chatPowered">Powered by Pol Sathkara Knowledge Base</div>
 </div>
 
 <div id="printArea"></div>
@@ -6824,8 +6857,11 @@ var INTERCROP={"Dry Zone":{"Banana":{"varieties":"Dry & Intermediate – Ambul, 
 var T={
   en:{
     chatTitle:"Coconut Advisor", chatSubtitle:"Ask about coconut farming",
-    chatWelcome:"Hello! 🥥 I'm the Coconut Growing Advisor. Ask me about varieties, fertilizer, pests, diseases, irrigation, intercropping, or harvesting.",
-    chatPlaceholder:"Type your question...", chatExamples:"Example questions:",
+    chatOnline:"Online", chatNewChat:"New conversation",
+    chatWelcome:"Hello! 🥥 I'm the Coconut Growing Advisor. Ask me about varieties, fertilizer, pests, diseases, irrigation, intercropping, or harvesting.\n\nI have knowledge from CRI, CCB, and CDA.",
+    chatPlaceholder:"Type your question...", chatExamples:"Try asking about:",
+    chatRelated:"Related topics:", chatPowered:"Powered by Pol Sathkara Knowledge Base",
+    chatCleared:"Conversation cleared. How can I help you?",
     chatQ1:"Which coconut varieties are best?", chatQ2:"How to control red palm weevil?",
     chatQ3:"What fertilizer for adult palms?", chatQ4:"Best intercrops for coconut?",
     chatQ5:"How to manage drought in coconut?", chatQ6:"What value-added products from coconut?",
@@ -6857,8 +6893,11 @@ var T={
   },
   si:{
     chatTitle:"පොල් උපදේශක", chatSubtitle:"පොල් වගාව ගැන අසන්න",
-    chatWelcome:"ආයුබෝවන්! 🥥 මම පොල් වගා උපදේශකයා. ප්‍රභේද, පොහොර, පළිබෝධ, රෝග, වාරිමාර්ග, අන්තර් බෝග හෝ අස්වැන්න ගැන අසන්න.",
-    chatPlaceholder:"ඔබේ ප්‍රශ්නය ටයිප් කරන්න...", chatExamples:"උදාහරණ ප්‍රශ්න:",
+    chatOnline:"සබැඳි", chatNewChat:"නව සංවාදය",
+    chatWelcome:"ආයුබෝවන්! 🥥 මම පොල් වගා උපදේශකයා. ප්‍රභේද, පොහොර, පළිබෝධ, රෝග, වාරිමාර්ග, අන්තර් බෝග හෝ අස්වැන්න ගැන අසන්න.\n\nCRI, CCB, සහ CDA වෙතින් දැනුම ඇත.",
+    chatPlaceholder:"ඔබේ ප්‍රශ්නය ටයිප් කරන්න...", chatExamples:"මේවා ගැන අසන්න:",
+    chatRelated:"සම්බන්ධ මාතෘකා:", chatPowered:"පොල් සත්කර දැනුම් පදනමෙනි",
+    chatCleared:"සංවාදය ඉවත් කරන ලදි. මට ඔබට උදව් කරන්නේ කොහොමද?",
     chatQ1:"හොඳම පොල් ප්‍රභේද මොනවාද?", chatQ2:"රතු පණුවා පාලනය කරන්නේ කොහොමද?",
     chatQ3:"වැඩිහිටි පොල්වලට පොහොර?", chatQ4:"පොල් සමඟ හොඳම අතුරු බෝග?",
     chatQ5:"පොල් නියං කළමනාකරණය කරන්නේ කෙසේද?", chatQ6:"පොල් වල එකතු අගය නිෂ්පාදන මොනවාද?",
@@ -6890,8 +6929,11 @@ var T={
   },
   ta:{
     chatTitle:"தென்னை ஆலோசகர்", chatSubtitle:"தென்னை சாகுபடி பற்றி கேளுங்கள்",
-    chatWelcome:"வணக்கம்! 🥥 நான் தென்னை சாகுபடி ஆலோசகர். ரகங்கள், உரம், பூச்சிகள், நோய்கள், நீர்ப்பாசனம், ஊடுபயிர் அல்லது அறுவடை பற்றி கேளுங்கள்.",
-    chatPlaceholder:"உங்கள் கேள்வியை தட்டச்சு செய்யவும்...", chatExamples:"எடுத்துக்காட்டு கேள்விகள்:",
+    chatOnline:"ஆன்லைன்", chatNewChat:"புதிய உரையாடல்",
+    chatWelcome:"வணக்கம்! 🥥 நான் தென்னை சாகுபடி ஆலோசகர். ரகங்கள், உரம், பூச்சிகள், நோய்கள், நீர்ப்பாசனம், ஊடுபயிர் அல்லது அறுவடை பற்றி கேளுங்கள்.\n\nCRI, CCB மற்றும் CDA இலிருந்து அறிவு உள்ளது.",
+    chatPlaceholder:"உங்கள் கேள்வியை தட்டச்சு செய்யவும்...", chatExamples:"இவை பற்றி கேளுங்கள்:",
+    chatRelated:"தொடர்புடைய தலைப்புகள்:", chatPowered:"போல் சத்கர அறிவுத் தளத்தால் இயங்குகிறது",
+    chatCleared:"உரையாடல் அழிக்கப்பட்டது. நான் உங்களுக்கு எப்படி உதவ முடியும்?",
     chatQ1:"சிறந்த தென்னை ரகங்கள் எவை?", chatQ2:"சிவப்பு கூன்வண்டு கட்டுப்படுத்துவது எப்படி?",
     chatQ3:"முதிர்ந்த மரங்களுக்கு உரம்?", chatQ4:"தென்னைக்கு சிறந்த ஊடுபயிர்?",
     chatQ5:"தென்னையில் வறட்சி மேலாண்மை எப்படி?", chatQ6:"தென்னையிலிருந்து மதிப்புக்கூட்டு தயாரிப்புகள் என்ன?",
@@ -7387,25 +7429,83 @@ var CHAT_FALLBACK={
 en:"I'm sorry, I don't have specific information about that. For more help:\n\n• **Coconut Research Institute (CRI):** 031-2255500 | cri.gov.lk\n• **Coconut Cultivation Board (CCB):** 011-2861331 | coconutsrilanka.lk\n• **Coconut Development Authority (CDA):** cda.gov.lk\n• Or contact your local Coconut Development Officer. 🌴",
 si:"සමාවන්න, ඒ ගැන විශේෂිත තොරතුරු මා සතුව නොමැත. වැඩිදුර උදව් සඳහා:\n\n• **පොල් පර්යේෂණ ආයතනය (CRI):** 031-2255500 | cri.gov.lk\n• **පොල් වගා මණ්ඩලය (CCB):** 011-2861331 | coconutsrilanka.lk\n• **පොල් සංවර්ධන අධිකාරිය (CDA):** cda.gov.lk\n• හෝ ඔබේ ප්‍රාදේශීය පොල් සංවර්ධන නිලධාරී අමතන්න. 🌴",
 ta:"மன்னிக்கவும், அது பற்றிய குறிப்பிட்ட தகவல்கள் என்னிடம் இல்லை. மேலும் உதவிக்கு:\n\n• **தென்னை ஆராய்ச்சி நிறுவனம் (CRI):** 031-2255500 | cri.gov.lk\n• **தென்னை பயிர்ச்செய்கை சபை (CCB):** 011-2861331 | coconutsrilanka.lk\n• **தென்னை அபிவிருத்தி அதிகாரசபை (CDA):** cda.gov.lk\n• அல்லது உங்கள் உள்ளூர் தென்னை அபிவிருத்தி அதிகாரியை தொடர்பு கொள்ளுங்கள். 🌴"};
-function chatSearch(query){
-  var q=query.toLowerCase();var best=null,bestScore=0;
+var CHAT_MIN_SCORE=3;
+function chatSearchAll(query){
+  var q=query.toLowerCase();
+  var results=[];
   for(var i=0;i<KB.length;i++){
-    var score=0;
-    for(var j=0;j<KB[i].keywords.length;j++){if(q.indexOf(KB[i].keywords[j].toLowerCase())>=0)score+=2;}
+    var score=0;var kw=KB[i].keywords;
+    for(var j=0;j<kw.length;j++){if(q.indexOf(kw[j].toLowerCase())>=0)score+=3;}
     var words=q.split(/\s+/);
-    for(var j=0;j<KB[i].keywords.length;j++){for(var w=0;w<words.length;w++){if(words[w].length>2&&KB[i].keywords[j].toLowerCase().indexOf(words[w])>=0)score+=1;}}
-    if(score>bestScore){bestScore=score;best=KB[i];}
+    for(var j=0;j<kw.length;j++){
+      var kwl=kw[j].toLowerCase();
+      for(var w=0;w<words.length;w++){
+        if(words[w].length>2){
+          if(kwl.indexOf(words[w])>=0)score+=1;
+          if(words[w].length>3&&kwl.indexOf(words[w].slice(0,-1))>=0)score+=1;
+        }
+      }
+    }
+    if(score>0)results.push({entry:KB[i],score:score,idx:i});
   }
-  return best;
+  results.sort(function(a,b){return b.score-a.score;});
+  return results;
+}
+function chatSearch(query){
+  var r=chatSearchAll(query);
+  return(r.length>0&&r[0].score>=CHAT_MIN_SCORE)?r[0].entry:null;
+}
+function chatGetRelated(query){
+  var r=chatSearchAll(query);
+  var related=[];
+  for(var i=1;i<r.length&&related.length<3;i++){
+    if(r[i].score>=2){
+      var kw=r[i].entry.keywords;
+      var label=kw[0].charAt(0).toUpperCase()+kw[0].slice(1);
+      related.push({label:label,keywords:kw.slice(0,3).join(' ')});
+    }
+  }
+  return related;
 }
 function chatEsc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 function chatFmt(s){return chatEsc(s).replace(/\*\*(.+?)\*\*/g,'<b>$1</b>').replace(/\n/g,'<br>');}
+function chatTime(){var d=new Date();var h=d.getHours(),m=d.getMinutes();return (h<10?'0':'')+h+':'+(m<10?'0':'')+m;}
 var chatHistory=[];
+var chatBusy=false;
 function chatAddMsg(text,who,store){
-  if(store!==false)chatHistory.push({text:text,who:who});
+  if(store!==false)chatHistory.push({text:text,who:who,time:chatTime()});
   var m=document.getElementById('chatMsgs');
+  var row=document.createElement('div');row.className='cmsg-row '+who;
   var b=document.createElement('div');b.className='cbubble '+who;b.innerHTML=chatFmt(text);
-  m.appendChild(b);m.scrollTop=m.scrollHeight;
+  row.appendChild(b);
+  var ts=document.createElement('div');ts.className='cmsg-time';
+  ts.textContent=store!==false?chatTime():(chatHistory.length>0?chatHistory[chatHistory.length-1].time:chatTime());
+  row.appendChild(ts);
+  m.appendChild(row);m.scrollTop=m.scrollHeight;
+  return row;
+}
+function chatShowTyping(){
+  var m=document.getElementById('chatMsgs');
+  var el=document.createElement('div');el.className='ctyping';el.id='chatTypingEl';
+  el.innerHTML='<span></span><span></span><span></span>';
+  m.appendChild(el);m.scrollTop=m.scrollHeight;
+}
+function chatHideTyping(){var el=document.getElementById('chatTypingEl');if(el)el.remove();}
+function chatShowRelated(query){
+  var related=chatGetRelated(query);
+  if(related.length===0)return;
+  var m=document.getElementById('chatMsgs');
+  var wrap=document.createElement('div');wrap.className='cmsg-row bot';
+  var lbl=document.createElement('div');lbl.className='cmsg-time';lbl.textContent=t('chatRelated');
+  wrap.appendChild(lbl);
+  var row=document.createElement('div');row.className='crelated';
+  related.forEach(function(r){
+    var btn=document.createElement('button');btn.textContent=r.label;
+    btn.onclick=function(){chatHandle(r.keywords);};
+    row.appendChild(btn);
+  });
+  wrap.appendChild(row);
+  m.appendChild(wrap);m.scrollTop=m.scrollHeight;
 }
 function chatRender(){
   var m=document.getElementById('chatMsgs');if(!m)return;m.innerHTML='';
@@ -7422,23 +7522,42 @@ function chatRender(){
     for(var i=0;i<chatHistory.length;i++)chatAddMsg(chatHistory[i].text,chatHistory[i].who,false);
   }
 }
+function chatSetInputEnabled(on){
+  var inp=document.getElementById('chatInput');
+  var btn=document.getElementById('chatSend');
+  inp.disabled=!on;btn.disabled=!on;
+}
 function chatHandle(text){
-  text=(text||'').trim();if(!text)return;
+  text=(text||'').trim();if(!text||chatBusy)return;
+  chatBusy=true;
+  chatSetInputEnabled(false);
   chatAddMsg(text,'user');
   var hit=chatSearch(text);
   var ans=hit?(hit.answer[lang]||hit.answer.en):(CHAT_FALLBACK[lang]||CHAT_FALLBACK.en);
-  chatAddMsg(ans,'bot');
+  chatShowTyping();
+  var delay=Math.min(400+ans.length*2,1500);
+  setTimeout(function(){
+    chatHideTyping();
+    chatAddMsg(ans,'bot');
+    chatShowRelated(text);
+    chatBusy=false;
+    chatSetInputEnabled(true);
+    document.getElementById('chatInput').focus();
+  },delay);
 }
 function chatApplyLang(){
   document.getElementById('chatTitle').textContent=t('chatTitle');
-  document.getElementById('chatSubtitle').textContent=t('chatSubtitle');
+  document.getElementById('chatStatus').textContent=t('chatOnline');
   document.getElementById('chatInput').placeholder=t('chatPlaceholder');
+  document.getElementById('chatPowered').textContent=t('chatPowered');
+  document.getElementById('chatClear').title=t('chatNewChat');
   chatRender();
 }
 (function initChat(){
   var fab=document.getElementById('chatFab'),panel=document.getElementById('chatPanel');
-  fab.onclick=function(){panel.classList.add('open');fab.style.display='none';};
+  fab.onclick=function(){panel.classList.add('open');fab.style.display='none';document.getElementById('chatInput').focus();};
   document.getElementById('chatClose').onclick=function(){panel.classList.remove('open');fab.style.display='flex';};
+  document.getElementById('chatClear').onclick=function(){chatHistory=[];chatRender();};
   var input=document.getElementById('chatInput');
   document.getElementById('chatSend').onclick=function(){chatHandle(input.value);input.value='';};
   input.addEventListener('keydown',function(e){if(e.key==='Enter'){chatHandle(input.value);input.value='';}});
