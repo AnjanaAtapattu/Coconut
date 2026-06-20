@@ -111,7 +111,7 @@ table.dt tr:last-child td{border-bottom:none;}
 .leaflet-popup-content{font-family:'Manrope';font-size:13px;}
 .leaflet-popup-content b{font-family:'Space Grotesk';color:var(--green);}
 /* ---- Chatbot ---- */
-#chatFab{position:fixed;right:16px;bottom:70px;z-index:900;width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#2196F3,#00BCD4);color:#fff;border:none;font-size:26px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 14px rgba(0,0,0,.3);cursor:pointer;animation:chatPulse 2s infinite;transition:transform .2s;}
+#chatFab{position:fixed;right:16px;bottom:100px;z-index:900;width:68px;height:68px;border-radius:50%;background:linear-gradient(135deg,#2196F3,#00BCD4);color:#fff;border:none;font-size:32px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 14px rgba(0,0,0,.3);cursor:pointer;animation:chatPulse 2s infinite;transition:transform .2s;}
 #chatFab:hover{transform:scale(1.1);}
 #chatFab:active{transform:scale(0.95);}
 @keyframes chatPulse{0%{box-shadow:0 4px 14px rgba(0,0,0,.3),0 0 0 0 rgba(45,74,34,.45);}70%{box-shadow:0 4px 14px rgba(0,0,0,.3),0 0 0 14px rgba(45,74,34,0);}100%{box-shadow:0 4px 14px rgba(0,0,0,.3),0 0 0 0 rgba(45,74,34,0);}}
@@ -215,6 +215,44 @@ nav.tabs button{flex:0 0 auto;min-width:60px;min-height:44px;padding:9px 10px 7p
 .rain-legend{display:flex;gap:12px;margin-top:20px;font-size:11px;flex-wrap:wrap;}
 .rain-legend span{display:flex;align-items:center;gap:4px;}
 .rain-legend .dot{width:10px;height:10px;border-radius:2px;}
+/* === Weather Dashboard === */
+.weather-dashboard{padding:4px;}
+.weather-summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:16px;}
+.weather-summary-card{background:linear-gradient(135deg,#e8f5e9,#c8e6c9);border-radius:14px;padding:14px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.08);}
+body.dark .weather-summary-card{background:linear-gradient(135deg,#2d2d44,#3a3a50);}
+.weather-summary-card .wsc-icon{font-size:28px;margin-bottom:4px;}
+.weather-summary-card .wsc-label{font-size:11px;color:#666;margin-bottom:2px;}
+body.dark .weather-summary-card .wsc-label{color:#aaa;}
+.weather-summary-card .wsc-value{font-size:18px;font-weight:800;color:var(--green);}
+.weather-bar-chart{background:#fff;border-radius:14px;padding:16px;box-shadow:0 2px 8px rgba(0,0,0,.08);margin-bottom:16px;}
+body.dark .weather-bar-chart{background:#2d2d44;}
+.weather-bar-chart h3{margin:0 0 12px;font-size:15px;color:var(--green);}
+.weather-pie-section{background:#fff;border-radius:14px;padding:16px;box-shadow:0 2px 8px rgba(0,0,0,.08);margin-bottom:16px;}
+body.dark .weather-pie-section{background:#2d2d44;}
+.weather-pie{width:140px;height:140px;border-radius:50%;margin:0 auto 12px;}
+.weather-pie-legend{display:flex;justify-content:center;gap:16px;font-size:12px;flex-wrap:wrap;}
+.weather-pie-legend span{display:flex;align-items:center;gap:4px;}
+.weather-stats{background:#fff;border-radius:14px;padding:16px;box-shadow:0 2px 8px rgba(0,0,0,.08);margin-bottom:16px;}
+body.dark .weather-stats{background:#2d2d44;}
+.weather-stats table{width:100%;border-collapse:collapse;font-size:12px;}
+.weather-stats th{text-align:left;padding:6px 8px;border-bottom:2px solid var(--green);color:var(--green);font-size:11px;}
+.weather-stats td{padding:6px 8px;border-bottom:1px solid var(--line);}
+.weather-cal-card{background:#fff;border-radius:14px;padding:16px;box-shadow:0 2px 8px rgba(0,0,0,.08);margin-bottom:16px;}
+body.dark .weather-cal-card{background:#2d2d44;}
+.weather-cal-card h3{margin:0 0 12px;font-size:15px;color:var(--green);}
+/* === Pest Split Layout === */
+.pest-split{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:8px;}
+.pest-column h3{font-size:15px;margin:0 0 10px;color:var(--green);}
+.pest-card-new{background:#fff;border-radius:12px;padding:12px;margin-bottom:8px;border-left:4px solid var(--green);box-shadow:0 2px 6px rgba(0,0,0,.06);transition:transform .15s,box-shadow .15s;cursor:pointer;}
+body.dark .pest-card-new{background:#2d2d44;}
+.pest-card-new:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,.12);}
+.pest-card-new.pest-type{border-left-color:#e65100;}
+.pest-card-new.disease-type{border-left-color:#6a1b9a;}
+.pest-card-new summary{display:flex;align-items:center;gap:8px;font-weight:700;font-size:13px;list-style:none;cursor:pointer;}
+.pest-card-new summary::-webkit-details-marker{display:none;}
+.pest-card-new .pest-icon{font-size:22px;}
+.pest-card-new .pest-body{margin-top:8px;font-size:12px;line-height:1.5;color:#555;}
+body.dark .pest-card-new .pest-body{color:#bbb;}
 /* === Price Ticker === */
 .price-ticker{background:var(--green);color:#fff;padding:6px 0;overflow:hidden;white-space:nowrap;font-size:12px;font-weight:600;}
 .price-ticker .scroll{display:inline-block;}
@@ -260,7 +298,8 @@ body.dark .search-box input{background:#1a1a2e;color:#e0e0e0;border-color:#3a3a5
 .sharebtn{display:inline-flex;align-items:center;gap:6px;background:var(--green);color:#fff;border:none;padding:12px 20px;border-radius:14px;font-family:'Space Grotesk';font-weight:700;font-size:14px;cursor:pointer;margin-top:6px;margin-right:8px;box-shadow:0 4px 12px rgba(45,74,34,.3);}
 /* === Office Finder === */
 #view-offices{overflow-y:auto;-webkit-overflow-scrolling:touch;padding:12px;background:var(--sand);}
-.ofc-card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:10px;display:flex;gap:12px;align-items:flex-start;}
+.ofc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px;}
+.ofc-card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px;display:flex;gap:12px;align-items:flex-start;}
 body.dark .ofc-card{background:#2d2d44;border-color:#3a3a50;}
 .ofc-card .ofc-icon{font-size:28px;flex:0 0 auto;}
 .ofc-card .ofc-info{flex:1;min-width:0;}
@@ -338,7 +377,12 @@ body.dark .fb-textarea{background:#1a1a2e;color:#e0e0e0;border-color:#3a3a50;}
     </div>
   </header>
   <div class="views">
-    <section class="view active" id="view-agro">
+    <section class="view active" id="view-google">
+      <div class="map" id="map-google"></div>
+      <button class="gbtn" id="pinBtn" data-t="pinBtn">📍 Drop pin on my location</button>
+      <div class="hint" id="ghint" data-t="hintGoogle">Tap the map to drop a pin & find your zone</div>
+    </section>
+    <section class="view" id="view-agro">
       <div class="map" id="map-agro"></div>
       <div class="hint" data-t="hintAgro">Tap a zone for the full growing guide</div>
       <div class="legend">
@@ -351,11 +395,6 @@ body.dark .fb-textarea{background:#1a1a2e;color:#e0e0e0;border-color:#3a3a50;}
       <div class="map" id="map-clim"></div>
       <div class="hint" data-t="hintClim">Tap a climatic zone</div>
     </section>
-    <section class="view" id="view-google">
-      <div class="map" id="map-google"></div>
-      <button class="gbtn" id="pinBtn" data-t="pinBtn">📍 Drop pin on my location</button>
-      <div class="hint" id="ghint" data-t="hintGoogle">Tap the map to drop a pin & find your zone</div>
-    </section>
     <section class="view" id="view-weather" style="position:absolute;inset:0;"></section>
     <section class="view" id="view-pests" style="position:absolute;inset:0;"></section>
     <section class="view" id="view-offices" style="position:absolute;inset:0;"></section>
@@ -364,9 +403,9 @@ body.dark .fb-textarea{background:#1a1a2e;color:#e0e0e0;border-color:#3a3a50;}
     <div class="scroll" id="priceScroll"></div>
   </div>
   <nav class="tabs">
-    <button class="active" data-tab="agro"><span class="ic">🗺️</span><span data-t="tabAgro">Agro Ecological</span></button>
+    <button class="active" data-tab="google"><span class="ic">🛰️</span><span data-t="tabGoogle">Google Map</span></button>
+    <button data-tab="agro"><span class="ic">🗺️</span><span data-t="tabAgro">Agro Ecological</span></button>
     <button data-tab="clim"><span class="ic">🌦️</span><span data-t="tabClim">Climatic Zones</span></button>
-    <button data-tab="google"><span class="ic">🛰️</span><span data-t="tabGoogle">Google Map</span></button>
     <button data-tab="weather"><span class="ic">🌤️</span><span data-t="tabWeather">Weather</span></button>
     <button data-tab="pests"><span class="ic">🐛</span><span data-t="tabPests">Pests</span></button>
     <button data-tab="offices"><span class="ic">🏢</span><span data-t="tabOffices">Offices</span></button>
@@ -7933,27 +7972,57 @@ function renderWeather(){
     {key:'int',name:t('intZone'),color:'var(--int)',data:RAINFALL_DATA.int},
     {key:'dry',name:t('dryZone'),color:'var(--dry)',data:RAINFALL_DATA.dry}
   ];
-  var html='<h2 style="margin:0 0 12px;font-size:16px;color:var(--green)">🌤️ '+t('weatherTitle')+'</h2>';
-  html+='<div class="rain-legend"><span><span class="dot" style="background:var(--wet)"></span>'+t('wetZone')+'</span><span><span class="dot" style="background:var(--int)"></span>'+t('intZone')+'</span><span><span class="dot" style="background:var(--dry)"></span>'+t('dryZone')+'</span><span>▣ '+t('currentMonth')+'</span></div>';
+  // Compute totals
+  var totals=zones.map(function(z){return z.data.reduce(function(a,b){return a+b;},0);});
+  var grandTotal=totals.reduce(function(a,b){return a+b;},0);
+  var html='<div class="weather-dashboard">';
+  html+='<h2 style="margin:0 0 14px;font-size:18px;color:var(--green)">🌤️ '+t('weatherTitle')+'</h2>';
+  // Summary cards
+  html+='<div class="weather-summary">';
+  html+='<div class="weather-summary-card"><div class="wsc-icon">🌧️</div><div class="wsc-label">'+t('wetZone')+'</div><div class="wsc-value">'+totals[0]+' mm</div></div>';
+  html+='<div class="weather-summary-card"><div class="wsc-icon">⛅</div><div class="wsc-label">'+t('intZone')+'</div><div class="wsc-value">'+totals[1]+' mm</div></div>';
+  html+='<div class="weather-summary-card"><div class="wsc-icon">☀️</div><div class="wsc-label">'+t('dryZone')+'</div><div class="wsc-value">'+totals[2]+' mm</div></div>';
+  html+='<div class="weather-summary-card"><div class="wsc-icon">📅</div><div class="wsc-label">Current Month</div><div class="wsc-value">'+months[curM]+'</div></div>';
+  html+='</div>';
+  // Bar charts per zone
+  html+='<div class="rain-legend" style="margin-bottom:12px"><span><span class="dot" style="background:var(--wet)"></span>'+t('wetZone')+'</span><span><span class="dot" style="background:var(--int)"></span>'+t('intZone')+'</span><span><span class="dot" style="background:var(--dry)"></span>'+t('dryZone')+'</span><span>▣ '+t('currentMonth')+'</span></div>';
   zones.forEach(function(z){
     var max=Math.max.apply(null,z.data);
-    html+='<div class="weather-zone"><h3>'+z.name+' — '+t('rainfallMm')+'</h3><div class="rain-chart">';
+    html+='<div class="weather-bar-chart"><h3>'+z.name+' — '+t('rainfallMm')+'</h3><div class="rain-chart">';
     for(var i=0;i<12;i++){
       var h=Math.round((z.data[i]/max)*80);
       html+='<div class="rain-bar'+(i===curM?' current':'')+'" style="height:'+h+'px;background:'+z.color+'"><span class="rval">'+z.data[i]+'</span><span class="rlabel">'+months[i]+'</span></div>';
     }
     html+='</div></div>';
   });
+  // Pie chart - rainfall distribution
+  var pcts=totals.map(function(t){return Math.round(t/grandTotal*100);});
+  html+='<div class="weather-pie-section"><h3 style="margin:0 0 12px;font-size:15px;color:var(--green)">🥧 Rainfall Distribution</h3>';
+  var deg1=Math.round(pcts[0]*3.6),deg2=Math.round((pcts[0]+pcts[1])*3.6);
+  html+='<div class="weather-pie" style="background:conic-gradient(var(--wet) 0deg '+deg1+'deg,var(--int) '+deg1+'deg '+deg2+'deg,var(--dry) '+deg2+'deg 360deg)"></div>';
+  html+='<div class="weather-pie-legend"><span><span class="dot" style="background:var(--wet)"></span>'+t('wetZone')+' '+pcts[0]+'%</span><span><span class="dot" style="background:var(--int)"></span>'+t('intZone')+' '+pcts[1]+'%</span><span><span class="dot" style="background:var(--dry)"></span>'+t('dryZone')+' '+pcts[2]+'%</span></div>';
+  html+='</div>';
+  // Comparison table
+  html+='<div class="weather-stats"><h3 style="margin:0 0 10px;font-size:15px;color:var(--green)">📊 Zone Comparison</h3>';
+  html+='<table><thead><tr><th>Zone</th><th>Annual (mm)</th><th>Avg/Month</th><th>Peak Month</th><th>Min Month</th></tr></thead><tbody>';
+  zones.forEach(function(z,idx){
+    var avg=Math.round(totals[idx]/12);
+    var peakIdx=z.data.indexOf(Math.max.apply(null,z.data));
+    var minIdx=z.data.indexOf(Math.min.apply(null,z.data));
+    html+='<tr><td><span class="dot" style="display:inline-block;width:10px;height:10px;border-radius:2px;background:'+z.color+';vertical-align:middle;margin-right:4px"></span>'+z.name+'</td><td>'+totals[idx]+'</td><td>'+avg+'</td><td>'+months[peakIdx]+' ('+z.data[peakIdx]+')</td><td>'+months[minIdx]+' ('+z.data[minIdx]+')</td></tr>';
+  });
+  html+='</tbody></table></div>';
   // Seasonal Calendar
-  html+='<div class="card" style="margin-top:16px"><h3>📅 '+t('calTitle')+'</h3><div class="cal-timeline">';
+  html+='<div class="weather-cal-card"><h3>📅 '+t('calTitle')+'</h3><div class="cal-timeline">';
   var calKeys=['calJan','calFeb','calMar','calApr','calMay','calJun','calJul','calAug','calSep','calOct','calNov','calDec'];
   var calColors=['#8BC34A','#8BC34A','#4CAF50','#4CAF50','#2196F3','#2196F3','#FF9800','#FF9800','#f44336','#f44336','#795548','#795548'];
+  var calIcons=['🌱','🌱','🌿','🌿','💧','💧','🌾','🌾','🥥','🥥','🪹','🪹'];
   for(var i=0;i<12;i++){
-    html+='<div class="cal-month'+(i===curM?' current':'')+'"><span class="cm-name">'+months[i]+'</span><span class="cm-bar" style="background:'+calColors[i]+'">'+t(calKeys[i])+'</span></div>';
+    html+='<div class="cal-month'+(i===curM?' current':'')+'"><span class="cm-name">'+calIcons[i]+' '+months[i]+'</span><span class="cm-bar" style="background:'+calColors[i]+'">'+t(calKeys[i])+'</span></div>';
   }
   html+='</div></div>';
-  // Price ticker note
   html+='<p class="muted" style="margin-top:12px;text-align:center">'+t('priceNote')+'</p>';
+  html+='</div>';
   el.innerHTML=html;
 }
 // ====== FEATURE: Price Ticker ======
@@ -8004,11 +8073,22 @@ var PESTS=[
 ];
 function renderPests(){
   var el=document.getElementById('view-pests');
+  var pests=PESTS.filter(function(p){return p.icon==='🪲';});
+  var diseases=PESTS.filter(function(p){return p.icon==='🍄';});
   var html='<h2 style="margin:0 0 12px;font-size:16px;color:var(--green)">🐛 '+t('pestTitle')+'</h2>';
-  PESTS.forEach(function(p){
-    html+='<details class="pest-card"><summary><span class="pest-icon">'+p.icon+'</span>'+t(p.nameKey)+'<span class="arr">▾</span></summary>';
-    html+='<div class="pest-body"><b>Symptoms:</b>'+esc(t(p.symKey))+'<b>Treatment:</b>'+esc(t(p.txKey))+'</div></details>';
+  html+='<div class="pest-split">';
+  html+='<div class="pest-column"><h3>🪲 Pests</h3>';
+  pests.forEach(function(p){
+    html+='<details class="pest-card-new pest-type"><summary><span class="pest-icon">'+p.icon+'</span>'+t(p.nameKey)+'</summary>';
+    html+='<div class="pest-body"><b>Symptoms:</b> '+esc(t(p.symKey))+'<br><b>Treatment:</b> '+esc(t(p.txKey))+'</div></details>';
   });
+  html+='</div>';
+  html+='<div class="pest-column"><h3>🍄 Diseases</h3>';
+  diseases.forEach(function(p){
+    html+='<details class="pest-card-new disease-type"><summary><span class="pest-icon">'+p.icon+'</span>'+t(p.nameKey)+'</summary>';
+    html+='<div class="pest-body"><b>Symptoms:</b> '+esc(t(p.symKey))+'<br><b>Treatment:</b> '+esc(t(p.txKey))+'</div></details>';
+  });
+  html+='</div></div>';
   el.innerHTML=html;
 }
 // ====== FEATURE: Share ======
@@ -8123,6 +8203,7 @@ function renderOffices(){
     html+='<option value="'+f+'"'+(ofcFilter===f?' selected':'')+'>'+t('filter'+f)+'</option>';
   });
   html+='</select></div>';
+  html+='<div class="ofc-grid">';
   filtered.forEach(function(o){
     html+='<div class="ofc-card"><div class="ofc-icon">'+o.icon+'</div><div class="ofc-info">';
     html+='<div class="ofc-name">'+o.name+'</div>';
@@ -8135,6 +8216,7 @@ function renderOffices(){
     html+='<a href="tel:'+o.phone.replace(/[^+\d]/g,'')+'">'+t('ofcCall')+'</a>';
     html+='</div></div></div>';
   });
+  html+='</div>';
   if(filtered.length===0)html+='<div style="text-align:center;padding:20px;color:#888">No offices found</div>';
   html+='</div>';
   el.innerHTML=html;
