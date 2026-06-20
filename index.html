@@ -248,9 +248,69 @@ body.dark .search-box input{background:#1a1a2e;color:#e0e0e0;border-color:#3a3a5
 .cal-month .cm-bar{flex:1;border-radius:4px;padding:4px 8px;color:#fff;font-weight:600;font-size:11px;}
 /* === Share Button === */
 .sharebtn{display:inline-flex;align-items:center;gap:6px;background:var(--green);color:#fff;border:none;padding:12px 20px;border-radius:14px;font-family:'Space Grotesk';font-weight:700;font-size:14px;cursor:pointer;margin-top:6px;margin-right:8px;box-shadow:0 4px 12px rgba(45,74,34,.3);}
+/* === Office Finder === */
+#view-offices{overflow-y:auto;-webkit-overflow-scrolling:touch;padding:12px;background:var(--sand);}
+.ofc-card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:10px;display:flex;gap:12px;align-items:flex-start;}
+body.dark .ofc-card{background:#2d2d44;border-color:#3a3a50;}
+.ofc-card .ofc-icon{font-size:28px;flex:0 0 auto;}
+.ofc-card .ofc-info{flex:1;min-width:0;}
+.ofc-card .ofc-name{font-weight:800;font-size:14px;color:var(--green);margin:0 0 2px;}
+.ofc-card .ofc-type{font-size:11px;color:#888;text-transform:uppercase;font-weight:700;letter-spacing:.4px;}
+.ofc-card .ofc-addr{font-size:12px;margin:4px 0;color:var(--ink);opacity:.8;}
+.ofc-card .ofc-phone{font-size:12px;color:var(--green);font-weight:600;}
+.ofc-card .ofc-dist{font-size:11px;color:#ff5722;font-weight:700;margin-top:4px;}
+.ofc-actions{display:flex;gap:6px;margin-top:6px;}
+.ofc-actions a,.ofc-actions button{background:var(--green);color:#fff;border:none;border-radius:8px;padding:6px 12px;font-size:11px;font-weight:700;text-decoration:none;cursor:pointer;font-family:'Manrope';}
+.ofc-actions a:hover,.ofc-actions button:hover{opacity:.85;}
+.ofc-locate-bar{display:flex;gap:8px;margin-bottom:12px;}
+.ofc-locate-bar button{flex:1;background:var(--green);color:#fff;border:none;border-radius:12px;padding:12px;font-family:'Space Grotesk';font-weight:700;font-size:14px;cursor:pointer;}
+.ofc-locate-bar select{flex:1;border:2px solid var(--line);border-radius:12px;padding:8px 12px;font-size:13px;font-family:'Manrope';background:#fff;color:var(--ink);}
+body.dark .ofc-locate-bar select{background:#2d2d44;color:#e0e0e0;border-color:#3a3a50;}
+/* === Pest Photo ID === */
+.pest-photo-section{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:12px;}
+body.dark .pest-photo-section{background:#2d2d44;border-color:#3a3a50;}
+.pest-photo-section h3{margin:0 0 8px;font-size:14px;color:var(--green);}
+.pest-capture{display:flex;gap:8px;margin-bottom:10px;}
+.pest-capture button{background:var(--green);color:#fff;border:none;border-radius:12px;padding:10px 16px;font-family:'Space Grotesk';font-weight:700;font-size:13px;cursor:pointer;display:flex;align-items:center;gap:6px;}
+.pest-preview{width:100%;max-width:300px;border-radius:10px;margin:8px 0;display:none;}
+.pest-compare{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px;}
+.pest-compare-card{border:2px solid var(--line);border-radius:10px;padding:10px;text-align:center;cursor:pointer;transition:all .2s;}
+.pest-compare-card:hover,.pest-compare-card.selected{border-color:var(--green);background:rgba(45,74,34,.08);}
+.pest-compare-card .pc-icon{font-size:36px;}
+.pest-compare-card .pc-name{font-size:11px;font-weight:700;color:var(--green);margin-top:4px;}
+.pest-compare-card .pc-match{font-size:10px;color:#ff9800;font-weight:600;}
+/* === Offline Indicator === */
+.offline-bar{position:fixed;top:0;left:0;right:0;z-index:2000;background:#ff5722;color:#fff;text-align:center;padding:4px;font-size:11px;font-weight:700;transform:translateY(-100%);transition:transform .3s;}
+.offline-bar.show{transform:translateY(0);}
+.cache-indicator{position:fixed;bottom:70px;left:16px;z-index:900;background:rgba(0,0,0,.7);color:#fff;padding:6px 12px;border-radius:20px;font-size:10px;display:none;align-items:center;gap:4px;}
+.cache-indicator.show{display:flex;}
+.cache-dot{width:6px;height:6px;border-radius:50%;background:#4caf50;}
+.cache-dot.stale{background:#ff9800;}
+/* === Feedback Form === */
+.feedback-overlay{position:fixed;inset:0;z-index:1200;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;transition:all .3s;}
+.feedback-overlay.open{opacity:1;visibility:visible;}
+.feedback-box{background:#fff;border-radius:16px;padding:24px;max-width:360px;width:90%;box-shadow:0 8px 32px rgba(0,0,0,.3);text-align:center;}
+body.dark .feedback-box{background:#2d2d44;color:#e0e0e0;}
+.feedback-box h3{margin:0 0 6px;color:var(--green);font-size:16px;}
+.feedback-box .fb-sub{font-size:12px;color:#888;margin-bottom:14px;}
+.fb-faces{display:flex;justify-content:center;gap:8px;margin-bottom:14px;}
+.fb-face{width:48px;height:48px;border-radius:50%;border:3px solid var(--line);background:none;font-size:28px;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;padding:0;}
+.fb-face:hover{transform:scale(1.15);}
+.fb-face.selected{border-color:var(--green);background:rgba(45,74,34,.1);transform:scale(1.2);}
+.fb-textarea{width:100%;border:2px solid var(--line);border-radius:12px;padding:10px;font-size:13px;font-family:'Manrope';resize:vertical;min-height:60px;box-sizing:border-box;margin-bottom:10px;}
+body.dark .fb-textarea{background:#1a1a2e;color:#e0e0e0;border-color:#3a3a50;}
+.fb-submit{background:var(--green);color:#fff;border:none;border-radius:12px;padding:12px 24px;font-family:'Space Grotesk';font-weight:700;font-size:14px;cursor:pointer;width:100%;}
+.fb-submit:disabled{opacity:.5;cursor:not-allowed;}
+.fb-thanks{padding:20px;text-align:center;font-size:36px;}
+/* === TTS Button === */
+.tts-btn{background:none;border:none;color:var(--green);cursor:pointer;font-size:16px;padding:2px 4px;opacity:.6;transition:opacity .2s;vertical-align:middle;}
+.tts-btn:hover{opacity:1;}
+.tts-btn.speaking{opacity:1;color:#ff5722;animation:micPulse 1s infinite;}
 </style>
 </head>
 <body>
+<div class="offline-bar" id="offlineBar" data-t="offlineMsg">You are offline. Showing cached content.</div>
+<div class="cache-indicator" id="cacheIndicator"><span class="cache-dot" id="cacheDot"></span><span id="cacheText"></span></div>
 <div id="app">
   <header class="topbar">
     <span class="logo">🥥</span>
@@ -259,6 +319,7 @@ body.dark .search-box input{background:#1a1a2e;color:#e0e0e0;border-color:#3a3a5
       <button class="hdr-btn" id="darkToggle" title="Dark mode">🌙</button>
       <button class="hdr-btn" id="fontToggle" title="Font size">A</button>
       <button class="hdr-btn" id="searchToggle" title="Search">🔍</button>
+      <button class="hdr-btn" id="feedbackToggle" title="Feedback">💬</button>
     </div>
     <div class="langsw" id="langsw">
       <button data-lang="en">EN</button>
@@ -287,6 +348,7 @@ body.dark .search-box input{background:#1a1a2e;color:#e0e0e0;border-color:#3a3a5
     </section>
     <section class="view" id="view-weather" style="position:absolute;inset:0;"></section>
     <section class="view" id="view-pests" style="position:absolute;inset:0;"></section>
+    <section class="view" id="view-offices" style="position:absolute;inset:0;"></section>
   </div>
   <div class="price-ticker" id="priceTicker">
     <div class="scroll" id="priceScroll"></div>
@@ -297,6 +359,7 @@ body.dark .search-box input{background:#1a1a2e;color:#e0e0e0;border-color:#3a3a5
     <button data-tab="google"><span class="ic">🛰️</span><span data-t="tabGoogle">Google Map</span></button>
     <button data-tab="weather"><span class="ic">🌤️</span><span data-t="tabWeather">Weather</span></button>
     <button data-tab="pests"><span class="ic">🐛</span><span data-t="tabPests">Pests</span></button>
+    <button data-tab="offices"><span class="ic">🏢</span><span data-t="tabOffices">Offices</span></button>
   </nav>
 </div>
 
@@ -304,6 +367,22 @@ body.dark .search-box input{background:#1a1a2e;color:#e0e0e0;border-color:#3a3a5
   <div class="search-box">
     <input id="searchInput" type="text" placeholder="Search zones, topics..." autocomplete="off">
     <div class="search-results" id="searchResults"></div>
+  </div>
+</div>
+
+<div class="feedback-overlay" id="feedbackOverlay">
+  <div class="feedback-box" id="feedbackBox">
+    <h3 id="fbTitle" data-t="fbTitle">How is your experience?</h3>
+    <div class="fb-sub" id="fbSub" data-t="fbSub">Your feedback helps us improve</div>
+    <div class="fb-faces" id="fbFaces">
+      <button class="fb-face" data-rating="1">😠</button>
+      <button class="fb-face" data-rating="2">😟</button>
+      <button class="fb-face" data-rating="3">😐</button>
+      <button class="fb-face" data-rating="4">🙂</button>
+      <button class="fb-face" data-rating="5">😄</button>
+    </div>
+    <textarea class="fb-textarea" id="fbText" placeholder="Tell us more (optional)..." maxlength="500"></textarea>
+    <button class="fb-submit" id="fbSubmit" disabled data-t="fbSubmit">Send Feedback</button>
   </div>
 </div>
 
@@ -341,6 +420,7 @@ body.dark .search-box input{background:#1a1a2e;color:#e0e0e0;border-color:#3a3a5
   </div>
   <div class="cpowered" id="chatPowered">Powered by Pol Sathkara Knowledge Base</div>
 </div>
+<input type="file" id="pestPhotoInput" accept="image/*" capture="environment" style="display:none">
 
 <div id="printArea"></div>
 
@@ -7029,7 +7109,13 @@ var T={
     calJul:"Fertilizer (Yala season)",calAug:"Yala fertilizer, weeding",
     calSep:"Harvest peak begins",calOct:"Peak harvest season",
     calNov:"Land prep, drainage work",calDec:"Drainage maintenance, off-season planning",
-    searchPlaceholder:"Search zones, topics...",noResults:"No results found"
+    searchPlaceholder:"Search zones, topics...",noResults:"No results found",
+    tabOffices:"Offices",officesTitle:"Nearest Offices",locateMe:"📍 Find My Location",filterAll:"All",filterCRI:"CRI",filterCCB:"CCB",filterGovijana:"Govijana Sewa",
+    ofcDirections:"Directions",ofcCall:"Call",ofcLocating:"Locating...",ofcNoGPS:"Location not available. Showing all offices.",ofcKmAway:"km away",
+    pestPhotoTitle:"Photo Pest Identifier",pestCapture:"📷 Take Photo",pestGallery:"🖼️ Choose Photo",pestCompareHint:"Take a photo of the affected palm, then compare with known pests below:",pestNoMatch:"No close match found. Contact your nearest CRI or Govijana Sewa office.",
+    offlineMsg:"You are offline. Showing cached content.",cacheOk:"Cached",cacheStale:"Not cached",
+    fbTitle:"How is your experience?",fbSub:"Your feedback helps us improve",fbSubmit:"Send Feedback",fbThanks:"Thank you for your feedback! 🌴",fbPlaceholder:"Tell us more (optional)...",
+    ttsSpeak:"Read aloud",ttsStop:"Stop reading"
   },
   si:{
     chatTitle:"පොල් උපදේශක", chatSubtitle:"පොල් වගාව ගැන අසන්න",
@@ -7084,7 +7170,13 @@ var T={
     calJan:"පොහොර (මහ අවසානය)",calFeb:"පැල තවාන්",calMar:"පැල සිටුවීම",calApr:"සිටුවීමේ කාලය",
     calMay:"මෝසම් සූදානම",calJun:"පළිබෝධ නිරීක්ෂණය",calJul:"පොහොර (යල)",calAug:"යල පොහොර",
     calSep:"අස්වනු උපරිමය",calOct:"අස්වනු කන්නය",calNov:"ඉඩම් සැකසීම",calDec:"ජලවහන නඩත්තු",
-    searchPlaceholder:"සොයන්න...",noResults:"ප්‍රතිඵල නැත"
+    searchPlaceholder:"සොයන්න...",noResults:"ප්‍රතිඵල නැත",
+    tabOffices:"කාර්යාල",officesTitle:"ළඟම කාර්යාල",locateMe:"📍 මගේ ස්ථානය",filterAll:"සියල්ල",filterCRI:"CRI",filterCCB:"CCB",filterGovijana:"ගොවිජන සේවා",
+    ofcDirections:"දිශා",ofcCall:"අමතන්න",ofcLocating:"සොයමින්...",ofcNoGPS:"ස්ථානය ලබාගත නොහැක. සියලු කාර්යාල පෙන්වයි.",ofcKmAway:"කි.මී. දුර",
+    pestPhotoTitle:"ඡායාරූපයෙන් පළිබෝධ හඳුනාගන්න",pestCapture:"📷 ඡායාරූපයක් ගන්න",pestGallery:"🖼️ ඡායාරූපයක් තෝරන්න",pestCompareHint:"බලපෑමට ලක් වූ පොල් ගසෙහි ඡායාරූපයක් ගෙන පහත දන්නා පළිබෝධ සමඟ සසඳන්න:",pestNoMatch:"ආසන්න ගැළපීමක් හමු නොවීය. ළඟම CRI හෝ ගොවිජන සේවා කාර්යාලය අමතන්න.",
+    offlineMsg:"ඔබ නොබැඳි ය. හැඹිලිගත අන්තර්ගතය පෙන්වයි.",cacheOk:"හැඹිලිගතයි",cacheStale:"හැඹිලිගත නැත",
+    fbTitle:"ඔබේ අත්දැකීම කොහොමද?",fbSub:"ඔබේ ප්‍රතිපෝෂණය අපට වැඩිදියුණු කිරීමට උපකාරී වේ",fbSubmit:"ප්‍රතිපෝෂණය යවන්න",fbThanks:"ඔබේ ප්‍රතිපෝෂණයට ස්තූතියි! 🌴",fbPlaceholder:"තවත් කියන්න (විකල්ප)...",
+    ttsSpeak:"කියවන්න",ttsStop:"නවත්වන්න"
   },
   ta:{
     chatTitle:"தென்னை ஆலோசகர்", chatSubtitle:"தென்னை சாகுபடி பற்றி கேளுங்கள்",
@@ -7139,7 +7231,13 @@ var T={
     calJan:"உரம் (மகா இறுதி)",calFeb:"நாற்றங்கால்",calMar:"நடவு தொடக்கம்",calApr:"நடவு காலம்",
     calMay:"பருவமழை தயாரிப்பு",calJun:"பூச்சி கண்காணிப்பு",calJul:"உரம் (யாலா)",calAug:"யாலா உரம்",
     calSep:"அறுவடை உச்சம்",calOct:"அறுவடை காலம்",calNov:"நிலம் தயாரிப்பு",calDec:"வடிகால் பராமரிப்பு",
-    searchPlaceholder:"தேடு...",noResults:"முடிவுகள் இல்லை"
+    searchPlaceholder:"தேடு...",noResults:"முடிவுகள் இல்லை",
+    tabOffices:"அலுவலகங்கள்",officesTitle:"அருகிலுள்ள அலுவலகங்கள்",locateMe:"📍 எனது இருப்பிடம்",filterAll:"அனைத்தும்",filterCRI:"CRI",filterCCB:"CCB",filterGovijana:"கோவிஜன சேவை",
+    ofcDirections:"திசைகள்",ofcCall:"அழைக்க",ofcLocating:"கண்டறிகிறது...",ofcNoGPS:"இருப்பிடம் கிடைக்கவில்லை. அனைத்து அலுவலகங்களையும் காட்டுகிறது.",ofcKmAway:"கி.மீ. தொலைவு",
+    pestPhotoTitle:"புகைப்படம் மூலம் பூச்சி அடையாளம்",pestCapture:"📷 புகைப்படம் எடு",pestGallery:"🖼️ புகைப்படம் தேர்வு",pestCompareHint:"பாதிக்கப்பட்ட தென்னை மரத்தின் புகைப்படம் எடுத்து கீழே உள்ள அறியப்பட்ட பூச்சிகளுடன் ஒப்பிடுங்கள்:",pestNoMatch:"நெருக்கமான பொருத்தம் கிடைக்கவில்லை. அருகிலுள்ள CRI அல்லது கோவிஜன சேவை அலுவலகத்தை தொடர்பு கொள்ளுங்கள்.",
+    offlineMsg:"நீங்கள் ஆஃப்லைனில் உள்ளீர்கள். தற்காலிக சேமிப்பு உள்ளடக்கத்தைக் காட்டுகிறது.",cacheOk:"தற்சேமிப்பு",cacheStale:"சேமிக்கப்படவில்லை",
+    fbTitle:"உங்கள் அனுபவம் எப்படி?",fbSub:"உங்கள் கருத்து எங்களுக்கு மேம்படுத்த உதவும்",fbSubmit:"கருத்தை அனுப்பு",fbThanks:"உங்கள் கருத்துக்கு நன்றி! 🌴",fbPlaceholder:"மேலும் கூறுங்கள் (விருப்பம்)...",
+    ttsSpeak:"படிக்க",ttsStop:"நிறுத்து"
   }
 };
 var lang=(function(){try{return localStorage.getItem('polLang')||'en';}catch(e){return 'en';}})();
@@ -7276,7 +7374,7 @@ function findZoneAt(lng,lat){
 }
 
 // ---- Tabs ----
-var tabMap={agro:'view-agro',clim:'view-clim',google:'view-google',weather:'view-weather',pests:'view-pests'};
+var tabMap={agro:'view-agro',clim:'view-clim',google:'view-google',weather:'view-weather',pests:'view-pests',offices:'view-offices'};
 var tabInited={weather:false,pests:false,clim:false,google:false};
 document.querySelectorAll('nav.tabs button').forEach(function(b){
   b.onclick=function(){
@@ -7287,6 +7385,7 @@ document.querySelectorAll('nav.tabs button').forEach(function(b){
     document.getElementById(tabMap[tb]).classList.add('active');
     if(tb==='weather'){if(!tabInited.weather){tabInited.weather=true;}renderWeather();}
     if(tb==='pests'){if(!tabInited.pests){tabInited.pests=true;}renderPests();}
+    if(tb==='offices'){renderOffices();}
     setTimeout(function(){ if(maps[tb])maps[tb].invalidateSize(); },320);
   };
 });
@@ -7932,11 +8031,259 @@ if('serviceWorker' in navigator){
   input.addEventListener('keydown',function(e){if(e.key==='Enter'){chatHandle(input.value);input.value='';}});
 })();
 
+// === Office Finder Data ===
+var OFFICES=[
+{name:'CRI Head Office',type:'CRI',lat:7.3522,lng:79.8917,addr:'Bandirippuwa Estate, Lunuwila 61150',phone:'031-2255300',icon:'🔬'},
+{name:'CRI Ratmalagara Station',type:'CRI',lat:7.9830,lng:80.4050,addr:'Ratmalagara, Kurunegala',phone:'027-3279344',icon:'🔬'},
+{name:'CRI Ambakelle Station',type:'CRI',lat:7.7550,lng:80.2050,addr:'Ambakelle, Kurunegala',phone:'032-5779408',icon:'🔬'},
+{name:'CRI Makandura Station',type:'CRI',lat:7.3200,lng:79.9700,addr:'Makandura, Gampaha',phone:'033-2272870',icon:'🔬'},
+{name:'CRI Walpita Station',type:'CRI',lat:7.2800,lng:79.9600,addr:'Walpita, Gampaha',phone:'031-3319993',icon:'🔬'},
+{name:'CRI Hirimbura Station',type:'CRI',lat:6.0700,lng:80.4500,addr:'Hirimbura, Galle',phone:'047-3624646',icon:'🔬'},
+{name:'CCB Head Office',type:'CCB',lat:6.9010,lng:79.9180,addr:'9/428, Battaramulla',phone:'011-2861331',icon:'🏛️'},
+{name:'CCB Kurunegala',type:'CCB',lat:7.4867,lng:80.3647,addr:'Kurunegala Regional Office',phone:'037-2222384',icon:'🏛️'},
+{name:'CCB Kuliyapitiya',type:'CCB',lat:7.4690,lng:80.0420,addr:'Kuliyapitiya Regional Office',phone:'037-2281282',icon:'🏛️'},
+{name:'CCB Marawila',type:'CCB',lat:7.3500,lng:79.8500,addr:'Marawila Regional Office',phone:'032-2254254',icon:'🏛️'},
+{name:'CCB Gampaha',type:'CCB',lat:7.0873,lng:80.0144,addr:'Gampaha Regional Office',phone:'033-2222452',icon:'🏛️'},
+{name:'CCB Kegalle',type:'CCB',lat:7.2514,lng:80.3469,addr:'Kegalle Regional Office',phone:'035-2222365',icon:'🏛️'},
+{name:'CCB Matale',type:'CCB',lat:7.4698,lng:80.6234,addr:'Matale Regional Office',phone:'066-2222358',icon:'🏛️'},
+{name:'CCB Ratnapura',type:'CCB',lat:6.6828,lng:80.3994,addr:'Ratnapura Regional Office',phone:'045-2222987',icon:'🏛️'},
+{name:'CCB Kalutara',type:'CCB',lat:6.5854,lng:79.9607,addr:'Kalutara Regional Office',phone:'034-2222175',icon:'🏛️'},
+{name:'CCB Galle',type:'CCB',lat:6.0535,lng:80.2210,addr:'Galle Regional Office',phone:'091-2234358',icon:'🏛️'},
+{name:'CCB Matara',type:'CCB',lat:5.9485,lng:80.5353,addr:'Matara Regional Office',phone:'041-2222358',icon:'🏛️'},
+{name:'CCB Anuradhapura',type:'CCB',lat:8.3114,lng:80.4037,addr:'Anuradhapura Regional Office',phone:'025-2222458',icon:'🏛️'},
+{name:'CCB Polonnaruwa',type:'CCB',lat:7.9400,lng:81.0010,addr:'Polonnaruwa Regional Office',phone:'027-2222358',icon:'🏛️'},
+{name:'CCB Hambantota',type:'CCB',lat:6.1429,lng:81.1212,addr:'Hambantota Regional Office',phone:'047-2256358',icon:'🏛️'},
+{name:'CCB Moneragala',type:'CCB',lat:6.8736,lng:81.3487,addr:'Moneragala Regional Office',phone:'055-2276358',icon:'🏛️'},
+{name:'CCB Batticaloa',type:'CCB',lat:7.7310,lng:81.6926,addr:'Batticaloa Regional Office',phone:'065-2222958',icon:'🏛️'},
+{name:'CCB Nursery - Bandirippuwa',type:'CCB',lat:7.3530,lng:79.8900,addr:'Bandirippuwa, Lunuwila',phone:'031-2255300',icon:'🌱'},
+{name:'CCB Nursery - Ambakelle',type:'CCB',lat:7.7560,lng:80.2060,addr:'Ambakelle, Kurunegala',phone:'032-5779408',icon:'🌱'},
+{name:'Govijana Sewa - Kurunegala',type:'Govijana',lat:7.4867,lng:80.3647,addr:'Dept. of Agrarian Services, Kurunegala',phone:'037-2222382',icon:'🌾'},
+{name:'Govijana Sewa - Gampaha',type:'Govijana',lat:7.0873,lng:80.0144,addr:'Dept. of Agrarian Services, Gampaha',phone:'033-2222351',icon:'🌾'},
+{name:'Govijana Sewa - Puttalam',type:'Govijana',lat:8.0362,lng:79.8283,addr:'Dept. of Agrarian Services, Puttalam',phone:'032-2265260',icon:'🌾'},
+{name:'Govijana Sewa - Matale',type:'Govijana',lat:7.4698,lng:80.6234,addr:'Dept. of Agrarian Services, Matale',phone:'066-2222342',icon:'🌾'},
+{name:'Govijana Sewa - Kandy',type:'Govijana',lat:7.2906,lng:80.6337,addr:'Dept. of Agrarian Services, Kandy',phone:'081-2224342',icon:'🌾'},
+{name:'Govijana Sewa - Kalutara',type:'Govijana',lat:6.5854,lng:79.9607,addr:'Dept. of Agrarian Services, Kalutara',phone:'034-2222678',icon:'🌾'},
+{name:'Govijana Sewa - Galle',type:'Govijana',lat:6.0535,lng:80.2210,addr:'Dept. of Agrarian Services, Galle',phone:'091-2234267',icon:'🌾'},
+{name:'Govijana Sewa - Matara',type:'Govijana',lat:5.9485,lng:80.5353,addr:'Dept. of Agrarian Services, Matara',phone:'041-2222267',icon:'🌾'},
+{name:'Govijana Sewa - Hambantota',type:'Govijana',lat:6.1429,lng:81.1212,addr:'Dept. of Agrarian Services, Hambantota',phone:'047-2256267',icon:'🌾'},
+{name:'Govijana Sewa - Ratnapura',type:'Govijana',lat:6.6828,lng:80.3994,addr:'Dept. of Agrarian Services, Ratnapura',phone:'045-2222267',icon:'🌾'},
+{name:'Govijana Sewa - Kegalle',type:'Govijana',lat:7.2514,lng:80.3469,addr:'Dept. of Agrarian Services, Kegalle',phone:'035-2222267',icon:'🌾'},
+{name:'Govijana Sewa - Anuradhapura',type:'Govijana',lat:8.3114,lng:80.4037,addr:'Dept. of Agrarian Services, Anuradhapura',phone:'025-2222267',icon:'🌾'},
+{name:'Govijana Sewa - Polonnaruwa',type:'Govijana',lat:7.9400,lng:81.0010,addr:'Dept. of Agrarian Services, Polonnaruwa',phone:'027-2222267',icon:'🌾'},
+{name:'Govijana Sewa - Batticaloa',type:'Govijana',lat:7.7310,lng:81.6926,addr:'Dept. of Agrarian Services, Batticaloa',phone:'065-2222267',icon:'🌾'},
+{name:'Govijana Sewa - Jaffna',type:'Govijana',lat:9.6615,lng:80.0255,addr:'Dept. of Agrarian Services, Jaffna',phone:'021-2222267',icon:'🌾'},
+{name:'Govijana Sewa - Trincomalee',type:'Govijana',lat:8.5874,lng:81.2152,addr:'Dept. of Agrarian Services, Trincomalee',phone:'026-2222267',icon:'🌾'}
+];
+var ofcUserLat=null,ofcUserLng=null,ofcFilter='All';
+function haversine(lat1,lng1,lat2,lng2){
+  var R=6371,dLat=(lat2-lat1)*Math.PI/180,dLng=(lng2-lng1)*Math.PI/180;
+  var a=Math.sin(dLat/2)*Math.sin(dLat/2)+Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dLng/2)*Math.sin(dLng/2);
+  return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));
+}
+function renderOffices(){
+  var el=document.getElementById('view-offices');
+  var filtered=OFFICES.filter(function(o){return ofcFilter==='All'||o.type===ofcFilter;});
+  if(ofcUserLat!==null){
+    filtered.forEach(function(o){o._dist=haversine(ofcUserLat,ofcUserLng,o.lat,o.lng);});
+    filtered.sort(function(a,b){return a._dist-b._dist;});
+  }
+  var html='<div style="padding:4px"><h2 style="margin:0 0 8px;font-size:16px;color:var(--green)">'+t('officesTitle')+'</h2>';
+  html+='<div class="ofc-locate-bar"><button id="ofcLocateBtn" onclick="locateForOffices()">'+t('locateMe')+'</button>';
+  html+='<select id="ofcFilterSel" onchange="ofcFilter=this.value;renderOffices()">';
+  ['All','CRI','CCB','Govijana'].forEach(function(f){
+    html+='<option value="'+f+'"'+(ofcFilter===f?' selected':'')+'>'+t('filter'+f)+'</option>';
+  });
+  html+='</select></div>';
+  filtered.forEach(function(o){
+    html+='<div class="ofc-card"><div class="ofc-icon">'+o.icon+'</div><div class="ofc-info">';
+    html+='<div class="ofc-name">'+o.name+'</div>';
+    html+='<div class="ofc-type">'+o.type+'</div>';
+    html+='<div class="ofc-addr">'+o.addr+'</div>';
+    html+='<div class="ofc-phone">📞 '+o.phone+'</div>';
+    if(o._dist!==undefined)html+='<div class="ofc-dist">📍 '+o._dist.toFixed(1)+' '+t('ofcKmAway')+'</div>';
+    html+='<div class="ofc-actions">';
+    html+='<a href="https://www.google.com/maps/dir/?api=1&destination='+o.lat+','+o.lng+'" target="_blank" rel="noopener">'+t('ofcDirections')+'</a>';
+    html+='<a href="tel:'+o.phone.replace(/[^+\d]/g,'')+'">'+t('ofcCall')+'</a>';
+    html+='</div></div></div>';
+  });
+  if(filtered.length===0)html+='<div style="text-align:center;padding:20px;color:#888">No offices found</div>';
+  html+='</div>';
+  el.innerHTML=html;
+}
+function locateForOffices(){
+  var btn=document.getElementById('ofcLocateBtn');
+  if(btn)btn.textContent=t('ofcLocating');
+  navigator.geolocation.getCurrentPosition(function(pos){
+    ofcUserLat=pos.coords.latitude;ofcUserLng=pos.coords.longitude;
+    renderOffices();
+  },function(){
+    alert(t('ofcNoGPS'));renderOffices();
+  },{timeout:10000,maximumAge:60000});
+}
+
+// === Pest Photo ID ===
+function renderPestPhotoSection(){
+  var el=document.getElementById('view-pests');
+  var existing=el.querySelector('.pest-photo-section');
+  if(existing)return;
+  var section=document.createElement('div');
+  section.className='pest-photo-section';
+  section.innerHTML='<h3>📷 '+t('pestPhotoTitle')+'</h3><p style="font-size:12px;color:#888;margin:0 0 8px">'+t('pestCompareHint')+'</p>'+
+    '<div class="pest-capture"><button onclick="document.getElementById(\'pestPhotoInput\').click()">'+t('pestCapture')+'</button></div>'+
+    '<img class="pest-preview" id="pestPreview">'+
+    '<div class="pest-compare" id="pestCompareGrid"></div>';
+  el.querySelector('div').insertBefore(section,el.querySelector('.pest-card'));
+  renderPestCompareGrid();
+  document.getElementById('pestPhotoInput').onchange=function(e){
+    var file=e.target.files[0];if(!file)return;
+    var reader=new FileReader();
+    reader.onload=function(ev){
+      var img=document.getElementById('pestPreview');
+      img.src=ev.target.result;img.style.display='block';
+    };
+    reader.readAsDataURL(file);
+  };
+}
+function renderPestCompareGrid(){
+  var grid=document.getElementById('pestCompareGrid');
+  if(!grid)return;
+  var html='';
+  PESTS.forEach(function(p){
+    html+='<div class="pest-compare-card" onclick="selectPestMatch(this,\''+p.key+'\')"><div class="pc-icon">'+p.icon+'</div><div class="pc-name">'+t('pest'+p.key)+'</div></div>';
+  });
+  grid.innerHTML=html;
+}
+function selectPestMatch(el,key){
+  document.querySelectorAll('.pest-compare-card').forEach(function(c){c.classList.remove('selected');});
+  el.classList.add('selected');
+  var details=document.querySelectorAll('.pest-card');
+  details.forEach(function(d){
+    var sum=d.querySelector('summary span:nth-child(2)');
+    if(sum&&sum.textContent===t('pest'+key)){d.open=true;d.scrollIntoView({behavior:'smooth',block:'center'});}
+    else{d.open=false;}
+  });
+}
+
+// === TTS (Text-to-Speech) ===
+var ttsUtterance=null;
+function ttsSpeak(text){
+  if(!window.speechSynthesis)return;
+  ttsStop();
+  var clean=text.replace(/\*\*/g,'').replace(/<[^>]+>/g,'').replace(/•/g,',');
+  ttsUtterance=new SpeechSynthesisUtterance(clean);
+  ttsUtterance.lang=lang==='si'?'si-LK':lang==='ta'?'ta-IN':'en-US';
+  ttsUtterance.rate=0.9;
+  speechSynthesis.speak(ttsUtterance);
+}
+function ttsStop(){
+  if(window.speechSynthesis)speechSynthesis.cancel();
+  ttsUtterance=null;
+}
+
+// === Offline Indicator ===
+(function initOffline(){
+  var bar=document.getElementById('offlineBar');
+  var indicator=document.getElementById('cacheIndicator');
+  var dot=document.getElementById('cacheDot');
+  var txt=document.getElementById('cacheText');
+  function updateStatus(){
+    var offline=!navigator.onLine;
+    bar.classList.toggle('show',offline);
+    if('caches' in window){
+      caches.open('pol-v1').then(function(cache){
+        cache.match('./').then(function(resp){
+          if(resp){
+            indicator.classList.add('show');
+            dot.className='cache-dot';
+            var cached=resp.headers.get('date');
+            txt.textContent=t('cacheOk')+(cached?' · '+new Date(cached).toLocaleDateString():'');
+          }else{
+            indicator.classList.add('show');
+            dot.className='cache-dot stale';
+            txt.textContent=t('cacheStale');
+          }
+        });
+      }).catch(function(){});
+    }
+  }
+  window.addEventListener('online',updateStatus);
+  window.addEventListener('offline',updateStatus);
+  setTimeout(updateStatus,2000);
+})();
+
+// === Feedback Form ===
+(function initFeedback(){
+  var overlay=document.getElementById('feedbackOverlay');
+  var rating=0;
+  document.getElementById('feedbackToggle').onclick=function(){overlay.classList.add('open');};
+  overlay.addEventListener('click',function(e){if(e.target===overlay)overlay.classList.remove('open');});
+  document.querySelectorAll('.fb-face').forEach(function(btn){
+    btn.onclick=function(){
+      rating=parseInt(btn.dataset.rating);
+      document.querySelectorAll('.fb-face').forEach(function(b){b.classList.remove('selected');});
+      btn.classList.add('selected');
+      document.getElementById('fbSubmit').disabled=false;
+    };
+  });
+  document.getElementById('fbSubmit').onclick=function(){
+    var text=document.getElementById('fbText').value;
+    var feedback={rating:rating,text:text,lang:lang,time:new Date().toISOString(),ua:navigator.userAgent};
+    try{
+      var stored=JSON.parse(localStorage.getItem('polFeedback')||'[]');
+      stored.push(feedback);
+      localStorage.setItem('polFeedback',JSON.stringify(stored));
+    }catch(e){}
+    document.getElementById('feedbackBox').innerHTML='<div class="fb-thanks"><div style="font-size:48px;margin-bottom:8px">'+['😠','😟','😐','🙂','😄'][rating-1]+'</div><p>'+t('fbThanks')+'</p></div>';
+    setTimeout(function(){
+      overlay.classList.remove('open');
+      setTimeout(function(){
+        document.getElementById('feedbackBox').innerHTML='<h3 data-t="fbTitle">'+t('fbTitle')+'</h3><div class="fb-sub" data-t="fbSub">'+t('fbSub')+'</div><div class="fb-faces" id="fbFaces"><button class="fb-face" data-rating="1">😠</button><button class="fb-face" data-rating="2">😟</button><button class="fb-face" data-rating="3">😐</button><button class="fb-face" data-rating="4">🙂</button><button class="fb-face" data-rating="5">😄</button></div><textarea class="fb-textarea" id="fbText" placeholder="'+t('fbPlaceholder')+'" maxlength="500"></textarea><button class="fb-submit" id="fbSubmit" disabled>'+t('fbSubmit')+'</button>';
+        rating=0;initFeedback();
+      },400);
+    },2000);
+  };
+})();
+
+// === Patch chatbot to add TTS buttons to bot messages ===
+var _origChatAddMsg=chatAddMsg;
+chatAddMsg=function(text,who,store){
+  var row=_origChatAddMsg(text,who,store);
+  if(who==='bot'&&window.speechSynthesis){
+    var ttsBtn=document.createElement('button');
+    ttsBtn.className='tts-btn';
+    ttsBtn.innerHTML='🔊';
+    ttsBtn.title=t('ttsSpeak');
+    ttsBtn.onclick=function(){
+      if(ttsBtn.classList.contains('speaking')){
+        ttsStop();ttsBtn.classList.remove('speaking');ttsBtn.innerHTML='🔊';
+      }else{
+        document.querySelectorAll('.tts-btn.speaking').forEach(function(b){b.classList.remove('speaking');b.innerHTML='🔊';});
+        ttsSpeak(text);ttsBtn.classList.add('speaking');ttsBtn.innerHTML='⏹️';
+        if(ttsUtterance)ttsUtterance.onend=function(){ttsBtn.classList.remove('speaking');ttsBtn.innerHTML='🔊';};
+      }
+    };
+    var bubble=row.querySelector('.cbubble');
+    if(bubble)bubble.appendChild(ttsBtn);
+  }
+  return row;
+};
+
+// === Patch renderPests to add photo section ===
+var _origRenderPests=renderPests;
+renderPests=function(){
+  _origRenderPests();
+  renderPestPhotoSection();
+};
+
 // init
 initAgro(); initClim(); initGoogle();
 switchLang(lang);
 window.openDossier=openDossier;
 window.shareZone=shareZone;
+window.locateForOffices=locateForOffices;
+window.selectPestMatch=selectPestMatch;
+window.ttsSpeak=ttsSpeak;
+window.ttsStop=ttsStop;
 
 </script>
 </body>
