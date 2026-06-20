@@ -7982,7 +7982,7 @@ function renderWeather(){
   scrollEl.innerHTML=html+html;
   requestAnimationFrame(function(){
     var w=scrollEl.scrollWidth;
-    var speed=30;
+    var speed=10;
     var dur=w/speed;
     scrollEl.style.animation='tickScroll '+dur+'s linear infinite';
   });
