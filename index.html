@@ -103,6 +103,28 @@ table.dt tr:last-child td{border-bottom:none;}
 }
 .leaflet-popup-content{font-family:'Manrope';font-size:13px;}
 .leaflet-popup-content b{font-family:'Space Grotesk';color:var(--green);}
+/* ---- Chatbot ---- */
+#chatFab{position:fixed;right:16px;bottom:70px;z-index:900;width:56px;height:56px;border-radius:50%;background:var(--green);color:#fff;border:none;font-size:26px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 14px rgba(0,0,0,.3);cursor:pointer;animation:chatPulse 2s infinite;}
+@keyframes chatPulse{0%{box-shadow:0 4px 14px rgba(0,0,0,.3),0 0 0 0 rgba(45,74,34,.45);}70%{box-shadow:0 4px 14px rgba(0,0,0,.3),0 0 0 14px rgba(45,74,34,0);}100%{box-shadow:0 4px 14px rgba(0,0,0,.3),0 0 0 0 rgba(45,74,34,0);}}
+#chatPanel{position:fixed;right:0;bottom:0;left:0;z-index:950;max-width:400px;height:600px;max-height:85vh;margin:0 auto;background:var(--sand);border-radius:16px 16px 0 0;box-shadow:0 -4px 24px rgba(0,0,0,.3);transform:translateY(110%);transition:transform .35s cubic-bezier(.3,.8,.3,1);display:flex;flex-direction:column;overflow:hidden;}
+#chatPanel.open{transform:translateY(0);}
+@media(min-width:440px){#chatPanel{right:16px;left:auto;bottom:16px;border-radius:16px;}}
+.chead{background:var(--green);color:#fff;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;flex:0 0 auto;}
+.chead h3{margin:0;font-family:'Space Grotesk';font-size:15px;}
+.chead .csub{font-size:11px;opacity:.85;}
+.chead .cclose{background:none;border:none;color:#fff;font-size:24px;line-height:1;cursor:pointer;}
+.cmsgs{flex:1 1 auto;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:10px;}
+.cbubble{max-width:85%;padding:9px 12px;border-radius:14px;font-size:13.5px;line-height:1.45;white-space:pre-wrap;word-wrap:break-word;}
+.cbubble.bot{align-self:flex-start;background:#e6efe0;color:var(--ink);border-bottom-left-radius:4px;}
+.cbubble.user{align-self:flex-end;background:var(--int);color:#fff;border-bottom-right-radius:4px;}
+.cbubble b,.cbubble strong{color:var(--green);}
+.cbubble.user b,.cbubble.user strong{color:#fff;}
+.cexamples{display:flex;flex-direction:column;gap:7px;padding:2px 4px;}
+.cexamples .clabel{font-size:11px;color:#666;font-weight:700;text-transform:uppercase;letter-spacing:.4px;}
+.cexamples button{text-align:left;background:#fff;border:1px solid var(--line);border-radius:12px;padding:9px 12px;font-size:13px;color:var(--green);font-family:'Manrope';cursor:pointer;}
+.cinput{flex:0 0 auto;display:flex;gap:8px;padding:10px;border-top:1px solid var(--line);background:#fff;}
+.cinput input{flex:1;border:1px solid var(--line);border-radius:20px;padding:10px 14px;font-size:14px;font-family:'Manrope';outline:none;}
+.cinput button{background:var(--green);color:#fff;border:none;border-radius:50%;width:42px;height:42px;font-size:18px;cursor:pointer;flex:0 0 auto;}
 </style>
 </head>
 <body>
@@ -155,6 +177,19 @@ table.dt tr:last-child td{border-bottom:none;}
     </div>
   </div>
   <div class="scon" id="dCon"></div>
+</div>
+
+<button id="chatFab" aria-label="chat">🌴</button>
+<div id="chatPanel">
+  <div class="chead">
+    <div><h3 id="chatTitle">Coconut Advisor</h3><div class="csub" id="chatSubtitle"></div></div>
+    <button class="cclose" id="chatClose">×</button>
+  </div>
+  <div class="cmsgs" id="chatMsgs"></div>
+  <div class="cinput">
+    <input id="chatInput" type="text" autocomplete="off">
+    <button id="chatSend">➤</button>
+  </div>
 </div>
 
 <div id="printArea"></div>
@@ -6788,6 +6823,11 @@ var INTERCROP={"Dry Zone":{"Banana":{"varieties":"Dry & Intermediate – Ambul, 
 // ====== i18n ======
 var T={
   en:{
+    chatTitle:"Coconut Advisor", chatSubtitle:"Ask about coconut farming",
+    chatWelcome:"Hello! 🥥 I'm the Coconut Growing Advisor. Ask me about varieties, fertilizer, pests, diseases, irrigation, intercropping, or harvesting.",
+    chatPlaceholder:"Type your question...", chatExamples:"Example questions:",
+    chatQ1:"Which coconut varieties are best?", chatQ2:"How to control red palm weevil?",
+    chatQ3:"What fertilizer for adult palms?", chatQ4:"Best intercrops for coconut?",
     subtitle:"Coconut Zone Guide · Sri Lanka",
     tabAgro:"Agro Ecological", tabClim:"Climatic Zones", tabGoogle:"Google Map",
     hintAgro:"Tap a zone for the full growing guide", hintClim:"Tap a climatic zone", hintGoogle:"Tap the map to drop a pin & find your zone",
@@ -6814,6 +6854,11 @@ var T={
     climDossierHint:"Open the Agro-Ecological tab and tap a sub-zone for variety & fertilizer recommendations specific to your location."
   },
   si:{
+    chatTitle:"පොල් උපදේශක", chatSubtitle:"පොල් වගාව ගැන අසන්න",
+    chatWelcome:"ආයුබෝවන්! 🥥 මම පොල් වගා උපදේශකයා. ප්‍රභේද, පොහොර, පළිබෝධ, රෝග, වාරිමාර්ග, අන්තර් බෝග හෝ අස්වැන්න ගැන අසන්න.",
+    chatPlaceholder:"ඔබේ ප්‍රශ්නය ටයිප් කරන්න...", chatExamples:"උදාහරණ ප්‍රශ්න:",
+    chatQ1:"හොඳම පොල් ප්‍රභේද මොනවාද?", chatQ2:"රතු පණුවා පාලනය කරන්නේ කොහොමද?",
+    chatQ3:"වැඩිහිටි පොල්වලට පොහොර?", chatQ4:"පොල් සමඟ හොඳම අතුරු බෝග?",
     subtitle:"පොල් කලාප මාර්ගෝපදේශය · ශ්‍රී ලංකා",
     tabAgro:"කෘෂි පාරිසරික", tabClim:"දේශගුණික කලාප", tabGoogle:"ගූගල් සිතියම",
     hintAgro:"සම්පූර්ණ වගා මාර්ගෝපදේශය සඳහා කලාපයක් තට්ටු කරන්න", hintClim:"දේශගුණික කලාපයක් තට්ටු කරන්න", hintGoogle:"සිතියම තට්ටු කර ඔබේ කලාපය සොයන්න",
@@ -6840,6 +6885,11 @@ var T={
     climDossierHint:"කෘෂි-පාරිසරික පටිත්ත විවෘත කර ඔබේ ස්ථානයට විශේෂිත ප්‍රභේද හා පොහොර නිර්දේශ සඳහා උප-කලාපයක් තට්ටු කරන්න."
   },
   ta:{
+    chatTitle:"தென்னை ஆலோசகர்", chatSubtitle:"தென்னை சாகுபடி பற்றி கேளுங்கள்",
+    chatWelcome:"வணக்கம்! 🥥 நான் தென்னை சாகுபடி ஆலோசகர். ரகங்கள், உரம், பூச்சிகள், நோய்கள், நீர்ப்பாசனம், ஊடுபயிர் அல்லது அறுவடை பற்றி கேளுங்கள்.",
+    chatPlaceholder:"உங்கள் கேள்வியை தட்டச்சு செய்யவும்...", chatExamples:"எடுத்துக்காட்டு கேள்விகள்:",
+    chatQ1:"சிறந்த தென்னை ரகங்கள் எவை?", chatQ2:"சிவப்பு கூன்வண்டு கட்டுப்படுத்துவது எப்படி?",
+    chatQ3:"முதிர்ந்த மரங்களுக்கு உரம்?", chatQ4:"தென்னைக்கு சிறந்த ஊடுபயிர்?",
     subtitle:"தென்னை மண்டல வழிகாட்டி · இலங்கை",
     tabAgro:"வேளாண் சூழலியல்", tabClim:"காலநிலை மண்டலங்கள்", tabGoogle:"கூகிள் வரைபடம்",
     hintAgro:"முழு வளர்ப்பு வழிகாட்டிக்கு ஒரு மண்டலத்தைத் தட்டவும்", hintClim:"காலநிலை மண்டலத்தைத் தட்டவும்", hintGoogle:"வரைபடத்தைத் தட்டி உங்கள் மண்டலத்தைக் கண்டறியுங்கள்",
@@ -6882,6 +6932,7 @@ function switchLang(l){
   document.querySelectorAll('#langsw button').forEach(function(b){ b.classList.toggle('active',b.getAttribute('data-lang')===l); });
   applyStaticT();
   render();
+  if(typeof chatApplyLang==='function')chatApplyLang();
 }
 // re-render currently open dossier (if any) in the active language
 function render(){
@@ -7167,6 +7218,126 @@ function footer(today){ return '<div class="pfooter"><span>'+t('generatedOn')+' 
 document.querySelectorAll('#langsw button').forEach(function(b){
   b.onclick=function(){ switchLang(b.getAttribute('data-lang')); };
 });
+
+// ---- Chatbot ----
+var KB=[
+{keywords:["variety","varieties","cric 60","cric 65","crisl 98","kapruwana","kapsuwaya","kapsetha","seedling","plant type","ප්‍රභේද","இரகம்"],answer:{
+en:"**Recommended Coconut Varieties:**\n\n• **CRIC 60** (Tall×Tall) — 12,000–15,000 nuts/ha/yr, bears in 5–6 yrs. For all zones.\n• **CRIC 65** (Dwarf×Tall) — 20,000–22,000 nuts/ha/yr, bears in 3–4 yrs.\n• **CRISL 98** (Tall×San Ramon) — 12,000–15,000 nuts/ha/yr, higher copra. Wet/intermediate zones.\n• **Kapruwana** (CRISL 2004) — 20,000–22,000 nuts/ha/yr, bears 3–4 yrs.\n• **Kapsuwaya** (CRISL 2012) — 20,000–22,000 nuts/ha/yr, bears 3–4 yrs.\n• **Kapsetha** (CRISL 2013) — 20,000–22,000 nuts/ha/yr, bears 3–4 yrs.\n• **CRISL 2020** — ~22,000 nuts/ha/yr, bears 3–4 yrs.\n• **Plus Palm** — 10,000–12,000 nuts/ha/yr, bears 5–6 yrs.\n• **Moorock Tall** — ~11,000 nuts/ha/yr, wet/intermediate zones.\n\nChoose high-quality seedlings with large strong stem, broad dark green leaves, and no pest/disease damage.",
+si:"**නිර්දේශිත පොල් ප්‍රභේද:**\n\n• **CRIC 60** (උස×උස) — 12,000–15,000 ගෙඩි/හෙ/වසර, අවු 5–6 දී ගෙඩි දරයි. සියලු කලාපවලට.\n• **CRIC 65** (කුරු×උස) — 20,000–22,000 ගෙඩි/හෙ/වසර, අවු 3–4 දී ගෙඩි දරයි.\n• **CRISL 98** (උස×San Ramon) — 12,000–15,000 ගෙඩි/හෙ/වසර, වැඩි කොප්රා. තෙත්/අතරමැදි කලාපවලට.\n• **කප්රුවන** (CRISL 2004) — 20,000–22,000 ගෙඩි/හෙ/වසර.\n• **කප්සුවය** (CRISL 2012) — 20,000–22,000 ගෙඩි/හෙ/වසර.\n• **කප්සේත** (CRISL 2013) — 20,000–22,000 ගෙඩි/හෙ/වසර.\n\nශක්තිමත් කඳක්, පුළුල් තද කොළ පත්‍ර සහිත නිරෝගී පැල තෝරන්න.",
+ta:"**பரிந்துரைக்கப்பட்ட தென்னை ரகங்கள்:**\n\n• **CRIC 60** (உயரம்×உயரம்) — 12,000–15,000 காய்/ஹெ/வருடம், 5–6 ஆண்டுகளில் காய்க்கும்.\n• **CRIC 65** (குள்ளம்×உயரம்) — 20,000–22,000 காய்/ஹெ/வருடம், 3–4 ஆண்டுகளில் காய்க்கும்.\n• **CRISL 98** (உயரம்×San Ramon) — 12,000–15,000 காய்/ஹெ/வருடம்.\n• **கப்ருவன** (CRISL 2004) — 20,000–22,000 காய்/ஹெ/வருடம்.\n• **கப்சுவய** (CRISL 2012) — 20,000–22,000 காய்/ஹெ/வருடம்.\n• **கப்சேத** (CRISL 2013) — 20,000–22,000 காய்/ஹெ/வருடம்.\n\nவலுவான தண்டு, அகன்ற அடர் பச்சை இலைகள் கொண்ட ஆரோக்கியமான நாற்றுகளைத் தேர்வு செய்யுங்கள்."}},
+{keywords:["fertilizer","fertiliser","urea","potash","dolomite","nutrient","npk","phosphate","mop","erp","tsp","apm","manure circle","පොහොර","உரம்"],answer:{
+en:"**Fertilizer for Coconut Palms:**\n\n**Adult palms (Wet/Intermediate zone):**\n• Urea: 800g\n• Eppawala Rock Phosphate: 900g\n• Muriate of Potash: 1,600g\n• Dolomite: 1,000g\n\n**Adult palms (Dry zone):**\n• Urea: 800g\n• Triple Super Phosphate: 400g\n• Muriate of Potash: 1,600g\n• Dolomite: 1,000g\n\n**Or use Adult Palm Mixture:** APM-W 3.3kg or APM-D 2.8kg + 1kg Dolomite.\n\nApply 1.5× for improved varieties (CRIC 60, 65, CRISL 98, Kapruwana etc.) and high-yielding palms (>75 nuts/palm/yr).\n\n**Application:** In manure circle (1.8m radius from trunk). Apply in two splits — with SW monsoon (April/May) and NE monsoon (Oct/Nov).",
+si:"**පොල් පොහොර යෙදීම:**\n\n**වැඩිහිටි පොල් (තෙත්/අතරමැදි කලාපය):**\n• යූරියා: 800g\n• එප්පාවල පොස්පේට්: 900g\n• මියුරේට් ඔෆ් පොටෑෂ්: 1,600g\n• ඩොලමයිට්: 1,000g\n\n**වැඩිහිටි පොල් (වියළි කලාපය):**\n• යූරියා: 800g\n• ට්‍රිපල් සුපර් පොස්පේට්: 400g\n• MOP: 1,600g\n• ඩොලමයිට්: 1,000g\n\nවැඩිදියුණු ප්‍රභේද සඳහා 1.5 ගුණයක් යොදන්න.\n\n**යෙදීම:** පොහොර වට (කඳෙන් 1.8m) තුළ. අප්‍රේල්/මැයි සහ ඔක්/නොවැ මාසවල දෙවරක් යොදන්න.",
+ta:"**தென்னை உரமிடுதல்:**\n\n**முதிர்ந்த மரங்கள் (ஈர/இடைநிலை வலயம்):**\n• யூரியா: 800g\n• எப்பாவல ராக் பாஸ்பேட்: 900g\n• மியூரேட் ஆஃப் பொட்டாஷ்: 1,600g\n• டொலமைட்: 1,000g\n\n**முதிர்ந்த மரங்கள் (வறண்ட வலயம்):**\n• யூரியா: 800g\n• டிரிபிள் சூப்பர் பாஸ்பேட்: 400g\n• MOP: 1,600g\n• டொலமைட்: 1,000g\n\nமேம்படுத்தப்பட்ட ரகங்களுக்கு 1.5 மடங்கு பயன்படுத்தவும்.\n\n**பயன்படுத்துதல்:** உர வட்டத்தில் (தண்டிலிருந்து 1.8m). ஏப்ரல்/மே மற்றும் அக்/நவம் மாதங்களில் இரு தவணைகளாக இடவும்."}},
+{keywords:["red palm weevil","weevil","rhynchophorus","රතු පණුවා","கூன்வண்டு","pest","පළිබෝධ","பூச்சி"],answer:{
+en:"**Red Palm Weevil (Rhynchophorus ferrugineus):**\n\n**Signs:** Holes 1–2cm with fibres/brown liquid, yellowing leaves, crunching noise inside trunk.\n\n**Prevention:**\n• Avoid wounding palms\n• Apply coal tar/burnt engine oil to wounds\n• Inspect every 2–3 weeks\n\n**Chemical control:**\n• Inject Monocrotophos 600 g/l SL, or\n• Chlorantraniliprole 20% + Thiamethoxam 20% WG (4g in 250ml water)\n  — 60ml for palms ≤1.5m, 120ml for taller\n\n**Traps:** Pheromone traps — 5 per hectare for plantations over 5 acres.\n\n**Severe damage:** Cut and burn affected palms to prevent spread.",
+si:"**රතු කරපටි පණුවා (Rhynchophorus ferrugineus):**\n\n**ලක්ෂණ:** කඳේ 1–2cm සිදුරු, දුඹුරු දියර, කහ වන පත්‍ර, කඳ තුළ ශබ්දය.\n\n**වැළැක්වීම:**\n• පොල් ගසට තුවාල නොකරන්න\n• තුවාලවලට අළුව/පිළිස්සුණු එන්ජින් තෙල් ගාන්න\n• සති 2–3 කට වරක් පරීක්ෂා කරන්න\n\n**රසායනික පාලනය:**\n• Monocrotophos 600 g/l SL එන්නත් කරන්න\n• Chlorantraniliprole + Thiamethoxam (4g 250ml වතුරේ)\n\n**උගුල්:** ෆෙරමෝන උගුල් — හෙක්ටයාරයට 5ක්.\n\n**දරුණු හානි:** ආසාදිත ගස් කපා පුළුස්සන්න.",
+ta:"**சிவப்பு கூன்வண்டு (Rhynchophorus ferrugineus):**\n\n**அறிகுறிகள்:** தண்டில் 1–2cm துளைகள், பழுப்பு நிற திரவம், மஞ்சள் இலைகள்.\n\n**தடுப்பு:**\n• மரத்தை காயப்படுத்தாதீர்கள்\n• காயங்களுக்கு நிலக்கரி தார்/எரிந்த எஞ்சின் எண்ணெய் பூசுங்கள்\n• 2–3 வாரங்களுக்கு ஒருமுறை பரிசோதிக்கவும்\n\n**இரசாயன கட்டுப்பாடு:**\n• Monocrotophos 600 g/l SL ஊசி போடவும்\n• Chlorantraniliprole + Thiamethoxam (4g 250ml நீரில்)\n\n**பொறிகள்:** ஃபெரமோன் பொறிகள் — ஹெக்டேருக்கு 5.\n\n**கடுமையான சேதம்:** பாதிக்கப்பட்ட மரங்களை வெட்டி எரிக்கவும்."}},
+{keywords:["black beetle","rhinoceros beetle","oryctes","කළු කුරුමිණියා","கருவண்டு"],answer:{
+en:"**Black/Rhinoceros Beetle (Oryctes rhinoceros):**\n\n**Signs:** V-shaped cuts on unfolded leaves, adults bore into bud base.\n\n**Control:**\n• Apply burnt engine oil to nearby logs\n• Remove wood/manure piles (breeding sites)\n• Soil layer >15cm over husk pits\n• Metal hook removal from bud\n• Fish net wrapping around crown\n• Coal tar/burnt engine oil monthly\n• 6 naphthalene balls per young palm\n• Pheromone trap: 1 per 5 acres",
+si:"**කළු කුරුමිණියා (Oryctes rhinoceros):**\n\n**ලක්ෂණ:** නොපිපුණු පත්‍රවල V හැඩ කැපීම්.\n\n**පාලනය:**\n• අසල ලී කඳවලට පිළිස්සුණු එන්ජින් තෙල් ගාන්න\n• ලී/පොහොර ගොඩවල් ඉවත් කරන්න\n• මුරුංගු වළවලට 15cm පස් තට්ටුවක්\n• ලෝහ කොක්කෙන් ඉවත් කරන්න\n• මසුන් දැලින් මුදුන ආවරණය\n• මාසිකව අළුව/එන්ජින් තෙල්\n• තරුණ පොලකට නැප්තලීන් බෝල 6ක්",
+ta:"**கருவண்டு (Oryctes rhinoceros):**\n\n**அறிகுறிகள்:** விரியாத இலைகளில் V வடிவ வெட்டுக்கள்.\n\n**கட்டுப்பாடு:**\n• அருகிலுள்ள மரக்கட்டைகளுக்கு எரிந்த எஞ்சின் எண்ணெய் பூசுங்கள்\n• மரம்/உரக் குவியல்களை அகற்றுங்கள்\n• தொட்டிகளின் மீது 15cm மண் அடுக்கு\n• உலோக கொக்கி மூலம் அகற்றுங்கள்\n• மீன் வலையால் மேற்பகுதியை சுற்றுங்கள்"}},
+{keywords:["harvest","harvesting","mature nut","picking","bunch","අස්වනු","අறුවடை","அறுவடை"],answer:{
+en:"**Coconut Harvesting:**\n\n**When to harvest:** 10–11 months after inflorescence opens. A full-bearing palm produces 12–14 bunches/year.\n\n**Mature nut signs:**\n• Brown/yellowish-brown husk\n• Hollow sound when tapped\n• Firm white oily meat\n\n**Schedules:** Monthly (30-day), bimonthly (60-day), or 45-day cycles.\n\n**Methods:** Pole picking or climbing.\n\n**Premature nut fall causes:**\n• Potassium deficiency\n• Moisture stress\n• Pollination failure\n• Pests/diseases\n• Hormonal imbalance",
+si:"**පොල් අස්වැන්න:**\n\n**කපන කාලය:** මල් පිපීමෙන් මාස 10–11 කට පසු. සම්පූර්ණ ගෙඩි දරන ගසකින් වසරට කුලා 12–14ක්.\n\n**පරිණත ගෙඩි ලක්ෂණ:**\n• දුඹුරු/කහ-දුඹුරු පොත්ත\n• තට්ටු කළ විට හිස් ශබ්දය\n• ශක්තිමත් සුදු තෙල් සහිත මාංශය\n\n**කපන වේලාසටහන්:** මාසික (දින 30), දෙමාසික (දින 60), හෝ දින 45 චක්‍ර.\n\n**ක්‍රම:** පොල්ලෙන් කැපීම හෝ නැගීම.",
+ta:"**தென்னை அறுவடை:**\n\n**அறுவடை நேரம்:** பூங்கொத்து மலர்ந்த 10–11 மாதங்களுக்குப் பிறகு. முழுமையாக காய்க்கும் மரம் வருடத்திற்கு 12–14 குலைகள் தரும்.\n\n**முதிர்ந்த காய் அறிகுறிகள்:**\n• பழுப்பு/மஞ்சள்-பழுப்பு ஓடு\n• தட்டினால் வெற்று ஒலி\n• உறுதியான வெள்ளை எண்ணெய் சதை\n\n**அட்டவணை:** மாதாந்திர (30 நாள்), இருமாத (60 நாள்), அல்லது 45 நாள் சுழற்சி."}},
+{keywords:["spacing","planting","hole","establish","plant","seedling plant","square method","වගා","நடவு","இடைவெளி"],answer:{
+en:"**Establishing a Coconut Plantation:**\n\n**Spacing methods:**\n• Square: 8m × 8m = 158 plants/ha (64/acre)\n• Wide row: 8m × 10m = 128 plants/ha (52/acre)\n• Special wide: 8m × 12m = 102 plants/ha (for tea/sugarcane intercrop)\n\n**Planting hole:**\n• Sandy loam: 0.9m × 0.9m × 0.9m\n• Gravel soil: 1.2m × 1.2m × 1.2m\n\n**Preparation:**\n1. Place 30–35 coconut husks at bottom (coir side up)\n2. Add 10kg dry cow dung or 5kg goat manure\n3. Add 1kg dolomite\n4. Add Young Palm Mixture (YPM)\n\nEach husk absorbs 6–7× its weight in water!",
+si:"**පොල් වතුවක් පිහිටුවීම:**\n\n**පරතරය:**\n• සමචතුරස්‍ර: 8m × 8m = හෙක්ටයාරයට 158 (අක්කරයට 64)\n• පළල් පේළි: 8m × 10m = හෙක්ටයාරයට 128\n\n**වළ:**\n• වැලි මැටි: 0.9m × 0.9m × 0.9m\n• කලු මැටි: 1.2m × 1.2m × 1.2m\n\n**සූදානම:**\n1. පොල් කටු 30–35 පත්තට (කොහු පැත්ත ඉහළට)\n2. ගොම පොහොර 10kg හෝ එළු පොහොර 5kg\n3. ඩොලමයිට් 1kg\n4. තරුණ පැල මිශ්‍රණය (YPM)",
+ta:"**தென்னைத் தோட்டம் அமைத்தல்:**\n\n**இடைவெளி:**\n• சதுர முறை: 8m × 8m = ஹெக்டேருக்கு 158 (ஏக்கருக்கு 64)\n• அகல வரிசை: 8m × 10m = ஹெக்டேருக்கு 128\n\n**நடவுக் குழி:**\n• மணல் மண்: 0.9m × 0.9m × 0.9m\n• சரளை மண்: 1.2m × 1.2m × 1.2m\n\n**தயாரிப்பு:**\n1. குழியின் அடியில் 30–35 தேங்காய் உமி\n2. 10kg மாட்டுச் சாணம் அல்லது 5kg ஆட்டு உரம்\n3. 1kg டொலமைட்\n4. இளம் மரக் கலவை (YPM)"}},
+{keywords:["irrigation","water","moisture","drought","mulch","mulching","biochar","වාරිමාර්ග","ජලය","நீர்ப்பாசனம்"],answer:{
+en:"**Irrigation & Moisture Conservation:**\n\n**Water needs:**\n• Young palm: 10–30 L/day\n• Adult palm: 40–60 L/day (up to 100L in heat stress)\n\n**By age:** <1yr=12L, 1yr=18L, 2yr=28L, 3yr=32L, 4yr=36L, 5yr+=40–60L\n\n**Methods:** Basin irrigation, sprinkler, hose (1 riser per 16 palms), micro/drip, girdle sprinkler (75–85% efficiency).\n\n**Moisture conservation:**\n• Mulching with husks/fronds\n• Husk burial (350–400 husks per pit)\n• Coir dust burial\n• Contour drains (slope >3%)\n\n**Biochar:** 30kg per planting hole; for adults 30kg one-time or 6kg multiple applications.",
+si:"**වාරිමාර්ග සහ තෙතමන සංරක්ෂණය:**\n\n**ජල අවශ්‍යතා:**\n• තරුණ පොල්: දිනකට ලී 10–30\n• වැඩිහිටි පොල්: දිනකට ලී 40–60\n\n**ක්‍රම:** වළ, ස්ප්‍රින්ක්ලර්, බිංදු, ගර්ඩල් ස්ප්‍රින්ක්ලර්.\n\n**තෙතමන සංරක්ෂණය:**\n• පොල් කටු/ඈට මළුකිරීම\n• පොල් කටු වළදැමීම (වළකට 350–400)\n• බයෝචාර්: වළකට 30kg",
+ta:"**நீர்ப்பாசனம் & ஈரப்பதம் பாதுகாப்பு:**\n\n**நீர் தேவை:**\n• இளம் மரம்: நாளுக்கு 10–30 லீ\n• முதிர்ந்த மரம்: நாளுக்கு 40–60 லீ\n\n**முறைகள்:** தொட்டி, தெளிப்பான், சொட்டு நீர்ப்பாசனம்.\n\n**ஈரப்பதம் பாதுகாப்பு:**\n• உமி/ஓலை மூடாக்கு\n• உமி புதைப்பு (குழிக்கு 350–400)\n• பயோசார்: குழிக்கு 30kg"}},
+{keywords:["intercrop","intercropping","pepper","banana","cinnamon","cashew","pineapple","ginger","turmeric","papaya","mango","cassava","අතුරු බෝග","ஊடுபயிர்"],answer:{
+en:"**Intercropping with Coconut:**\n\nPlant intercrops >1.8m from the palm. Apply fertilizer separately.\n\n**Recommended crops:**\n• **Black Pepper** — on support trees, 2m×2m, plantations 15–50 yrs, yields 2–3 kg/vine at 5 yrs\n• **Pineapple** — plantations <5 or >30 yrs\n• **Banana** — plantations >30 yrs, flowering 10–12 months\n• **Cinnamon** — plantations 25–45 yrs, first harvest after 3 yrs\n• **Ginger** — plantations >20 yrs, 600–800kg seed/acre\n• **Turmeric** — plantations >20 yrs\n• **Cashew** — one plant per coconut square, ~5kg/plant\n• **Cassava** — plantations <5 or >30 yrs\n• **Papaya** (Rathna, Red Lady)\n• **Mango** (Karthakolomban, TOM EJC)\n\nGrow light-loving plants until age 5 and after 20 years.",
+si:"**පොල් සමඟ අතුරු බෝග:**\n\nපොල් ගසෙන් 1.8m ට වඩා ඈතින් සිටුවන්න.\n\n**නිර්දේශිත බෝග:**\n• **ගම්මිරිස්** — ආධාරක ගස්වල, වසර 15–50 වතු\n• **අන්නාසි** — වසර <5 හෝ >30 වතු\n• **කෙසෙල්** — වසර >30 වතු\n• **කුරුඳු** — වසර 25–45 වතු\n• **ඉඟුරු** — වසර >20 වතු\n• **කහ** — වසර >20 වතු\n• **කජු** — පොල් චතුරස්‍රයකට එක ගසක්\n• **මඤ්ඤොක්කා** — වසර <5 හෝ >30",
+ta:"**தென்னையுடன் ஊடுபயிர்:**\n\nமரத்திலிருந்து 1.8m க்கு மேல் நடவும்.\n\n**பரிந்துரைக்கப்பட்ட பயிர்கள்:**\n• **மிளகு** — ஆதார மரங்களில், 15–50 வயது தோட்டங்கள்\n• **அன்னாசி** — <5 அல்லது >30 வயது\n• **வாழை** — >30 வயது தோட்டங்கள்\n• **இலவங்கப்பட்டை** — 25–45 வயது\n• **இஞ்சி** — >20 வயது\n• **மஞ்சள்** — >20 வயது\n• **முந்திரி** — ஒரு தென்னை சதுரத்திற்கு ஒன்று"}},
+{keywords:["disease","bud rot","stem bleeding","leaf blight","ganoderma","wilt","phytophthora","රෝග","நோய்"],answer:{
+en:"**Common Coconut Diseases:**\n\n• **Bud Rot** (Phytophthora) — bud turns pale/brown, rots. Treat with Mancozeb+Metalaxyl or Tebuconazole. Bordeaux mixture preventively.\n\n• **Stem Bleeding** (Ceratocystis) — reddish-brown fluid oozing. Remove diseased tissue, apply copper fungicide/coal tar.\n\n• **Leaf Blight** — yellow spots turning brown. Caused by K deficiency. Extra MOP (250g young/500g adult per 6 months) + kitchen ash.\n\n• **Ganoderma Root Rot** — in palms >15 yrs, reddish fluid at base. Uproot and burn, dig isolation trench, apply Bordeaux mixture.\n\n• **Weligama Leaf Wilt (WCLWD)** — leaves fold diagonally, intense yellowing. No cure. Destroy diseased trees, plant resistant green dwarf varieties.\n\n• **Collar Rot** — rotting base, foul smell. Remove mulch during rains, expose to sunlight.",
+si:"**පොල් රෝග:**\n\n• **මුදුන් කුණුවීම** (Phytophthora) — මුදුන කුණුවේ. Mancozeb+Metalaxyl හෝ Tebuconazole.\n• **කඳ ලේ ගැලීම** — දුඹුරු දියර. රෝගී පටක ඉවත් කර, තඹ දිලීර නාශක.\n• **පත්‍ර දැවිල්ල** — කහ ලප. MOP 250g (තරුණ)/500g (වැඩිහිටි) මාස 6ට.\n• **ගැනෝඩර්මා** — වසර >15 ගස්වල. උදුරා පුළුස්සන්න.\n• **වැලිගම පොල් මැලවීම** — පත්‍ර දිගට නැමේ. ප්‍රතිකාර නැත. කොළ කුරු ප්‍රභේද සිටුවන්න.",
+ta:"**தென்னை நோய்கள்:**\n\n• **குருத்து அழுகல்** (Phytophthora) — குருத்து அழுகும். Mancozeb+Metalaxyl அல்லது Tebuconazole.\n• **தண்டு இரத்தப்போக்கு** — சிவப்பு-பழுப்பு திரவம். நோய்வாய்ப்பட்ட திசுக்களை அகற்றுங்கள்.\n• **இலை கருகல்** — மஞ்சள் புள்ளிகள். MOP 250g (இளம்)/500g (முதிர்ந்த).\n• **கனோடெர்மா** — >15 வயது மரங்களில். பிடுங்கி எரிக்கவும்.\n• **வெலிகம இலை வாடல்** — சிகிச்சை இல்லை. பச்சை குள்ள ரகங்கள் நடவும்."}},
+{keywords:["weed","weeding","herbicide","glufosinate","lantana","imperata","වල්","களை"],answer:{
+en:"**Weed Management in Coconut:**\n\n**Methods:**\n• Mechanical — hand pulling, slashing, hoeing, tractor slashers\n• Agronomic — cover cropping, intercropping, livestock grazing\n• Biological — Amelo insulata caterpillar for Chromolaena odorata\n• Chemical — Glufosinate ammonium for Guinea grass: 100ml in 16L (mature), 80ml in 16L (immature)\n\n**Common weeds:** Chromolaena (Podisinghomaran), Lantana, Imperata (Illuk), Guinea grass, Mission grass, Torpedo grass.\n\n**Best approach:** Integrated weed management combining multiple methods.",
+si:"**පොල් වල් මර්දනය:**\n\n**ක්‍රම:** අතින් ඉවත් කිරීම, කපා දැමීම, වගා ආවරණ, පශු සත්ව ගැවසීම, ජීවවිද්‍යාත්මක (Chromolaena සඳහා Amelo insulata), රසායනික (Guinea grass සඳහා Glufosinate).\n\n**පොදු වල් පැළෑටි:** පොදිසිංහෝමරං, ගඳ පාන, ඉලුක්, ගිනී තණ.",
+ta:"**தென்னை களை மேலாண்மை:**\n\n**முறைகள்:** கையால் அகற்றுதல், வெட்டுதல், மூடுபயிர், கால்நடை மேய்ச்சல், உயிரியல் (Chromolaena க்கு Amelo insulata), இரசாயன (Guinea grass க்கு Glufosinate).\n\n**பொதுவான களைகள்:** Chromolaena, Lantana, Imperata, Guinea grass."}},
+{keywords:["organic","manure","cow dung","compost","gliricidia","vermicompost","කාබනික","இயற்கை உரம்"],answer:{
+en:"**Organic Manure for Coconut:**\n\n• **Cow Dung** (moisture 20–30%): 20kg per palm\n• **Alternative:** 15kg cow dung + 1kg Eppawala Rock Phosphate + 1kg Dolomite\n• **Chicken Manure:** 30kg per palm\n• **Agricultural Compost:** 46kg per palm\n• **Gliricidia:** 30kg per palm\n\n**Vermicomposting:** Use Eisenia fetida earthworms.\n\n**Animal integration:** Poultry, goat, cattle manure. Biogas from livestock (50–70% methane).\n\n**Beekeeping** can boost coconut yield up to 40%!",
+si:"**පොල් සඳහා කාබනික පොහොර:**\n\n• **ගොම** (තෙතමන 20–30%): ගසකට 20kg\n• **විකල්ප:** ගොම 15kg + එප්පාවල 1kg + ඩොලමයිට් 1kg\n• **කුකුළු පොහොර:** ගසකට 30kg\n• **කෘෂි කොම්පෝස්ට්:** ගසකට 46kg\n• **ග්ලිරිසීඩියා:** ගසකට 30kg\n\n**මී මැසි පාලනය** පොල් අස්වැන්න 40% දක්වා වැඩි කරයි!",
+ta:"**தென்னைக்கு இயற்கை உரம்:**\n\n• **மாட்டுச் சாணம்** (ஈரப்பதம் 20–30%): மரத்திற்கு 20kg\n• **மாற்று:** சாணம் 15kg + எப்பாவல 1kg + டொலமைட் 1kg\n• **கோழி உரம்:** மரத்திற்கு 30kg\n• **கம்போஸ்ட்:** மரத்திற்கு 46kg\n• **கிளிரிசீடியா:** மரத்திற்கு 30kg\n\n**தேனீ வளர்ப்பு** தென்னை மகசூலை 40% வரை அதிகரிக்கும்!"}},
+{keywords:["animal","livestock","cattle","goat","sheep","poultry","chicken","beekeeping","bee","fish","biogas","සත්ත්ව","கால்நடை"],answer:{
+en:"**Animal Husbandry with Coconut:**\n\n**Stocking rates:**\n• Buffalo/cattle: 1 per 3–4 acres\n• Goats/sheep: 6 per acre\n• Goats only in mature plantations; sheep okay in young plantations\n\n**Integration benefits:**\n• Manure for organic fertilizer\n• Biogas production (50–70% methane)\n• Weed control through grazing\n\n**Beekeeping:** Can boost coconut yield up to 40% through better pollination.\n\n**Fish:** Pond integration possible in low-lying areas.\n\n**Vermicomposting:** Use Eisenia fetida with livestock manure.",
+si:"**පොල් සමඟ සත්ත්ව පාලනය:**\n\n**ගොවිපල අනුපාත:**\n• මී හරක්: අක්කර 3–4 කට 1\n• එළුවන්/බැටළුවන්: අක්කරයට 6\n\n**මී මැසි පාලනය:** පොල් අස්වැන්න 40% දක්වා වැඩි කරයි.\n\n**බයෝගෑස්:** පශු පොහොරෙන් (මෙතේන් 50–70%).",
+ta:"**தென்னையுடன் கால்நடை வளர்ப்பு:**\n\n**எண்ணிக்கை:**\n• எருமை/மாடு: 3–4 ஏக்கருக்கு 1\n• ஆடுகள்: ஏக்கருக்கு 6\n\n**தேனீ வளர்ப்பு:** மகசூலை 40% வரை அதிகரிக்கும்.\n\n**பயோகேஸ்:** கால்நடை உரத்திலிருந்து (மீத்தேன் 50–70%)."}},
+{keywords:["coconut mite","aceria","මයිටා","உண்ணி"],answer:{
+en:"**Coconut Mite (Aceria guerreronis):**\n\n**Signs:** Microscopic pest under perianth, yellowish-white triangular spot turning brown on nuts.\n\n**Control:**\n• Spray: 200ml palm/vegetable oil + 800ml water + 12g soap powder + 5g wettable sulfur per 1L\n• Spray twice/year (February and July-August), ~1L per palm\n• Biological: Release predatory mite Neoseiulus baraki — 5,000 released 3 times/year",
+si:"**පොල් මයිටා (Aceria guerreronis):**\n\n**ලක්ෂණ:** ගෙඩියේ කහ-සුදු ත්‍රිකෝණාකාර ලප.\n\n**පාලනය:**\n• ඉසීම: 200ml තෙල් + 800ml වතුර + 12g සබන් + 5g සල්ෆර්\n• වසරකට දෙවරක් (පෙබ සහ ජූලි-අගෝ)\n• ජීවවිද්‍යාත්මක: Neoseiulus baraki මයිටා — 5,000 වසරකට 3 වරක්",
+ta:"**தென்னை உண்ணி (Aceria guerreronis):**\n\n**அறிகுறிகள்:** காய்களில் மஞ்சள்-வெள்ளை முக்கோண புள்ளிகள்.\n\n**கட்டுப்பாடு:**\n• தெளிப்பு: 200ml எண்ணெய் + 800ml நீர் + 12g சோப்பு + 5g சல்ஃபர்\n• வருடத்திற்கு 2 முறை (பிப் மற்றும் ஜூலை-ஆக)\n• உயிரியல்: Neoseiulus baraki உண்ணி — 5,000 வருடத்திற்கு 3 முறை"}},
+{keywords:["whitefly","සුදු මැස්සා","வெள்ளை ஈ"],answer:{
+en:"**Coconut Whitefly (5 species in Sri Lanka):**\n\n**Signs:** White cottony nests under leaflets, sooty mold from honeydew.\n\n**Control:**\n• Thiamethoxam 25 WG — 3g in 10L water\n• Carbosulfan — 20ml in 10L\n• Neem oil: 10ml + 5g soap powder in 1L (spray every 2 weeks for 2 months)\n• Grease on yellow polythene around trunk (sticky trap)",
+si:"**පොල් සුදු මැස්සා:**\n\n**ලක්ෂණ:** පත්‍ර යටි පැත්තේ සුදු පුළුන් සහිත කූඩු.\n\n**පාලනය:**\n• Thiamethoxam 25 WG — 10L වතුරේ 3g\n• කොහොඹ තෙල්: 10ml + සබන් 5g 1L (සති 2කට වරක් මාස 2ක්)\n• කහ පොලිතීන් මත තෙල් ග්‍රීස් (ඇලෙන උගුලක්)",
+ta:"**தென்னை வெள்ளை ஈ:**\n\n**அறிகுறிகள்:** இலைகளின் கீழ் வெள்ளை பஞ்சு போன்ற கூடுகள்.\n\n**கட்டுப்பாடு:**\n• Thiamethoxam 25 WG — 10L நீரில் 3g\n• வேப்ப எண்ணெய்: 10ml + சோப்பு 5g 1L (2 வாரங்களுக்கு ஒருமுறை 2 மாதங்கள்)\n• மஞ்சள் பாலிதீன் மீது கிரீஸ் (ஒட்டும் பொறி)"}}
+];
+var CHAT_FALLBACK={
+en:"I'm sorry, I don't have specific information about that in the Coconut Research Institute manual. Please contact the Coconut Research Institute of Sri Lanka (CRISL) at Lunuwila, or your local Coconut Development Officer for more help. 🌴",
+si:"සමාවන්න, පොල් පර්යේෂණ ආයතනයේ අත්පොතේ ඒ ගැන විශේෂිත තොරතුරු මා සතුව නොමැත. වැඩිදුර උදව් සඳහා ලුණුවිල පොල් පර්යේෂණ ආයතනය හෝ ඔබේ ප්‍රාදේශීය පොල් සංවර්ධන නිලධාරී අමතන්න. 🌴",
+ta:"மன்னிக்கவும், தென்னை ஆராய்ச்சி நிறுவனத்தின் கையேட்டில் அது பற்றிய குறிப்பிட்ட தகவல்கள் என்னிடம் இல்லை. மேலும் உதவிக்கு லுணுவில தென்னை ஆராய்ச்சி நிறுவனம் அல்லது உங்கள் உள்ளூர் தென்னை அபிவிருத்தி அதிகாரியை தொடர்பு கொள்ளுங்கள். 🌴"};
+function chatSearch(query){
+  var q=query.toLowerCase();var best=null,bestScore=0;
+  for(var i=0;i<KB.length;i++){
+    var score=0;
+    for(var j=0;j<KB[i].keywords.length;j++){if(q.indexOf(KB[i].keywords[j].toLowerCase())>=0)score+=2;}
+    var words=q.split(/\s+/);
+    for(var j=0;j<KB[i].keywords.length;j++){for(var w=0;w<words.length;w++){if(words[w].length>2&&KB[i].keywords[j].toLowerCase().indexOf(words[w])>=0)score+=1;}}
+    if(score>bestScore){bestScore=score;best=KB[i];}
+  }
+  return best;
+}
+function chatEsc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function chatFmt(s){return chatEsc(s).replace(/\*\*(.+?)\*\*/g,'<b>$1</b>').replace(/\n/g,'<br>');}
+var chatHistory=[];
+function chatAddMsg(text,who,store){
+  if(store!==false)chatHistory.push({text:text,who:who});
+  var m=document.getElementById('chatMsgs');
+  var b=document.createElement('div');b.className='cbubble '+who;b.innerHTML=chatFmt(text);
+  m.appendChild(b);m.scrollTop=m.scrollHeight;
+}
+function chatRender(){
+  var m=document.getElementById('chatMsgs');if(!m)return;m.innerHTML='';
+  chatAddMsg(t('chatWelcome'),'bot',false);
+  if(chatHistory.length===0){
+    var ex=document.createElement('div');ex.className='cexamples';
+    var lbl=document.createElement('div');lbl.className='clabel';lbl.textContent=t('chatExamples');ex.appendChild(lbl);
+    ['chatQ1','chatQ2','chatQ3','chatQ4'].forEach(function(k){
+      var btn=document.createElement('button');btn.textContent=t(k);
+      btn.onclick=function(){chatHandle(t(k));};ex.appendChild(btn);
+    });
+    m.appendChild(ex);
+  }else{
+    for(var i=0;i<chatHistory.length;i++)chatAddMsg(chatHistory[i].text,chatHistory[i].who,false);
+  }
+}
+function chatHandle(text){
+  text=(text||'').trim();if(!text)return;
+  chatAddMsg(text,'user');
+  var hit=chatSearch(text);
+  var ans=hit?(hit.answer[lang]||hit.answer.en):(CHAT_FALLBACK[lang]||CHAT_FALLBACK.en);
+  chatAddMsg(ans,'bot');
+}
+function chatApplyLang(){
+  document.getElementById('chatTitle').textContent=t('chatTitle');
+  document.getElementById('chatSubtitle').textContent=t('chatSubtitle');
+  document.getElementById('chatInput').placeholder=t('chatPlaceholder');
+  chatRender();
+}
+(function initChat(){
+  var fab=document.getElementById('chatFab'),panel=document.getElementById('chatPanel');
+  fab.onclick=function(){panel.classList.add('open');fab.style.display='none';};
+  document.getElementById('chatClose').onclick=function(){panel.classList.remove('open');fab.style.display='flex';};
+  var input=document.getElementById('chatInput');
+  document.getElementById('chatSend').onclick=function(){chatHandle(input.value);input.value='';};
+  input.addEventListener('keydown',function(e){if(e.key==='Enter'){chatHandle(input.value);input.value='';}});
+})();
 
 // init
 initAgro(); initClim(); initGoogle();
