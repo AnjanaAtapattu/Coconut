@@ -25,7 +25,7 @@ header.topbar .logo{font-size:22px;}
 header.topbar h1{font-size:16px;margin:0;font-weight:600;letter-spacing:.3px;}
 header.topbar small{display:block;font-size:11px;opacity:.8;font-family:'Manrope';font-weight:500;}
 .langsw{margin-left:auto;display:flex;background:rgba(255,255,255,.16);border-radius:18px;overflow:hidden;flex:0 0 auto;}
-.langsw button{background:none;border:none;color:#fff;padding:6px 10px;font-size:13px;font-weight:700;cursor:pointer;opacity:.7;line-height:1;font-family:inherit;}
+.langsw button{background:none;border:none;color:#fff;padding:10px 12px;font-size:13px;font-weight:700;cursor:pointer;opacity:.7;line-height:1;font-family:inherit;min-height:44px;}
 .langsw button.active{background:rgba(255,255,255,.9);color:var(--green);opacity:1;}
 body.lang-si{font-family:'Noto Sans Sinhala','Manrope',sans-serif;}
 body.lang-ta{font-family:'Noto Sans Tamil','Manrope',sans-serif;}
@@ -102,8 +102,9 @@ table.dt tr:last-child td{border-bottom:none;}
   .pfooter{position:absolute;bottom:4mm;left:8mm;right:8mm;font-size:8pt;color:#666;display:flex;justify-content:space-between;border-top:1px solid #ccc;padding-top:2px;}
   .psheet{counter-increment:pg;}
   .pfooter .pn::after{content:counter(pg);}
-  #chatPanel,#chatFab,.search-overlay,.price-ticker{display:none !important;}
-  #view-weather,#view-pests{display:block !important;position:static !important;opacity:1 !important;visibility:visible !important;}
+  #chatPanel,#chatFab,.search-overlay,.price-ticker,.feedback-overlay,.offline-bar,.cache-indicator,.ofc-locate-bar{display:none !important;}
+  #view-weather,#view-pests,#view-offices{display:block !important;position:static !important;opacity:1 !important;visibility:visible !important;}
+  .ofc-card{page-break-inside:avoid;}
   .pest-card{page-break-inside:avoid;}
   .rain-chart{height:60px !important;}
 }
@@ -178,6 +179,13 @@ body.dark .fact .fl{color:#8aba7f;}
 body.dark table.dt td{border-color:#3a3a50;}
 body.dark .gbtn{background:#2d2d44;color:#4caf50;}
 body.dark #chatFab{background:linear-gradient(135deg,#4caf50,#2d8a4e);}
+body.dark .sheet .shead{background:#2d6a30;}
+body.dark .feedback-box{background:#2d2d44;color:#e0e0e0;}
+body.dark .fb-face{border-color:#3a3a50;}
+body.dark .fb-textarea{background:#1a1a2e;color:#e0e0e0;border-color:#3a3a50;}
+body.dark .ofc-card{background:#2d2d44;border-color:#3a3a50;}
+body.dark .pest-photo-section{background:#2d2d44;border-color:#3a3a50;}
+body.dark .pest-compare-card{border-color:#3a3a50;}
 /* === Font Sizes === */
 body.font-lg{font-size:17px;}
 body.font-lg .cbubble{font-size:15.5px;}
@@ -185,6 +193,8 @@ body.font-lg nav.tabs button{font-size:12px;}
 body.font-xl{font-size:20px;}
 body.font-xl .cbubble{font-size:18px;}
 body.font-xl nav.tabs button{font-size:13.5px;}
+/* === Focus Styles === */
+.hdr-btn:focus-visible,.langsw button:focus-visible,nav.tabs button:focus-visible,.fb-face:focus-visible,.pest-card summary:focus-visible,.ofc-actions a:focus-visible{outline:2px solid #ff9800;outline-offset:2px;border-radius:4px;}
 /* === Header Controls === */
 .hdr-controls{display:flex;align-items:center;gap:4px;margin-left:6px;}
 .hdr-btn{background:rgba(255,255,255,.16);border:none;color:#fff;width:30px;height:30px;border-radius:50%;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s;padding:0;line-height:1;}
@@ -192,7 +202,7 @@ body.font-xl nav.tabs button{font-size:13.5px;}
 /* === Scrollable Nav === */
 nav.tabs{overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
 nav.tabs::-webkit-scrollbar{display:none;}
-nav.tabs button{flex:0 0 auto;min-width:60px;padding:9px 10px 7px;}
+nav.tabs button{flex:0 0 auto;min-width:60px;min-height:44px;padding:9px 10px 7px;}
 /* === Weather View === */
 #view-weather,#view-pests{overflow-y:auto;-webkit-overflow-scrolling:touch;padding:12px;background:var(--sand);}
 .weather-zone{margin-bottom:16px;}
@@ -207,7 +217,7 @@ nav.tabs button{flex:0 0 auto;min-width:60px;padding:9px 10px 7px;}
 .rain-legend .dot{width:10px;height:10px;border-radius:2px;}
 /* === Price Ticker === */
 .price-ticker{background:var(--green);color:#fff;padding:6px 0;overflow:hidden;white-space:nowrap;font-size:12px;font-weight:600;}
-.price-ticker .scroll{display:inline-block;animation:tickScroll 10s linear infinite;}
+.price-ticker .scroll{display:inline-block;animation:tickScroll 10s linear infinite;will-change:transform;}
 @keyframes tickScroll{0%{transform:translateX(100%);}100%{transform:translateX(-100%);}}
 .price-ticker .item{display:inline;margin:0 24px;}
 .price-ticker .item .pname{opacity:.8;}
@@ -313,13 +323,13 @@ body.dark .fb-textarea{background:#1a1a2e;color:#e0e0e0;border-color:#3a3a50;}
 <div class="cache-indicator" id="cacheIndicator"><span class="cache-dot" id="cacheDot"></span><span id="cacheText"></span></div>
 <div id="app">
   <header class="topbar">
-    <span class="logo">🥥</span>
+    <span class="logo" role="img" aria-label="Coconut">🥥</span>
     <div><h1>Pol Sathkara<small data-t="subtitle">Coconut Zone Guide · Sri Lanka</small></h1></div>
     <div class="hdr-controls">
-      <button class="hdr-btn" id="darkToggle" title="Dark mode">🌙</button>
-      <button class="hdr-btn" id="fontToggle" title="Font size">A</button>
-      <button class="hdr-btn" id="searchToggle" title="Search">🔍</button>
-      <button class="hdr-btn" id="feedbackToggle" title="Feedback">💬</button>
+      <button class="hdr-btn" id="darkToggle" title="Dark mode" aria-label="Toggle dark mode">🌙</button>
+      <button class="hdr-btn" id="fontToggle" title="Font size" aria-label="Change font size">A</button>
+      <button class="hdr-btn" id="searchToggle" title="Search" aria-label="Search">🔍</button>
+      <button class="hdr-btn" id="feedbackToggle" title="Feedback" aria-label="Send feedback">💬</button>
     </div>
     <div class="langsw" id="langsw">
       <button data-lang="en">EN</button>
@@ -8141,7 +8151,9 @@ function renderPestPhotoSection(){
     '<div class="pest-capture"><button onclick="document.getElementById(\'pestPhotoInput\').click()">'+t('pestCapture')+'</button></div>'+
     '<img class="pest-preview" id="pestPreview">'+
     '<div class="pest-compare" id="pestCompareGrid"></div>';
-  el.querySelector('div').insertBefore(section,el.querySelector('.pest-card'));
+  var parent=el.querySelector('div')||el;
+  var firstCard=el.querySelector('.pest-card');
+  if(firstCard)parent.insertBefore(section,firstCard);else parent.appendChild(section);
   renderPestCompareGrid();
   document.getElementById('pestPhotoInput').onchange=function(e){
     var file=e.target.files[0];if(!file)return;
@@ -8158,17 +8170,19 @@ function renderPestCompareGrid(){
   if(!grid)return;
   var html='';
   PESTS.forEach(function(p){
-    html+='<div class="pest-compare-card" onclick="selectPestMatch(this,\''+p.key+'\')"><div class="pc-icon">'+p.icon+'</div><div class="pc-name">'+t('pest'+p.key)+'</div></div>';
+    var key=p.nameKey.replace('pest','');
+    html+='<div class="pest-compare-card" onclick="selectPestMatch(this,\''+key+'\')"><div class="pc-icon">'+p.icon+'</div><div class="pc-name">'+t(p.nameKey)+'</div></div>';
   });
   grid.innerHTML=html;
 }
 function selectPestMatch(el,key){
   document.querySelectorAll('.pest-compare-card').forEach(function(c){c.classList.remove('selected');});
   el.classList.add('selected');
+  var target=t('pest'+key);
   var details=document.querySelectorAll('.pest-card');
   details.forEach(function(d){
-    var sum=d.querySelector('summary span:nth-child(2)');
-    if(sum&&sum.textContent===t('pest'+key)){d.open=true;d.scrollIntoView({behavior:'smooth',block:'center'});}
+    var text=d.querySelector('summary').textContent.replace(/▾/,'').trim();
+    if(text.indexOf(target)>=0){d.open=true;d.scrollIntoView({behavior:'smooth',block:'center'});}
     else{d.open=false;}
   });
 }
@@ -8226,6 +8240,7 @@ function ttsStop(){
   var rating=0;
   document.getElementById('feedbackToggle').onclick=function(){overlay.classList.add('open');};
   overlay.addEventListener('click',function(e){if(e.target===overlay)overlay.classList.remove('open');});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&overlay.classList.contains('open'))overlay.classList.remove('open');});
   document.querySelectorAll('.fb-face').forEach(function(btn){
     btn.onclick=function(){
       rating=parseInt(btn.dataset.rating);
