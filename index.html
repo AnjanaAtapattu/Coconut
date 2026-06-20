@@ -7,7 +7,7 @@
 <meta name="description" content="Site-specific coconut growing guidance for Sri Lanka." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&family=Noto+Sans+Sinhala:wght@400;600;700&family=Noto+Sans+Tamil:wght@400;600;700&display=swap" rel="stylesheet">
 <title>Pol Sathkara — Coconut Zone Guide</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -22,6 +22,13 @@ header.topbar{background:var(--green);color:#fff;padding:10px 16px;display:flex;
 header.topbar .logo{font-size:22px;}
 header.topbar h1{font-size:16px;margin:0;font-weight:600;letter-spacing:.3px;}
 header.topbar small{display:block;font-size:11px;opacity:.8;font-family:'Manrope';font-weight:500;}
+.langsw{margin-left:auto;display:flex;background:rgba(255,255,255,.16);border-radius:18px;overflow:hidden;flex:0 0 auto;}
+.langsw button{background:none;border:none;color:#fff;padding:6px 10px;font-size:13px;font-weight:700;cursor:pointer;opacity:.7;line-height:1;font-family:inherit;}
+.langsw button.active{background:rgba(255,255,255,.9);color:var(--green);opacity:1;}
+body.lang-si{font-family:'Noto Sans Sinhala','Manrope',sans-serif;}
+body.lang-ta{font-family:'Noto Sans Tamil','Manrope',sans-serif;}
+body.lang-si h1,body.lang-si h2,body.lang-si h3,body.lang-si h4,body.lang-si .head{font-family:'Noto Sans Sinhala','Space Grotesk',sans-serif;}
+body.lang-ta h1,body.lang-ta h2,body.lang-ta h3,body.lang-ta h4,body.lang-ta .head{font-family:'Noto Sans Tamil','Space Grotesk',sans-serif;}
 .views{flex:1 1 auto;position:relative;overflow:hidden;}
 .view{position:absolute;inset:0;opacity:0;visibility:hidden;transition:opacity .3s ease;}
 .view.active{opacity:1;visibility:visible;}
@@ -102,32 +109,37 @@ table.dt tr:last-child td{border-bottom:none;}
 <div id="app">
   <header class="topbar">
     <span class="logo">🥥</span>
-    <div><h1>Pol Sathkara<small>Coconut Zone Guide · Sri Lanka</small></h1></div>
+    <div><h1>Pol Sathkara<small data-t="subtitle">Coconut Zone Guide · Sri Lanka</small></h1></div>
+    <div class="langsw" id="langsw">
+      <button data-lang="en">EN</button>
+      <button data-lang="si">සි</button>
+      <button data-lang="ta">த</button>
+    </div>
   </header>
   <div class="views">
     <section class="view active" id="view-agro">
       <div class="map" id="map-agro"></div>
-      <div class="hint">Tap a zone for the full growing guide</div>
+      <div class="hint" data-t="hintAgro">Tap a zone for the full growing guide</div>
       <div class="legend">
-        <div class="row"><span class="sw" style="background:var(--wet)"></span>Wet Zone</div>
-        <div class="row"><span class="sw" style="background:var(--int)"></span>Intermediate</div>
-        <div class="row"><span class="sw" style="background:var(--dry)"></span>Dry Zone</div>
+        <div class="row"><span class="sw" style="background:var(--wet)"></span><span data-t="legWet">Wet Zone</span></div>
+        <div class="row"><span class="sw" style="background:var(--int)"></span><span data-t="legInt">Intermediate</span></div>
+        <div class="row"><span class="sw" style="background:var(--dry)"></span><span data-t="legDry">Dry Zone</span></div>
       </div>
     </section>
     <section class="view" id="view-clim">
       <div class="map" id="map-clim"></div>
-      <div class="hint">Tap a climatic zone</div>
+      <div class="hint" data-t="hintClim">Tap a climatic zone</div>
     </section>
     <section class="view" id="view-google">
       <div class="map" id="map-google"></div>
-      <button class="gbtn" id="pinBtn">📍 Drop pin on my location</button>
-      <div class="hint" id="ghint">Tap the map to drop a pin & find your zone</div>
+      <button class="gbtn" id="pinBtn" data-t="pinBtn">📍 Drop pin on my location</button>
+      <div class="hint" id="ghint" data-t="hintGoogle">Tap the map to drop a pin & find your zone</div>
     </section>
   </div>
   <nav class="tabs">
-    <button class="active" data-tab="agro"><span class="ic">🗺️</span>Agro Ecological</button>
-    <button data-tab="clim"><span class="ic">🌦️</span>Climatic Zones</button>
-    <button data-tab="google"><span class="ic">🛰️</span>Google Map</button>
+    <button class="active" data-tab="agro"><span class="ic">🗺️</span><span data-t="tabAgro">Agro Ecological</span></button>
+    <button data-tab="clim"><span class="ic">🌦️</span><span data-t="tabClim">Climatic Zones</span></button>
+    <button data-tab="google"><span class="ic">🛰️</span><span data-t="tabGoogle">Google Map</span></button>
   </nav>
 </div>
 
@@ -6773,6 +6785,113 @@ var ZONE_DATA={
 var INTERCROP={"Dry Zone":{"Banana":{"varieties":"Dry & Intermediate – Ambul, Kolikuttu, Alu kesel, Sini kesel Wet Zone – Anamalu, Ambun","planting_materials":"Most suitable- ‘Kadupath’ Suckers Somewhat suitable – ‘Kanya’ Suckers Should be free from Bunchy Top, Panama disease & attack from Banana Weevil","plant_density":"30 plants/ac","best_time_to_plant":"With the onset of monsoon","available_at":"Horana Fruit Research Institute Weeding should be done. More suckers should be removed. Only One sucker is allowed.","potential_return":"","notes":""},"CO3":{"varieties":"","planting_materials":"Root slips Stem cuttings with 2–3 nodes Healthy disease-free planting materials","plant_density":"11,000 plants/ac","best_time_to_plant":"Beginning of rainy season","available_at":"Department of Animal Production & Health First cut after 60–75 days Harvest every 45–60 days Apply nitrogen after each cut Irrigate during drought periods Loosing of soil around the plants is needed","potential_return":"","notes":""},"Cashew":{"varieties":"WUCC varieties","planting_materials":"Budded plants","plant_density":"32 plants/ac","best_time_to_plant":"With the onset of monsoon","available_at":"Cashew Cooperation Plant Nurseries, Plant nurseries of Department of Agriculture","potential_return":"Yield: 5kg/plant/Year Market Price: Rs.3000/Kg (Retail Price) Weeding is needed","notes":""},"Cassava":{"varieties":"Most Suitable: MU 51 (9 Months) Kiri Kawadi (4-6 Months) Others Recommended Varieties: CARI555, Suranimala, Swarna, Shani","planting_materials":"Live Stem Cuttings (10-15cm Length)","plant_density":"4000 plants/Ac","best_time_to_plant":"Wet zone – Both Yala & Maha Season Dry zone – Maha Season","available_at":"","potential_return":"Yield: 3-10kg/tree Market Price: 40-50Rs/kg (Whole sale) Loosing of soil around the","notes":""},"Dragonfruit":{"varieties":"Helocerous","planting_materials":"Stem cuttings","plant_density":"30 plants/ac","best_time_to_plant":"with the onset of monsoon","available_at":"Horana Fruit Research Centre Walpita Seed Production Farm A concrete supporter is should be supplied to the plants for their proper growth. Weeding is needed.","potential_return":"","notes":""},"Guava":{"varieties":"Horana Red, Horana White, Pubudu, Kanthi Hybrid – Lanka Jayant, Horana Sweet","planting_materials":"Budded plants or seedlings obtained from stem cuttings","plant_density":"","best_time_to_plant":"With the onset of monsoon After planting shade should be provided","available_at":"Horana Fruit Research Center Walpita Seed Production Farm","potential_return":"Yield: 40 kg/tree Market Price: 80 Rs/kg (Whole sale) Mulching, Weeding and irrigation in Dry zone is needed.","notes":""},"Lime":{"varieties":"Local Lime (Dehi), Balangoda Lime, Tahiti Lime (Persian Lime) Suitable Areas Wet Zone, Intermediate Zone, Dry Zone (with irrigation), Well-drained sandy loam and loam soils","planting_materials":"Budded plants, Grafted plants, Healthy disease-free nursery plants Should be free from Citrus Greening, Canker and Tristeza Virus","plant_density":"160 plants/ac","best_time_to_plant":"With the onset of monsoon, After planting shade should be provided during dry periods","available_at":"Fruit Crop Research and Development Institute, Department of Agriculture, Nurseries, Registered Fruit Plant Nurseries","potential_return":"Yield: 30–50 kg/tree/year Average Yield: 40 kg/tree/year Mulching is recommended Regular weeding should be done","notes":""},"Mango":{"varieties":"Dry & Intermediate – Karthacolomban, Malwana Dry Zone –TOM EJC, Villard Wet Zone – Dampara, Giraaba","planting_materials":"Budded or Grafted Plants","plant_density":"30 plants/ac","best_time_to_plant":"With the onset of monsoon","available_at":"Horana Friut Research Centre Walpita Seed Production Farm Weeding & pruning should be done. Mulching can be done with pruned branches or coconut husks Mulching is recommended Irrigation is necessary during dry periods Remove water shoots and diseased branches","potential_return":"","notes":""},"Papaya":{"varieties":"Most Suitable: Rathna Others Recommended Varieties: Red Lady, Local Varieties","planting_materials":"Seedlings from selected varieties","plant_density":"120 plants/ac","best_time_to_plant":"With the onset of monsoon","available_at":"Makandura Agriculture Research Center Horana Fruit Research Center","potential_return":"Yield: 30-40 fruits/plant Market Price: 150-170Rs/kg (Retail Price) Mulching is needed. In Dry zone irrigation must be supplied. Remove water shoots and diseased branches","notes":""},"Pomegranate":{"varieties":"Kalpitiya Hybrid Nayana Nimali Daya","planting_materials":"Seedlings Root Cuttings","plant_density":"30 plants/ac","best_time_to_plant":"With the onset of monsoon","available_at":"Horana Fruit Research Centre Walpita Seed Production Farm Ambepussa Agriculture Farm","potential_return":"","notes":""}},"Intermediate Zone":{"Avocado":{"varieties":"Pollock, Fuerte, Hass, Purple Hybrid","planting_materials":"Grafted plants- Healthy nursery plants","plant_density":"80 plants/ac","best_time_to_plant":"With the onset of monsoon","available_at":"Horana Fruit Research Institute Mulching recommended Pruning dead branches Irrigation during dry periods","potential_return":"","notes":""},"Banana":{"varieties":"Dry & Intermediate – Ambul, Kolikuttu, Alu kesel, Sini kesel Wet Zone – Anamalu, Ambun","planting_materials":"Most suitable- ‘Kadupath’ Suckers Somewhat suitable – ‘Kanya’ Suckers Should be free from Bunchy Top, Panama disease & attack from Banana Weevil","plant_density":"30 plants/ac","best_time_to_plant":"With the onset of monsoon","available_at":"Horana Fruit Research Institute Weeding should be done. More suckers should be removed. Only One sucker is allowed.","potential_return":"","notes":""},"CO3":{"varieties":"","planting_materials":"Root slips Stem cuttings with 2–3 nodes Healthy disease-free planting materials","plant_density":"11,000 plants/ac","best_time_to_plant":"Beginning of rainy season","available_at":"Department of Animal Production & Health First cut after 60–75 days Harvest every 45–60 days Apply nitrogen after each cut Irrigate during drought periods Loosing of soil around the plants is needed","potential_return":"","notes":""},"Cashew":{"varieties":"WUCC varieties","planting_materials":"Budded plants","plant_density":"32 plants/ac","best_time_to_plant":"With the onset of monsoon","available_at":"Cashew Cooperation Plant Nurseries, Plant nurseries of Department of Agriculture","potential_return":"Yield: 5kg/plant/Year Market Price: Rs.3000/Kg (Retail Price) Weeding is needed","notes":""},"Cassava":{"varieties":"Most Suitable: MU 51 (9 Months) Kiri Kawadi (4-6 Months) Others Recommended Varieties: CARI555, Suranimala, Swarna, Shani","planting_materials":"Live Stem Cuttings (10-15cm Length)","plant_density":"4000 plants/Ac","best_time_to_plant":"Wet zone – Both Yala & Maha Season Dry zone – Maha Season","available_at":"","potential_return":"Yield: 3-10kg/tree Market Price: 40-50Rs/kg (Whole sale) Loosing of soil around the","notes":""},"Cinnomon":{"varieties":"Thitta Kurudu, Weli kurudu, Sewela kurudu,Pani kurudu","planting_materials":"Seedlings from high yeilding varieties","plant_density":"9900 plants/ac","best_time_to_plant":"April/May or September/October","available_at":"Department of Export Agriculture Walpita Seed Production Farm","potential_return":"Yield: 200-250kg/ac (Planting after 7 years) Market price: Rs.1500/Kg Agronomy Practices Weeding and pruning is needed to have good yield","notes":""},"Cocoa":{"varieties":"Most suitable - Forestero Intermediate – NA32 Dry zone - Millawana","planting_materials":"Seedlings from DEA","plant_density":"Single row - 220 plants/Ac Double row – 360 plants/Ac","best_time_to_plant":"Wet zone: April-July or October- December with the onset of Monsoon","available_at":"Department of Export Agriculture","potential_return":"Yield- 1g of processed cacao seeds/Mature tree/Year Market price – Rs. 411.00/kg of processed seeds Weeding around 100cm away from the plant, mulching and pruning should be done.","notes":""},"Coffee":{"varieties":"Low country – Robusta GCR, CC-1 C-11 for drier areas Catimor - only for Wet zone","planting_materials":"Seedlings from Department of Export Agriculture","plant_density":"540 plants/Ac","best_time_to_plant":"with the onset of monsoon in Yala","available_at":"Walpita Seed Production Farm","potential_return":"Yield: 700 kg Market price: Rs.750.00/kg Weeding should be done about 1m around the plant.","notes":""},"Dragonfruit":{"varieties":"Helocerous","planting_materials":"Stem cuttings","plant_density":"30 plants/ac","best_time_to_plant":"with the onset of monsoon","available_at":"Horana Fruit Research Centre Walpita Seed Production Farm A concrete supporter is should be supplied to the plants for their proper growth. Weeding is needed.","potential_return":"","notes":""},"Ginger":{"varieties":"Local Ginger, Chinese Ginger, Rangoon Ginger, Nadia (Improved Variety)","planting_materials":"Healthy rhizomes 20–25 g seed rhizomes Disease-free planting materials Should be free from rhizome rot and bacterial wilt","plant_density":"48,000 plants/ac","best_time_to_plant":"With the onset of monsoon Mulching should be done immediately after planting","available_at":"Department of Agriculture Regional Agricultural Research Centres","potential_return":"Yield: 8–15 t/ha Average Yield: 10–12 t/ha Mulching is essential","notes":""},"Guava":{"varieties":"Horana Red, Horana White, Pubudu, Kanthi Hybrid – Lanka Jayant, Horana Sweet","planting_materials":"Budded plants or seedlings obtained from stem cuttings","plant_density":"","best_time_to_plant":"With the onset of monsoon After planting shade should be provided","available_at":"Horana Fruit Research Center Walpita Seed Production Farm","potential_return":"Yield: 40 kg/tree Market Price: 80 Rs/kg (Whole sale) Mulching, Weeding and irrigation in Dry zone is needed.","notes":""},"Lime":{"varieties":"Local Lime (Dehi), Balangoda Lime, Tahiti Lime (Persian Lime) Suitable Areas Wet Zone, Intermediate Zone, Dry Zone (with irrigation), Well-drained sandy loam and loam soils","planting_materials":"Budded plants, Grafted plants, Healthy disease-free nursery plants Should be free from Citrus Greening, Canker and Tristeza Virus","plant_density":"160 plants/ac","best_time_to_plant":"With the onset of monsoon, After planting shade should be provided during dry periods","available_at":"Fruit Crop Research and Development Institute, Department of Agriculture, Nurseries, Registered Fruit Plant Nurseries","potential_return":"Yield: 30–50 kg/tree/year Average Yield: 40 kg/tree/year Mulching is recommended Regular weeding should be done","notes":""},"Mango":{"varieties":"Dry & Intermediate – Karthacolomban, Malwana Dry Zone –TOM EJC, Villard Wet Zone – Dampara, Giraaba","planting_materials":"Budded or Grafted Plants","plant_density":"30 plants/ac","best_time_to_plant":"With the onset of monsoon","available_at":"Horana Friut Research Centre Walpita Seed Production Farm Weeding & pruning should be done. Mulching can be done with pruned branches or coconut husks Mulching is recommended Irrigation is necessary during dry periods Remove water shoots and diseased branches","potential_return":"","notes":""},"Papaya":{"varieties":"Most Suitable: Rathna Others Recommended Varieties: Red Lady, Local Varieties","planting_materials":"Seedlings from selected varieties","plant_density":"120 plants/ac","best_time_to_plant":"With the onset of monsoon","available_at":"Makandura Agriculture Research Center Horana Fruit Research Center","potential_return":"Yield: 30-40 fruits/plant Market Price: 150-170Rs/kg (Retail Price) Mulching is needed. In Dry zone irrigation must be supplied. Remove water shoots and diseased branches","notes":""},"PassionFruit":{"varieties":"Purple Passion Fruit, Yellow Passion Fruit, KPF-4 (Improved Selection), Hybrid Passion Fruit","planting_materials":"Healthy seedlings, Rooted cuttings, Grafted plants","plant_density":"650 plants/ac","best_time_to_plant":"With the onset of monsoon, Trellis system should be established before planting, Temporary shade may be provided during establishment","available_at":"Fruit Crop Research and Development Institute Department of Agriculture Nurseries Registered Fruit Plant Nurseries","potential_return":"Yield: 10–20 kg/vine/year, Average Yield: 15 kg/vine/year Provide a strong trellis support system Regular pruning should be done Mulching is recommended","notes":""},"Pepper":{"varieties":"Panniyur – 1, Kuchin, MB 12 & GK 49, Hybrids –Dingi Rala, Kohukumbure Rala, Bootawe Rala","planting_materials":"Stem Cuttings with 3-4 leaves","plant_density":"300–400 vines/ha Provide suitable support trees or standards Train vines properly during establishment Mulching should be done to conserve moisture Regular weeding is necessary","best_time_to_plant":"with the onset of monsoon in Yala","available_at":"Walpita Seed Production Farm Department of Export Agriculture","potential_return":"Average Yield: 3 kg dry pepper/vine/year","notes":""},"Pineapple":{"varieties":"Muritious Kew","planting_materials":"Axil & root suckers (should treated with fungicide before planting) Tissue Culture plants","plant_density":"Single row- 3500/Ac Double row- 5000/Ac","best_time_to_plant":"With the onset of monsoon","available_at":"Department of Agriculture - Horana Fruit Research Centre Department of Export Agriculture","potential_return":"Yield- A Kiwi Fruit 4-5 kg and Murisi around 2kg Market price – Large Rs 280-300","notes":""},"Taro":{"varieties":"Local Kiri Ala Improved DOA selections","planting_materials":"Healthy corms Healthy cormels Disease-free planting materials","plant_density":"6,900 plants/ac","best_time_to_plant":"Beginning of rainy season","available_at":"Department of Agriculture Regional Agriculture Centres Regular weeding Maintain adequate soil moisture Earthing- up after establishment.","potential_return":"","notes":""},"Tumeric":{"varieties":"Alleppey Supreme, Lakadong, Prabha, Prathibha, Suguna, Sudarsana, Local Turmeric Selections","planting_materials":"Healthy rhizomes, Mother rhizomes or finger rhizomes, Disease-free planting materials","plant_density":"20,000 plants/ac","best_time_to_plant":"With the onset of monsoon","available_at":"Department of Agriculture Regional Agricultural Research Centres","potential_return":"Yield: 15–30 t/ha (fresh rhizomes) Average Yield: 20–25 t/ha Mulching is essential Regular weeding should be done Earthing-up at 2–3 months after planting Maintain adequate soil moisture Provide proper drainage during heavy rains Apply organic manure regularly","notes":""}},"Wet Zone":{"Avocado":{"varieties":"Pollock, Fuerte, Hass, Purple Hybrid","planting_materials":"Grafted plants- Healthy nursery plants","plant_density":"80 plants/ac","best_time_to_plant":"With the onset of monsoon","available_at":"Horana Fruit Research Institute Mulching recommended Pruning dead branches Irrigation during dry periods","potential_return":"","notes":""},"Banana":{"varieties":"Dry & Intermediate – Ambul, Kolikuttu, Alu kesel, Sini kesel Wet Zone – Anamalu, Ambun","planting_materials":"Most suitable- ‘Kadupath’ Suckers Somewhat suitable – ‘Kanya’ Suckers Should be free from Bunchy Top, Panama disease & attack from Banana Weevil","plant_density":"30 plants/ac","best_time_to_plant":"With the onset of monsoon","available_at":"Horana Fruit Research Institute Weeding should be done. More suckers should be removed. Only One sucker is allowed.","potential_return":"","notes":""},"CO3":{"varieties":"","planting_materials":"Root slips Stem cuttings with 2–3 nodes Healthy disease-free planting materials","plant_density":"11,000 plants/ac","best_time_to_plant":"Beginning of rainy season","available_at":"Department of Animal Production & Health First cut after 60–75 days Harvest every 45–60 days Apply nitrogen after each cut Irrigate during drought periods Loosing of soil around the plants is needed","potential_return":"","notes":""},"Cinnomon":{"varieties":"Thitta Kurudu, Weli kurudu, Sewela kurudu,Pani kurudu","planting_materials":"Seedlings from high yeilding varieties","plant_density":"9900 plants/ac","best_time_to_plant":"April/May or September/October","available_at":"Department of Export Agriculture Walpita Seed Production Farm","potential_return":"Yield: 200-250kg/ac (Planting after 7 years) Market price: Rs.1500/Kg Agronomy Practices Weeding and pruning is needed to have good yield","notes":""},"Cocoa":{"varieties":"Most suitable - Forestero Intermediate – NA32 Dry zone - Millawana","planting_materials":"Seedlings from DEA","plant_density":"Single row - 220 plants/Ac Double row – 360 plants/Ac","best_time_to_plant":"Wet zone: April-July or October- December with the onset of Monsoon","available_at":"Department of Export Agriculture","potential_return":"Yield- 1g of processed cacao seeds/Mature tree/Year Market price – Rs. 411.00/kg of processed seeds Weeding around 100cm away from the plant, mulching and pruning should be done.","notes":""},"Coffee":{"varieties":"Low country – Robusta GCR, CC-1 C-11 for drier areas Catimor - only for Wet zone","planting_materials":"Seedlings from Department of Export Agriculture","plant_density":"540 plants/Ac","best_time_to_plant":"with the onset of monsoon in Yala","available_at":"Walpita Seed Production Farm","potential_return":"Yield: 700 kg Market price: Rs.750.00/kg Weeding should be done about 1m around the plant.","notes":""},"Durian":{"varieties":"Monthong, Chanee, Kan Yao","planting_materials":"Grafted plants Healthy nursery plants","plant_density":"40 plants/ac","best_time_to_plant":"With the onset of monsoon","available_at":"Horana Fruit Research Institute Mulching essential Irrigation during dry periods Protect young plants from strong winds Apply organic manure regularly Provide proper drainage during heavy rains Apply organic manure regularly","potential_return":"","notes":""},"Ginger":{"varieties":"Local Ginger, Chinese Ginger, Rangoon Ginger, Nadia (Improved Variety)","planting_materials":"Healthy rhizomes 20–25 g seed rhizomes Disease-free planting materials Should be free from rhizome rot and bacterial wilt","plant_density":"48,000 plants/ac","best_time_to_plant":"With the onset of monsoon Mulching should be done immediately after planting","available_at":"Department of Agriculture Regional Agricultural Research Centres","potential_return":"Yield: 8–15 t/ha Average Yield: 10–12 t/ha Mulching is essential","notes":""},"Guava":{"varieties":"Horana Red, Horana White, Pubudu, Kanthi Hybrid – Lanka Jayant, Horana Sweet","planting_materials":"Budded plants or seedlings obtained from stem cuttings","plant_density":"","best_time_to_plant":"With the onset of monsoon After planting shade should be provided","available_at":"Horana Fruit Research Center Walpita Seed Production Farm","potential_return":"Yield: 40 kg/tree Market Price: 80 Rs/kg (Whole sale) Mulching, Weeding and irrigation in Dry zone is needed.","notes":""},"Mango":{"varieties":"Dry & Intermediate – Karthacolomban, Malwana Dry Zone –TOM EJC, Villard Wet Zone – Dampara, Giraaba","planting_materials":"Budded or Grafted Plants","plant_density":"30 plants/ac","best_time_to_plant":"With the onset of monsoon","available_at":"Horana Friut Research Centre Walpita Seed Production Farm Weeding & pruning should be done. Mulching can be done with pruned branches or coconut husks Mulching is recommended Irrigation is necessary during dry periods Remove water shoots and diseased branches","potential_return":"","notes":""},"Papaya":{"varieties":"Most Suitable: Rathna Others Recommended Varieties: Red Lady, Local Varieties","planting_materials":"Seedlings from selected varieties","plant_density":"120 plants/ac","best_time_to_plant":"With the onset of monsoon","available_at":"Makandura Agriculture Research Center Horana Fruit Research Center","potential_return":"Yield: 30-40 fruits/plant Market Price: 150-170Rs/kg (Retail Price) Mulching is needed. In Dry zone irrigation must be supplied. Remove water shoots and diseased branches","notes":""},"PassionFruit":{"varieties":"Purple Passion Fruit, Yellow Passion Fruit, KPF-4 (Improved Selection), Hybrid Passion Fruit","planting_materials":"Healthy seedlings, Rooted cuttings, Grafted plants","plant_density":"650 plants/ac","best_time_to_plant":"With the onset of monsoon, Trellis system should be established before planting, Temporary shade may be provided during establishment","available_at":"Fruit Crop Research and Development Institute Department of Agriculture Nurseries Registered Fruit Plant Nurseries","potential_return":"Yield: 10–20 kg/vine/year, Average Yield: 15 kg/vine/year Provide a strong trellis support system Regular pruning should be done Mulching is recommended","notes":""},"Pepper":{"varieties":"Panniyur – 1, Kuchin, MB 12 & GK 49, Hybrids –Dingi Rala, Kohukumbure Rala, Bootawe Rala","planting_materials":"Stem Cuttings with 3-4 leaves","plant_density":"300–400 vines/ha Provide suitable support trees or standards Train vines properly during establishment Mulching should be done to conserve moisture Regular weeding is necessary","best_time_to_plant":"with the onset of monsoon in Yala","available_at":"Walpita Seed Production Farm Department of Export Agriculture","potential_return":"Average Yield: 3 kg dry pepper/vine/year","notes":""},"Pineapple":{"varieties":"Muritious Kew","planting_materials":"Axil & root suckers (should treated with fungicide before planting) Tissue Culture plants","plant_density":"Single row- 3500/Ac Double row- 5000/Ac","best_time_to_plant":"With the onset of monsoon","available_at":"Department of Agriculture - Horana Fruit Research Centre Department of Export Agriculture","potential_return":"Yield- A Kiwi Fruit 4-5 kg and Murisi around 2kg Market price – Large Rs 280-300","notes":""},"Rambutan":{"varieties":"Malwana Special Malayan Red Malayan Yellow Jawa variety","planting_materials":"Seedlings from selected varieties & budded plants","plant_density":"30 plants/ac","best_time_to_plant":"With the onset of monsoon","available_at":"Walpita seed production farm Horana Fruit Research Center Plant Nurseries of Department of Agriculture","potential_return":"Yield: 2000-3000 fruits/plant/Year Pruning is needed after every fruiting season.","notes":""},"Taro":{"varieties":"Local Kiri Ala Improved DOA selections","planting_materials":"Healthy corms Healthy cormels Disease-free planting materials","plant_density":"6,900 plants/ac","best_time_to_plant":"Beginning of rainy season","available_at":"Department of Agriculture Regional Agriculture Centres Regular weeding Maintain adequate soil moisture Earthing- up after establishment.","potential_return":"","notes":""},"Tea":{"varieties":"TRI 2025, TRI 2026, 2027, TRI 3014, 3019, 3025 TRI 4006, 4047, 4088, AS 6, DG 7, DG 39","planting_materials":"TRI Recommended plants","plant_density":"4000plants/Ac","best_time_to_plant":"April/May","available_at":"TRI nurseries","potential_return":"Yield – 800kg/Ac/Month Soil rehabilitation practices should be applied. Mana/ Gothamala should be maintained for18 months before tea planting.","notes":""},"Tumeric":{"varieties":"Alleppey Supreme, Lakadong, Prabha, Prathibha, Suguna, Sudarsana, Local Turmeric Selections","planting_materials":"Healthy rhizomes, Mother rhizomes or finger rhizomes, Disease-free planting materials","plant_density":"20,000 plants/ac","best_time_to_plant":"With the onset of monsoon","available_at":"Department of Agriculture Regional Agricultural Research Centres","potential_return":"Yield: 15–30 t/ha (fresh rhizomes) Average Yield: 20–25 t/ha Mulching is essential Regular weeding should be done Earthing-up at 2–3 months after planting Maintain adequate soil moisture Provide proper drainage during heavy rains Apply organic manure regularly","notes":""}}};
 </script>
 <script>
+// ====== i18n ======
+var T={
+  en:{
+    subtitle:"Coconut Zone Guide · Sri Lanka",
+    tabAgro:"Agro Ecological", tabClim:"Climatic Zones", tabGoogle:"Google Map",
+    hintAgro:"Tap a zone for the full growing guide", hintClim:"Tap a climatic zone", hintGoogle:"Tap the map to drop a pin & find your zone",
+    pinBtn:"📍 Drop pin on my location", locating:"Locating…", locFail:"Could not get location. Tap the map instead.",
+    legWet:"Wet Zone", legInt:"Intermediate", legDry:"Dry Zone",
+    zoneOverview:"Zone Overview", recVarieties:"Recommended Varieties", potYield:"Potential Yield",
+    fertSchedule:"Fertilizer Schedule", youngPalms:"Young Palms (per palm/yr)", maturePalms:"Mature Palms (per palm/yr)",
+    organicManure:"Organic Manure", intercropOptions:"Intercrop Options", aboutClimate:"About this Climate Zone",
+    terrain:"Terrain", rainfall:"Rainfall", soils:"Soils", landUse:"Land Use",
+    varieties:"Varieties", plantingMaterial:"Planting Material", plantDensity:"Plant Density", bestTime:"Best Time to Plant",
+    availableAt:"Available At", potReturn:"Potential Return", notes:"Notes",
+    notSpecified:"Not specified.", noExtra:"No extra details.",
+    intercropHint:"Crops suited for inter-planting in your climate zone. Tap to expand.",
+    printBtn:"🖨️ Print / Save PDF Report",
+    youAreIn:"You are in zone", viewGuide:"View full guide →", noZone:"No zone found here",
+    pinOutside:"Pin is outside Sri Lanka zones. Tap inside the island.",
+    printHeader:"Pol Sathkara — Coconut Zone Guide",
+    fertYoung:"Fertilizer — Young Palms (per palm/yr)", fertMature:"Fertilizer — Mature Palms (per palm/yr)",
+    annualRainfall:"Annual Rainfall", majorSoils:"Major Soils", agroEcoZone:"Agro-Eco Zone",
+    generatedOn:"Generated on", page:"Page",
+    descWet:"High rainfall (>2500mm), no pronounced dry season. Lush perennial cropping.",
+    descInt:"Moderate rainfall (1750–2500mm) with a short dry spell.",
+    descDry:"Lower rainfall (<1750mm) with a long dry season; irrigation often needed.",
+    climDossierHint:"Open the Agro-Ecological tab and tap a sub-zone for variety & fertilizer recommendations specific to your location."
+  },
+  si:{
+    subtitle:"පොල් කලාප මාර්ගෝපදේශය · ශ්‍රී ලංකා",
+    tabAgro:"කෘෂි පාරිසරික", tabClim:"දේශගුණික කලාප", tabGoogle:"ගූගල් සිතියම",
+    hintAgro:"සම්පූර්ණ වගා මාර්ගෝපදේශය සඳහා කලාපයක් තට්ටු කරන්න", hintClim:"දේශගුණික කලාපයක් තට්ටු කරන්න", hintGoogle:"සිතියම තට්ටු කර ඔබේ කලාපය සොයන්න",
+    pinBtn:"📍 මගේ ස්ථානය සලකුණු කරන්න", locating:"සොයමින්…", locFail:"ස්ථානය සොයාගත නොහැක. සිතියම තට්ටු කරන්න.",
+    legWet:"තෙත් කලාපය", legInt:"අතරමැදි කලාපය", legDry:"වියළි කලාපය",
+    zoneOverview:"කලාප දළ විශ්ලේෂණය", recVarieties:"නිර්දේශිත ප්‍රභේද", potYield:"අපේක්ෂිත අස්වැන්න",
+    fertSchedule:"පොහොර කාලසටහන", youngPalms:"තරුණ පොල් (පොල් ගසකට/වසරකට)", maturePalms:"මේරූ පොල් (පොල් ගසකට/වසරකට)",
+    organicManure:"කාබනික පොහොර", intercropOptions:"අන්තර් බෝග විකල්ප", aboutClimate:"මෙම දේශගුණික කලාපය ගැන",
+    terrain:"භූමි ස්වභාවය", rainfall:"වර්ෂාපතනය", soils:"පාංශු", landUse:"ඉඩම් භාවිතය",
+    varieties:"ප්‍රභේද", plantingMaterial:"රෝපණ ද්‍රව්‍ය", plantDensity:"ශාක ඝනත්වය", bestTime:"වගා කිරීමට සුදුසු කාලය",
+    availableAt:"ලබාගත හැකි ස්ථාන", potReturn:"අපේක්ෂිත ආදායම", notes:"සටහන්",
+    notSpecified:"සඳහන් කර නැත.", noExtra:"අමතර විස්තර නොමැත.",
+    intercropHint:"ඔබේ දේශගුණික කලාපයට ගැළපෙන අන්තර් බෝග. විස්තර බැලීමට තට්ටු කරන්න.",
+    printBtn:"🖨️ වාර්තාව මුද්‍රණය / PDF සුරකින්න",
+    youAreIn:"ඔබ සිටින කලාපය", viewGuide:"සම්පූර්ණ මාර්ගෝපදේශය බලන්න →", noZone:"මෙහි කලාපයක් හමු නොවීය",
+    pinOutside:"ස්ථානය ශ්‍රී ලංකා කලාපවලින් පිටතය. දිවයින තුළ තට්ටු කරන්න.",
+    printHeader:"Pol Sathkara — Coconut Zone Guide",
+    fertYoung:"පොහොර — තරුණ පොල්", fertMature:"පොහොර — මේරූ පොල්",
+    annualRainfall:"වාර්ෂික වර්ෂාපතනය", majorSoils:"ප්‍රධාන පාංශු", agroEcoZone:"කෘෂි-පාරිසරික කලාපය",
+    generatedOn:"ජනනය කළ දිනය", page:"පිටුව",
+    descWet:"ඉහළ වර්ෂාපතනය (>2500mm), පැහැදිලි වියළි කාලයක් නැත. බහුවාර්ෂික බෝග සඳහා සුදුසුයි.",
+    descInt:"මධ්‍යම වර්ෂාපතනය (1750–2500mm) කෙටි වියළි කාලයක් සහිතව.",
+    descDry:"අඩු වර්ෂාපතනය (<1750mm) දිගු වියළි කාලයක් සහිතව; බොහෝ විට වාරිමාර්ග අවශ්‍යයි.",
+    climDossierHint:"කෘෂි-පාරිසරික පටිත්ත විවෘත කර ඔබේ ස්ථානයට විශේෂිත ප්‍රභේද හා පොහොර නිර්දේශ සඳහා උප-කලාපයක් තට්ටු කරන්න."
+  },
+  ta:{
+    subtitle:"தென்னை மண்டல வழிகாட்டி · இலங்கை",
+    tabAgro:"வேளாண் சூழலியல்", tabClim:"காலநிலை மண்டலங்கள்", tabGoogle:"கூகிள் வரைபடம்",
+    hintAgro:"முழு வளர்ப்பு வழிகாட்டிக்கு ஒரு மண்டலத்தைத் தட்டவும்", hintClim:"காலநிலை மண்டலத்தைத் தட்டவும்", hintGoogle:"வரைபடத்தைத் தட்டி உங்கள் மண்டலத்தைக் கண்டறியுங்கள்",
+    pinBtn:"📍 எனது இருப்பிடத்தைக் குறிக்கவும்", locating:"கண்டறிகிறது…", locFail:"இருப்பிடம் கிடைக்கவில்லை. வரைபடத்தைத் தட்டவும்.",
+    legWet:"ஈர வலயம்", legInt:"இடைநிலை வலயம்", legDry:"வறண்ட வலயம்",
+    zoneOverview:"மண்டல மேலோட்டம்", recVarieties:"பரிந்துரைக்கப்பட்ட இரகங்கள்", potYield:"எதிர்பார்க்கப்படும் மகசூல்",
+    fertSchedule:"உர அட்டவணை", youngPalms:"இளம் தென்னை (மரத்திற்கு/வருடம்)", maturePalms:"முதிர்ந்த தென்னை (மரத்திற்கு/வருடம்)",
+    organicManure:"இயற்கை உரம்", intercropOptions:"ஊடுபயிர் விருப்பங்கள்", aboutClimate:"இந்த காலநிலை மண்டலம் பற்றி",
+    terrain:"நிலப்பரப்பு", rainfall:"மழைப்பொழிவு", soils:"மண் வகைகள்", landUse:"நில பயன்பாடு",
+    varieties:"இரகங்கள்", plantingMaterial:"நடவுப் பொருட்கள்", plantDensity:"நடவு அடர்த்தி", bestTime:"நடவு செய்ய சிறந்த நேரம்",
+    availableAt:"கிடைக்கும் இடம்", potReturn:"எதிர்பார்க்கப்படும் வருவாய்", notes:"குறிப்புகள்",
+    notSpecified:"குறிப்பிடப்படவில்லை.", noExtra:"கூடுதல் விவரங்கள் இல்லை.",
+    intercropHint:"உங்கள் காலநிலை மண்டலத்திற்கு ஏற்ற ஊடுபயிர்கள். விவரங்களுக்குத் தட்டவும்.",
+    printBtn:"🖨️ அறிக்கையை அச்சிடு / PDF சேமி",
+    youAreIn:"நீங்கள் இருக்கும் மண்டலம்", viewGuide:"முழு வழிகாட்டியைக் காண →", noZone:"இங்கு மண்டலம் கிடைக்கவில்லை",
+    pinOutside:"குறி இலங்கை மண்டலங்களுக்கு வெளியே உள்ளது. தீவுக்குள் தட்டவும்.",
+    printHeader:"Pol Sathkara — Coconut Zone Guide",
+    fertYoung:"உரம் — இளம் தென்னை", fertMature:"உரம் — முதிர்ந்த தென்னை",
+    annualRainfall:"ஆண்டு மழைப்பொழிவு", majorSoils:"முக்கிய மண் வகைகள்", agroEcoZone:"வேளாண்-சூழலியல் மண்டலம்",
+    generatedOn:"உருவாக்கிய நாள்", page:"பக்கம்",
+    descWet:"அதிக மழைப்பொழிவு (>2500mm), தெளிவான வறண்ட காலம் இல்லை. பல்லாண்டு பயிர்களுக்கு ஏற்றது.",
+    descInt:"மிதமான மழைப்பொழிவு (1750–2500mm) குறுகிய வறண்ட காலத்துடன்.",
+    descDry:"குறைந்த மழைப்பொழிவு (<1750mm) நீண்ட வறண்ட காலத்துடன்; பெரும்பாலும் நீர்ப்பாசனம் தேவை.",
+    climDossierHint:"வேளாண்-சூழலியல் தாவலைத் திறந்து, உங்கள் இருப்பிடத்திற்கான இரகம் & உர பரிந்துரைகளுக்கு துணை-மண்டலத்தைத் தட்டவும்."
+  }
+};
+var lang=(function(){try{return localStorage.getItem('polLang')||'en';}catch(e){return 'en';}})();
+if(!T[lang])lang='en';
+function t(key){return (T[lang]&&T[lang][key])||T.en[key]||key;}
+function applyStaticT(){
+  document.querySelectorAll('[data-t]').forEach(function(el){ el.textContent=t(el.getAttribute('data-t')); });
+}
+function switchLang(l){
+  if(!T[l])l='en';
+  lang=l;
+  try{localStorage.setItem('polLang',l);}catch(e){}
+  document.body.classList.remove('lang-en','lang-si','lang-ta');
+  document.body.classList.add('lang-'+l);
+  document.documentElement.lang=(l==='si'?'si':l==='ta'?'ta':'en');
+  document.querySelectorAll('#langsw button').forEach(function(b){ b.classList.toggle('active',b.getAttribute('data-lang')===l); });
+  applyStaticT();
+  render();
+}
+// re-render currently open dossier (if any) in the active language
+function render(){
+  var sheet=document.getElementById('sheet');
+  if(sheet&&sheet.classList.contains('open')){
+    if(currentFid!=null)openDossier(currentFid);
+    else if(currentClimName)openClimDossier(currentClimName);
+  }
+}
+
 // ====== App logic ======
 var EMOJI={Banana:'🍌',Cashew:'🥜',Cassava:'🌿',CO3:'🌾',Dragonfruit:'🐉',Guava:'🍈',Lime:'🍋',Mango:'🥭',Papaya:'☘️',Pomegranate:'🍎',Avocado:'🥑',Cinnomon:'🟤',Cinnamon:'🟤',Cocoa:'🍫',Coffee:'☕',Ginger:'🫚',PassionFruit:'🟣',Pepper:'🫑',Pineapple:'🍍',Taro:'🍠',Tumeric:'🟡',Turmeric:'🟡',Durian:'🥥',Rambutan:'🔴',Tea:'🍵'};
 var CLIMCOL={'WET ZONE':'#2D6A30','INTERMEDIATE':'#B8862E','INTERMEDIATE ZONE':'#B8862E','DRY ZONE':'#B5541F'};
@@ -6830,11 +6949,11 @@ function initGoogle(){
   m.on('click',function(e){ dropPin(e.latlng.lat,e.latlng.lng); });
   document.getElementById('pinBtn').onclick=function(){
     if(!navigator.geolocation){alert('Geolocation not available');return;}
-    document.getElementById('ghint').textContent='Locating…';
+    document.getElementById('ghint').textContent=t('locating');
     navigator.geolocation.getCurrentPosition(function(pos){
       m.setView([pos.coords.latitude,pos.coords.longitude],11);
       dropPin(pos.coords.latitude,pos.coords.longitude);
-    },function(){document.getElementById('ghint').textContent='Could not get location. Tap the map instead.';});
+    },function(){document.getElementById('ghint').textContent=t('locFail');});
   };
 }
 function dropPin(lat,lng){
@@ -6843,11 +6962,11 @@ function dropPin(lat,lng){
   var feat=findZoneAt(lng,lat);
   if(feat){
     var p=feat.properties;
-    document.getElementById('ghint').textContent='You are in zone '+p.ZONE+' — '+climKind(p.CLIMATIC_Z);
-    marker.bindPopup('<b>'+p.ZONE+'</b><br>'+p.AGRO_ECO_Z+'<br><a href="#" onclick="openDossier('+p.FINAL_ID+');return false;">View full guide →</a>').openPopup();
+    document.getElementById('ghint').textContent=t('youAreIn')+' '+p.ZONE+' — '+climKind(p.CLIMATIC_Z);
+    marker.bindPopup('<b>'+p.ZONE+'</b><br>'+p.AGRO_ECO_Z+'<br><a href="#" onclick="openDossier('+p.FINAL_ID+');return false;">'+t('viewGuide')+'</a>').openPopup();
   }else{
-    document.getElementById('ghint').textContent='Pin is outside Sri Lanka zones. Tap inside the island.';
-    marker.bindPopup('No zone found here').openPopup();
+    document.getElementById('ghint').textContent=t('pinOutside');
+    marker.bindPopup(t('noZone')).openPopup();
   }
 }
 // point in polygon ray casting
@@ -6889,7 +7008,7 @@ document.querySelectorAll('nav.tabs button').forEach(function(b){
 
 // ---- Dossier ----
 function tbl(rows){
-  if(!rows||!rows.length)return '<p class="muted">Not specified.</p>';
+  if(!rows||!rows.length)return '<p class="muted">'+t('notSpecified')+'</p>';
   var h='<table class="dt"><tbody>';
   rows.forEach(function(r){h+='<tr><td>'+esc(r.label)+'</td><td><b>'+esc(r.value)+'</b></td></tr>';});
   return h+'</tbody></table>';
@@ -6902,14 +7021,16 @@ function intercropFor(kind){ // kind like 'Wet Zone'
 function cropBlock(name,c){
   var em=EMOJI[name]||'🌱';
   var rows='';
-  var fields=[['varieties','Varieties'],['planting_materials','Planting Material'],['plant_density','Plant Density'],['best_time_to_plant','Best Time to Plant'],['available_at','Available At'],['potential_return','Potential Return'],['notes','Notes']];
-  fields.forEach(function(f){ var v=c[f[0]]; if(v&&String(v).trim())rows+='<div class="r"><b>'+f[1]+'</b>'+esc(v)+'</div>'; });
-  return '<details class="crop"><summary><span class="em">'+em+'</span>'+esc(name)+'<span class="arr">▾</span></summary><div class="body">'+(rows||'<div class="r muted">No extra details.</div>')+'</div></details>';
+  var fields=[['varieties','varieties'],['planting_materials','plantingMaterial'],['plant_density','plantDensity'],['best_time_to_plant','bestTime'],['available_at','availableAt'],['potential_return','potReturn'],['notes','notes']];
+  fields.forEach(function(f){ var v=c[f[0]]; if(v&&String(v).trim())rows+='<div class="r"><b>'+t(f[1])+'</b>'+esc(v)+'</div>'; });
+  return '<details class="crop"><summary><span class="em">'+em+'</span>'+esc(name)+'<span class="arr">▾</span></summary><div class="body">'+(rows||'<div class="r muted">'+t('noExtra')+'</div>')+'</div></details>';
 }
 
 var currentFid=null;
+var currentClimName=null;
 function openDossier(fid){
   currentFid=fid;
+  currentClimName=null;
   var feat=null;
   for(var i=0;i<AGRO.features.length;i++){if(AGRO.features[i].properties.FINAL_ID===fid){feat=AGRO.features[i];break;}}
   var p=feat?feat.properties:{};
@@ -6927,25 +7048,25 @@ function openDossier(fid){
   var land=(d&&d.land_use)||p.LAND_USE||'—';
 
   var html='';
-  html+='<div class="card"><h3>📋 Zone Overview</h3><div class="facts">';
-  html+=fact('Terrain',terrain)+fact('Rainfall',rain)+fact('Soils',soils)+fact('Land Use',land);
+  html+='<div class="card"><h3>📋 '+t('zoneOverview')+'</h3><div class="facts">';
+  html+=fact(t('terrain'),terrain)+fact(t('rainfall'),rain)+fact(t('soils'),soils)+fact(t('landUse'),land);
   html+='</div></div>';
 
   if(d&&d.varieties&&d.varieties.length){
-    html+='<div class="card"><h3>🌴 Recommended Varieties</h3><div class="chips">';
+    html+='<div class="card"><h3>🌴 '+t('recVarieties')+'</h3><div class="chips">';
     d.varieties.forEach(function(v){html+='<span class="chip">'+esc(v)+'</span>';});
     html+='</div>';
-    if(d.potential_yield&&d.potential_yield.length){ html+='<h3 style="margin-top:14px">📈 Potential Yield</h3>'+tbl(d.potential_yield); }
+    if(d.potential_yield&&d.potential_yield.length){ html+='<h3 style="margin-top:14px">📈 '+t('potYield')+'</h3>'+tbl(d.potential_yield); }
     html+='</div>';
   }
   if(d&&((d.fertilizer_young&&d.fertilizer_young.length)||(d.fertilizer_mature&&d.fertilizer_mature.length))){
-    html+='<div class="card"><h3>🧪 Fertilizer Schedule</h3>';
-    if(d.fertilizer_young&&d.fertilizer_young.length){html+='<h3 style="font-size:12.5px;color:#7a6a3a">Young Palms (per palm/yr)</h3>'+tbl(d.fertilizer_young);}
-    if(d.fertilizer_mature&&d.fertilizer_mature.length){html+='<h3 style="font-size:12.5px;color:#7a6a3a;margin-top:12px">Mature Palms (per palm/yr)</h3>'+tbl(d.fertilizer_mature);}
+    html+='<div class="card"><h3>🧪 '+t('fertSchedule')+'</h3>';
+    if(d.fertilizer_young&&d.fertilizer_young.length){html+='<h3 style="font-size:12.5px;color:#7a6a3a">'+t('youngPalms')+'</h3>'+tbl(d.fertilizer_young);}
+    if(d.fertilizer_mature&&d.fertilizer_mature.length){html+='<h3 style="font-size:12.5px;color:#7a6a3a;margin-top:12px">'+t('maturePalms')+'</h3>'+tbl(d.fertilizer_mature);}
     html+='</div>';
   }
   if(d&&d.organic_manure&&d.organic_manure.length){
-    html+='<div class="card"><h3>🍂 Organic Manure</h3>'+tbl(d.organic_manure)+'</div>';
+    html+='<div class="card"><h3>🍂 '+t('organicManure')+'</h3>'+tbl(d.organic_manure)+'</div>';
   }
   if(d&&d.extra_sections&&d.extra_sections.length){
     d.extra_sections.forEach(function(s){
@@ -6958,9 +7079,9 @@ function openDossier(fid){
   var ic=intercropFor(kind);
   var icHtml='';
   for(var nm in ic){ icHtml+=cropBlock(nm,ic[nm]); }
-  if(icHtml){ html+='<div class="card"><h3>🌾 Intercrop Options — '+esc(kind)+'</h3><p class="muted" style="margin-top:-4px">Crops suited for inter-planting in your climate zone. Tap to expand.</p>'+icHtml+'</div>'; }
+  if(icHtml){ html+='<div class="card"><h3>🌾 '+t('intercropOptions')+' — '+esc(kind)+'</h3><p class="muted" style="margin-top:-4px">'+t('intercropHint')+'</p>'+icHtml+'</div>'; }
 
-  html+='<button class="printbtn" onclick="printReport()">🖨️ Print / Save PDF Report</button>';
+  html+='<button class="printbtn" onclick="printReport()">'+t('printBtn')+'</button>';
   document.getElementById('dCon').innerHTML=html;
   document.getElementById('dCon').scrollTop=0;
   document.getElementById('sheet').classList.add('open');
@@ -6972,15 +7093,16 @@ function openClimDossier(name){
   var kind=climKind(name);
   var col=climColor(name);
   currentFid=null;
+  currentClimName=name;
   document.getElementById('dTitle').textContent=name.charAt(0).toUpperCase()+name.slice(1);
   document.getElementById('dSub').textContent='Agro-Climatic Zone of Sri Lanka';
   var bd=document.getElementById('dBadge'); bd.textContent=kind.toUpperCase(); bd.style.background=col;
   document.querySelector('.shead').style.background=col;
-  var desc={'Wet Zone':'High rainfall (>2500mm), no pronounced dry season. Lush perennial cropping.','Intermediate Zone':'Moderate rainfall (1750–2500mm) with a short dry spell.','Dry Zone':'Lower rainfall (<1750mm) with a long dry season; irrigation often needed.'}[kind]||'';
-  var html='<div class="card"><h3>🌦️ About this Climate Zone</h3><p>'+esc(desc)+'</p><p class="muted">Open the Agro-Ecological tab and tap a sub-zone for variety & fertilizer recommendations specific to your location.</p></div>';
+  var desc={'Wet Zone':t('descWet'),'Intermediate Zone':t('descInt'),'Dry Zone':t('descDry')}[kind]||'';
+  var html='<div class="card"><h3>🌦️ '+t('aboutClimate')+'</h3><p>'+esc(desc)+'</p><p class="muted">'+t('climDossierHint')+'</p></div>';
   var ic=intercropFor(kind);var icHtml='';for(var nm in ic){icHtml+=cropBlock(nm,ic[nm]);}
-  if(icHtml)html+='<div class="card"><h3>🌾 Intercrop Options — '+esc(kind)+'</h3>'+icHtml+'</div>';
-  html+='<button class="printbtn" onclick="printReport()">🖨️ Print / Save PDF Report</button>';
+  if(icHtml)html+='<div class="card"><h3>🌾 '+t('intercropOptions')+' — '+esc(kind)+'</h3>'+icHtml+'</div>';
+  html+='<button class="printbtn" onclick="printReport()">'+t('printBtn')+'</button>';
   document.getElementById('dCon').innerHTML=html;
   document.getElementById('dCon').scrollTop=0;
   document.getElementById('sheet').classList.add('open');
@@ -7001,25 +7123,25 @@ function printReport(){
   var terrain=(d&&d.terrain)||p.TERRAIN||'—', rain=(d&&d.annual_rainfall)||((p.AnualRFmm||'')+' mm'), soils=(d&&d.major_soils)||p.MAJOR_SOIL||'—', land=(d&&d.land_use)||p.LAND_USE||'—';
 
   // Page 1: zone info
-  var pg1='<div class="psheet"><div class="phead"><h1>Pol Sathkara — Coconut Zone Guide</h1><div class="pz">'+esc(title)+'</div><span class="pbadge">'+esc(kind.toUpperCase())+(p.ZONE?(' · '+esc(p.ZONE)):'')+'</span></div><div class="pbody">';
-  pg1+='<h2>Zone Overview</h2><table class="pfacts"><tbody>'+
-    '<tr><td>Terrain</td><td>'+esc(terrain)+'</td></tr>'+
-    '<tr><td>Annual Rainfall</td><td>'+esc(rain)+'</td></tr>'+
-    '<tr><td>Major Soils</td><td>'+esc(soils)+'</td></tr>'+
-    '<tr><td>Land Use</td><td>'+esc(land)+'</td></tr>'+
-    (p.AGRO_ECO_Z?'<tr><td>Agro-Eco Zone</td><td>'+esc(p.AGRO_ECO_Z)+'</td></tr>':'')+
+  var pg1='<div class="psheet"><div class="phead"><h1>'+esc(t('printHeader'))+'</h1><div class="pz">'+esc(title)+'</div><span class="pbadge">'+esc(kind.toUpperCase())+(p.ZONE?(' · '+esc(p.ZONE)):'')+'</span></div><div class="pbody">';
+  pg1+='<h2>'+t('zoneOverview')+'</h2><table class="pfacts"><tbody>'+
+    '<tr><td>'+t('terrain')+'</td><td>'+esc(terrain)+'</td></tr>'+
+    '<tr><td>'+t('annualRainfall')+'</td><td>'+esc(rain)+'</td></tr>'+
+    '<tr><td>'+t('majorSoils')+'</td><td>'+esc(soils)+'</td></tr>'+
+    '<tr><td>'+t('landUse')+'</td><td>'+esc(land)+'</td></tr>'+
+    (p.AGRO_ECO_Z?'<tr><td>'+t('agroEcoZone')+'</td><td>'+esc(p.AGRO_ECO_Z)+'</td></tr>':'')+
     '</tbody></table>';
-  if(d&&d.varieties&&d.varieties.length){ pg1+='<h2>Recommended Varieties</h2><p>'+d.varieties.map(esc).join(', ')+'</p>'; }
-  if(d&&d.potential_yield&&d.potential_yield.length){ pg1+='<h2>Potential Yield</h2>'+ptbl(d.potential_yield); }
+  if(d&&d.varieties&&d.varieties.length){ pg1+='<h2>'+t('recVarieties')+'</h2><p>'+d.varieties.map(esc).join(', ')+'</p>'; }
+  if(d&&d.potential_yield&&d.potential_yield.length){ pg1+='<h2>'+t('potYield')+'</h2>'+ptbl(d.potential_yield); }
   pg1+=footer(today);
 
   // Page 2: fertilizer + organic
   var pg2='';
   if(d&&((d.fertilizer_young&&d.fertilizer_young.length)||(d.fertilizer_mature&&d.fertilizer_mature.length)||(d.organic_manure&&d.organic_manure.length))){
-    pg2='<div class="psheet"><div class="phead"><h1>Pol Sathkara — Coconut Zone Guide</h1><div class="pz">'+esc(title)+' · Fertilizer & Manure</div></div><div class="pbody">';
-    if(d.fertilizer_young&&d.fertilizer_young.length)pg2+='<h2>Fertilizer — Young Palms (per palm/yr)</h2>'+ptbl(d.fertilizer_young);
-    if(d.fertilizer_mature&&d.fertilizer_mature.length)pg2+='<h2>Fertilizer — Mature Palms (per palm/yr)</h2>'+ptbl(d.fertilizer_mature);
-    if(d.organic_manure&&d.organic_manure.length)pg2+='<h2>Organic Manure</h2>'+ptbl(d.organic_manure);
+    pg2='<div class="psheet"><div class="phead"><h1>'+esc(t('printHeader'))+'</h1><div class="pz">'+esc(title)+' · '+t('fertSchedule')+'</div></div><div class="pbody">';
+    if(d.fertilizer_young&&d.fertilizer_young.length)pg2+='<h2>'+t('fertYoung')+'</h2>'+ptbl(d.fertilizer_young);
+    if(d.fertilizer_mature&&d.fertilizer_mature.length)pg2+='<h2>'+t('fertMature')+'</h2>'+ptbl(d.fertilizer_mature);
+    if(d.organic_manure&&d.organic_manure.length)pg2+='<h2>'+t('organicManure')+'</h2>'+ptbl(d.organic_manure);
     pg2+=footer(today);
   }
 
@@ -7028,21 +7150,27 @@ function printReport(){
   for(var nm in ic){
     var c=ic[nm];var em=EMOJI[nm]||'';
     icHtml+='<div class="pcrop"><div class="ct">'+em+' '+esc(nm)+'</div><table><tbody>';
-    [['varieties','Varieties'],['planting_materials','Planting Material'],['plant_density','Plant Density'],['best_time_to_plant','Best Time'],['available_at','Available At'],['potential_return','Potential Return'],['notes','Notes']].forEach(function(f){
-      if(c[f[0]]&&String(c[f[0]]).trim())icHtml+='<tr><td style="width:32%;font-weight:600">'+f[1]+'</td><td>'+esc(c[f[0]])+'</td></tr>';
+    [['varieties','varieties'],['planting_materials','plantingMaterial'],['plant_density','plantDensity'],['best_time_to_plant','bestTime'],['available_at','availableAt'],['potential_return','potReturn'],['notes','notes']].forEach(function(f){
+      if(c[f[0]]&&String(c[f[0]]).trim())icHtml+='<tr><td style="width:32%;font-weight:600">'+t(f[1])+'</td><td>'+esc(c[f[0]])+'</td></tr>';
     });
     icHtml+='</tbody></table></div>';
   }
   var pg3='';
-  if(icHtml){ pg3='<div class="psheet"><div class="phead"><h1>Pol Sathkara — Coconut Zone Guide</h1><div class="pz">Intercrop Options · '+esc(kind)+'</div></div><div class="pbody">'+icHtml+footer(today); }
+  if(icHtml){ pg3='<div class="psheet"><div class="phead"><h1>'+esc(t('printHeader'))+'</h1><div class="pz">'+t('intercropOptions')+' · '+esc(kind)+'</div></div><div class="pbody">'+icHtml+footer(today); }
 
   document.getElementById('printArea').innerHTML=pg1+pg2+pg3;
   setTimeout(function(){window.print();},120);
 }
-function footer(today){ return '<div class="pfooter"><span>Generated '+today+' · Pol Sathkara</span><span class="pn">Page </span></div></div></div>'; }
+function footer(today){ return '<div class="pfooter"><span>'+t('generatedOn')+' '+today+' · Pol Sathkara</span><span class="pn">'+t('page')+' </span></div></div></div>'; }
+
+// ---- Language switcher ----
+document.querySelectorAll('#langsw button').forEach(function(b){
+  b.onclick=function(){ switchLang(b.getAttribute('data-lang')); };
+});
 
 // init
 initAgro(); initClim(); initGoogle();
+switchLang(lang);
 window.openDossier=openDossier;
 
 </script>
