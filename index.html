@@ -217,8 +217,8 @@ nav.tabs button{flex:0 0 auto;min-width:60px;min-height:44px;padding:9px 10px 7p
 .rain-legend .dot{width:10px;height:10px;border-radius:2px;}
 /* === Price Ticker === */
 .price-ticker{background:var(--green);color:#fff;padding:6px 0;overflow:hidden;white-space:nowrap;font-size:12px;font-weight:600;}
-.price-ticker .scroll{display:inline-block;animation:tickScroll 60s linear infinite;will-change:transform;}
-@keyframes tickScroll{0%{transform:translateX(100%);}100%{transform:translateX(-100%);}}
+.price-ticker .scroll{display:inline-block;padding-left:100%;animation:tickScroll 120s linear infinite;will-change:transform;}
+@keyframes tickScroll{0%{transform:translateX(0);}100%{transform:translateX(-100%);}}
 .price-ticker .item{display:inline;margin:0 24px;}
 .price-ticker .item .pname{opacity:.8;}
 .price-ticker .item .pprice{margin-left:4px;}
