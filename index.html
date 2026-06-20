@@ -7371,7 +7371,7 @@ function initClim(){
 }
 var marker=null;
 function initGoogle(){
-  var m=maps.google=L.map('map-google',{zoomControl:true,attributionControl:true}).fitBounds(SL_BOUNDS);
+  var m=maps.google=L.map('map-google',{zoomControl:true,attributionControl:true}).setView([7.8,80.2],7);
   L.tileLayer(SAT,{attribution:ATTR,maxZoom:18}).addTo(m);
   L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_only_labels/{z}/{x}/{y}{r}.png',{maxZoom:18,pane:'overlayPane',subdomains:'abcd'}).addTo(m);
   maps.google=m;
