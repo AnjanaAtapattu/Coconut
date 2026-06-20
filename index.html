@@ -6999,7 +6999,6 @@ function initGoogle(){
   var m=maps.google=L.map('map-google',{zoomControl:true,attributionControl:true}).fitBounds(SL_BOUNDS);
   L.tileLayer(SAT,{attribution:ATTR,maxZoom:18}).addTo(m);
   L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}',{maxZoom:18,pane:'overlayPane'}).addTo(m);
-  L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Transportation/MapServer/tile/{z}/{y}/{x}',{maxZoom:18,pane:'overlayPane'}).addTo(m);
   maps.google=m;
   m.on('click',function(e){ dropPin(e.latlng.lat,e.latlng.lng); });
   document.getElementById('pinBtn').onclick=function(){
