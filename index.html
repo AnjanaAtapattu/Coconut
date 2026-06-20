@@ -8331,7 +8331,8 @@ function ttsStop(){
 (function initFeedback(){
   var overlay=document.getElementById('feedbackOverlay');
   var rating=0;
-  document.getElementById('feedbackToggle').onclick=function(){overlay.classList.add('open');};
+  var fbToggle=document.getElementById('feedbackToggle');
+  if(fbToggle) fbToggle.onclick=function(){overlay.classList.add('open');};
   overlay.addEventListener('click',function(e){if(e.target===overlay)overlay.classList.remove('open');});
   document.addEventListener('keydown',function(e){if(e.key==='Escape'&&overlay.classList.contains('open'))overlay.classList.remove('open');});
   document.querySelectorAll('.fb-face').forEach(function(btn){
