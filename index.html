@@ -7092,7 +7092,7 @@ var T={
     weatherTitle:"Seasonal Weather Guide",wetZone:"Wet Zone",intZone:"Intermediate Zone",dryZone:"Dry Zone",
     monthNames:"Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec",
     rainfallMm:"Rainfall (mm)",currentMonth:"Current month",
-    priceNote:"Prices from CDA weekly auction, visit cda.gov.lk for latest",
+    priceNote:"Source: CRI Cost of Production Data Survey, Jun 2026. Kurunegala / Puttalam / Gampaha markets.",
     pestTitle:"Coconut Pests & Diseases",
     pestRPW:"Red Palm Weevil",pestRPWsym:"Wilting crown, holes in trunk, sawdust-like frass at trunk base",pestRPWtx:"Pheromone traps, inject trunk with Carbosulfan/Chlorpyrifos, remove infected palms, field sanitation",
     pestMite:"Coconut Mite",pestMitesym:"Triangular brown patches under perianth, scarred nuts, reduced copra",pestMitetx:"Release predatory mites (Neoseiulus), spray Wettable Sulfur, maintain field hygiene",
@@ -7156,7 +7156,7 @@ var T={
     weatherTitle:"සෘතුමය කාලගුණ මාර්ගෝපදේශය",wetZone:"තෙත් කලාපය",intZone:"අතරමැදි කලාපය",dryZone:"වියළි කලාපය",
     monthNames:"ජන,පෙබ,මාර්,අප්‍රේ,මැයි,ජූනි,ජූලි,අගෝ,සැප්,ඔක්,නොවැ,දෙසැ",
     rainfallMm:"වර්ෂාපතනය (mm)",currentMonth:"වත්මන් මාසය",
-    priceNote:"CDA සතිපතා වෙන්දේසියෙන් මිල ගණන්, cda.gov.lk බලන්න",
+    priceNote:"මූලාශ්‍රය: CRI නිෂ්පාදන පිරිවැය දත්ත සමීක්ෂණය, ජූනි 2026. කුරුණෑගල / පුත්තලම / ගම්පහ වෙළඳපොළ.",
     pestTitle:"පොල් පළිබෝධ සහ රෝග",
     pestRPW:"රතු පණුවා",pestRPWsym:"මුදුන වියළීම, කඳ සිදුරු",pestRPWtx:"ෆෙරමෝන උගුල්, කාබෝසල්ෆාන් එන්නත්",
     pestMite:"පොල් මයිට්",pestMitesym:"දුඹුරු පැල්ලම්, සීරුණු ගෙඩි",pestMitetx:"සතුරු මයිටා, ගන්ධක ඉසීම",
@@ -7217,7 +7217,7 @@ var T={
     weatherTitle:"பருவகால வானிலை வழிகாட்டி",wetZone:"ஈர வலயம்",intZone:"இடைநிலை வலயம்",dryZone:"வறண்ட வலயம்",
     monthNames:"ஜன,பிப்,மார்,ஏப்,மே,ஜூன்,ஜூலை,ஆக,செப்,அக்,நவ,டிச",
     rainfallMm:"மழைப்பொழிவு (mm)",currentMonth:"தற்போதைய மாதம்",
-    priceNote:"CDA வார ஏலத்திலிருந்து விலைகள், cda.gov.lk பார்க்கவும்",
+    priceNote:"ஆதாரம்: CRI உற்பத்தி செலவு தரவு ஆய்வு, ஜூன் 2026. குருநாகல் / புத்தளம் / கம்பஹா சந்தைகள்.",
     pestTitle:"தென்னை பூச்சிகள் & நோய்கள்",
     pestRPW:"சிவப்பு கூன்வண்டு",pestRPWsym:"மகுடம் வாடுதல், தண்டில் துளைகள்",pestRPWtx:"பெரோமோன் பொறிகள், கார்போசல்பான் ஊசி",
     pestMite:"தென்னை பேன்",pestMitesym:"பழுப்பு புள்ளிகள், சேதமான காய்கள்",pestMitetx:"எதிரி பேன், கந்தகம் தெளிப்பு",
@@ -7949,17 +7949,20 @@ function renderWeather(){
 // ====== FEATURE: Price Ticker ======
 (function initPriceTicker(){
   var prices=[
-    {name:'Coconut (1000 nuts)',price:'Rs. 42,000-48,000'},
-    {name:'Copra (MT)',price:'Rs. 230,000-250,000'},
-    {name:'Coconut Oil (MT)',price:'Rs. 480,000-520,000'},
-    {name:'Desiccated Coconut (MT)',price:'Rs. 680,000-750,000'},
-    {name:'Coir Fibre (MT)',price:'Rs. 85,000-95,000'}
+    {name:'Fresh Nut',price:'Rs. 75–85/nut'},
+    {name:'Fresh Nut Husked',price:'Rs. 150/kg'},
+    {name:'DC Fine',price:'Rs. 700/kg'},
+    {name:'DC Medium',price:'Rs. 800–810/kg'},
+    {name:'Copra Milling Ordinary',price:'Rs. 470–500/kg'},
+    {name:'Copra Superior 1',price:'Rs. 550/kg'},
+    {name:'Coconut Oil',price:'Rs. 900–930/kg'},
+    {name:'RBD Coconut Oil',price:'Rs. 900–970/kg'},
+    {name:'Coconut Poonac',price:'Rs. 90–100/kg'}
   ];
-  var html='';
+  var html='<span class="item" style="opacity:.7">📊 CRI Local Market Prices · Jun 1–16, 2026</span>';
   prices.forEach(function(p){
-    html+='<span class="item"><span class="pname">'+p.name+'</span><span class="pprice">'+p.price+'</span></span>';
+    html+='<span class="item"><span class="pname">'+p.name+'</span> <span class="pprice">'+p.price+'</span></span>';
   });
-  // duplicate for seamless scroll
   document.getElementById('priceScroll').innerHTML=html+html;
 })();
 // ====== FEATURE: Pest Gallery ======
