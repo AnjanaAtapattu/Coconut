@@ -8394,6 +8394,9 @@ renderPests=function(){
 
 // init
 initAgro(); initClim(); initGoogle();
+setTimeout(function(){
+  for(var k in maps) if(maps[k]) maps[k].invalidateSize();
+},500);
 switchLang(lang);
 window.openDossier=openDossier;
 window.shareZone=shareZone;
