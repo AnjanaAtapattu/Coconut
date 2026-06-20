@@ -368,7 +368,6 @@ body.dark .fb-textarea{background:#1a1a2e;color:#e0e0e0;border-color:#3a3a50;}
       <button class="hdr-btn" id="darkToggle" title="Dark mode" aria-label="Toggle dark mode">🌙</button>
       <button class="hdr-btn" id="fontToggle" title="Font size" aria-label="Change font size">A</button>
       <button class="hdr-btn" id="searchToggle" title="Search" aria-label="Search">🔍</button>
-      <button class="hdr-btn" id="feedbackToggle" title="Feedback" aria-label="Send feedback">💬</button>
     </div>
     <div class="langsw" id="langsw">
       <button data-lang="en">EN</button>
@@ -7515,6 +7514,7 @@ function openDossier(fid){
   if(icHtml){ html+='<div class="card"><h3>🌾 '+t('intercropOptions')+' — '+esc(kind)+'</h3><p class="muted" style="margin-top:-4px">'+t('intercropHint')+'</p>'+icHtml+'</div>'; }
 
   html+='<div style="display:flex;gap:8px;flex-wrap:wrap"><button class="sharebtn" onclick="shareZone()">📤 '+t('shareBtn')+'</button><button class="printbtn" style="flex:1" onclick="printReport()">'+t('printBtn')+'</button></div>';
+  html+='<button class="sharebtn" style="width:100%;justify-content:center;margin-top:8px;background:#2196F3;" onclick="document.getElementById(\'feedbackOverlay\').classList.add(\'open\')">💬 '+t('feedbackTitle')+'</button>';
   document.getElementById('dCon').innerHTML=html;
   document.getElementById('dCon').scrollTop=0;
   document.getElementById('sheet').classList.add('open');
@@ -7536,6 +7536,7 @@ function openClimDossier(name){
   var ic=intercropFor(kind);var icHtml='';for(var nm in ic){icHtml+=cropBlock(nm,ic[nm]);}
   if(icHtml)html+='<div class="card"><h3>🌾 '+t('intercropOptions')+' — '+esc(kind)+'</h3>'+icHtml+'</div>';
   html+='<div style="display:flex;gap:8px;flex-wrap:wrap"><button class="sharebtn" onclick="shareZone()">📤 '+t('shareBtn')+'</button><button class="printbtn" style="flex:1" onclick="printReport()">'+t('printBtn')+'</button></div>';
+  html+='<button class="sharebtn" style="width:100%;justify-content:center;margin-top:8px;background:#2196F3;" onclick="document.getElementById(\'feedbackOverlay\').classList.add(\'open\')">💬 '+t('feedbackTitle')+'</button>';
   document.getElementById('dCon').innerHTML=html;
   document.getElementById('dCon').scrollTop=0;
   document.getElementById('sheet').classList.add('open');
