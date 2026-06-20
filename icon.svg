@@ -1,0 +1,20 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <rect width="512" height="512" rx="96" fill="#2D4A22"/>
+  <g transform="translate(256,300)">
+    <!-- trunk -->
+    <path d="M -14 180 C -10 100 -6 40 4 -10 L 24 -6 C 16 50 12 110 16 180 Z" fill="#C97B2E"/>
+    <!-- fronds -->
+    <g fill="#7FAE5C">
+      <path d="M 10 -10 C -60 -40 -130 -30 -190 20 C -120 0 -55 -2 8 18 Z"/>
+      <path d="M 10 -10 C -40 -90 -100 -120 -175 -120 C -110 -90 -55 -55 6 4 Z"/>
+      <path d="M 10 -10 C -10 -100 -50 -160 -110 -195 C -65 -145 -30 -90 4 -2 Z"/>
+      <path d="M 14 -10 C 50 -100 100 -150 165 -175 C 110 -130 65 -80 18 -4 Z"/>
+      <path d="M 14 -10 C 70 -75 135 -100 200 -90 C 140 -70 85 -45 20 2 Z"/>
+      <path d="M 14 -10 C 75 -25 140 -15 195 22 C 130 -2 65 -4 12 16 Z"/>
+    </g>
+    <!-- coconuts -->
+    <circle cx="-6" cy="-6" r="16" fill="#F5F0E3"/>
+    <circle cx="18" cy="4" r="14" fill="#F5F0E3"/>
+    <circle cx="4" cy="16" r="13" fill="#F5F0E3"/>
+  </g>
+</svg>
