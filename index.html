@@ -104,7 +104,7 @@ table.dt tr:last-child td{border-bottom:none;}
 .leaflet-popup-content{font-family:'Manrope';font-size:13px;}
 .leaflet-popup-content b{font-family:'Space Grotesk';color:var(--green);}
 /* ---- Chatbot ---- */
-#chatFab{position:fixed;right:16px;bottom:70px;z-index:900;width:56px;height:56px;border-radius:50%;background:var(--green);color:#fff;border:none;font-size:26px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 14px rgba(0,0,0,.3);cursor:pointer;animation:chatPulse 2s infinite;}
+#chatFab{position:fixed;right:16px;bottom:70px;z-index:900;width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#2196F3,#00BCD4);color:#fff;border:none;font-size:26px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 14px rgba(0,0,0,.3);cursor:pointer;animation:chatPulse 2s infinite;}
 @keyframes chatPulse{0%{box-shadow:0 4px 14px rgba(0,0,0,.3),0 0 0 0 rgba(45,74,34,.45);}70%{box-shadow:0 4px 14px rgba(0,0,0,.3),0 0 0 14px rgba(45,74,34,0);}100%{box-shadow:0 4px 14px rgba(0,0,0,.3),0 0 0 0 rgba(45,74,34,0);}}
 #chatPanel{position:fixed;right:0;bottom:0;left:0;z-index:950;max-width:400px;height:600px;max-height:85vh;margin:0 auto;background:var(--sand);border-radius:16px 16px 0 0;box-shadow:0 -4px 24px rgba(0,0,0,.3);transform:translateY(110%);transition:transform .35s cubic-bezier(.3,.8,.3,1);display:flex;flex-direction:column;overflow:hidden;}
 #chatPanel.open{transform:translateY(0);}
@@ -179,7 +179,7 @@ table.dt tr:last-child td{border-bottom:none;}
   <div class="scon" id="dCon"></div>
 </div>
 
-<button id="chatFab" aria-label="chat">🌴</button>
+<button id="chatFab" aria-label="chat"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="36" height="36"><circle cx="38" cy="12" r="4" fill="#fff"/><line x1="38" y1="16" x2="38" y2="28" stroke="#fff" stroke-width="3" stroke-linecap="round"/><circle cx="62" cy="12" r="4" fill="#fff"/><line x1="62" y1="16" x2="62" y2="28" stroke="#fff" stroke-width="3" stroke-linecap="round"/><rect x="12" y="28" rx="22" ry="22" width="76" height="48" fill="none" stroke="#fff" stroke-width="5"/><circle cx="37" cy="52" r="7" fill="#fff"/><circle cx="63" cy="52" r="7" fill="#fff"/><polygon points="22,76 32,76 18,92" fill="#fff"/></svg></button>
 <div id="chatPanel">
   <div class="chead">
     <div><h3 id="chatTitle">Coconut Advisor</h3><div class="csub" id="chatSubtitle"></div></div>
