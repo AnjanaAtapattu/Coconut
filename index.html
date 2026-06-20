@@ -12,10 +12,624 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <title>Pol Sathkara — Coconut Zone Guide</title>
-    <script type="module" crossorigin src="/assets/index-P2l7a35Y.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-B5E3AR1Q.css">
-  <link rel="manifest" href="/manifest.webmanifest"><script id="vite-plugin-pwa:register-sw" src="/registerSW.js"></script></head>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+      :root {
+        --green-900: #1a2e14;
+        --green-800: #2D4A22;
+        --green-700: #3d6130;
+        --green-600: #4a7a3a;
+        --green-500: #5a9a48;
+        --green-100: #e8f0e4;
+        --green-50: #f0f5ed;
+        --sand-100: #F5F0E3;
+        --sand-200: #e8e0cc;
+        --sand-300: #d4c9aa;
+        --brown-700: #6b4c2a;
+        --brown-500: #8b6914;
+        --white: #ffffff;
+        --text: #1a2e14;
+        --text-muted: #5a6a52;
+        --radius: 12px;
+        --radius-lg: 20px;
+        --shadow: 0 2px 12px rgba(0,0,0,0.08);
+        --shadow-lg: 0 8px 32px rgba(0,0,0,0.12);
+      }
+      body {
+        font-family: 'Manrope', system-ui, sans-serif;
+        background: var(--sand-100);
+        color: var(--text);
+        min-height: 100dvh;
+        overflow-x: hidden;
+      }
+      h1, h2, h3, h4 { font-family: 'Space Grotesk', system-ui, sans-serif; }
+      .header {
+        background: var(--green-800);
+        color: var(--white);
+        padding: 16px 20px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      }
+      .header-icon { font-size: 28px; }
+      .header h1 { font-size: 1.25rem; font-weight: 700; }
+      .header p { font-size: 0.75rem; opacity: 0.8; margin-top: 2px; }
+      .steps {
+        display: flex;
+        justify-content: center;
+        gap: 8px;
+        padding: 16px 20px;
+        background: var(--white);
+        border-bottom: 1px solid var(--sand-200);
+      }
+      .step-dot {
+        width: 10px; height: 10px;
+        border-radius: 50%;
+        background: var(--sand-200);
+        transition: all 0.3s;
+      }
+      .step-dot.active { background: var(--green-600); transform: scale(1.3); }
+      .step-dot.done { background: var(--green-500); }
+      .container {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      .card {
+        background: var(--white);
+        border-radius: var(--radius-lg);
+        padding: 24px;
+        margin-bottom: 16px;
+        box-shadow: var(--shadow);
+      }
+      .card h2 {
+        font-size: 1.2rem;
+        margin-bottom: 4px;
+        color: var(--green-800);
+      }
+      .card .subtitle {
+        font-size: 0.85rem;
+        color: var(--text-muted);
+        margin-bottom: 16px;
+      }
+      #map {
+        width: 100%;
+        height: 350px;
+        border-radius: var(--radius);
+        border: 2px solid var(--sand-200);
+        margin-bottom: 12px;
+      }
+      .map-hint {
+        font-size: 0.8rem;
+        color: var(--text-muted);
+        text-align: center;
+      }
+      .field { margin-bottom: 16px; }
+      .field label {
+        display: block;
+        font-size: 0.85rem;
+        font-weight: 600;
+        margin-bottom: 6px;
+        color: var(--green-800);
+      }
+      select, input[type="number"] {
+        width: 100%;
+        padding: 12px 16px;
+        border: 2px solid var(--sand-200);
+        border-radius: var(--radius);
+        font-family: inherit;
+        font-size: 1rem;
+        background: var(--white);
+        color: var(--text);
+        transition: border-color 0.2s;
+        appearance: none;
+      }
+      select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%235a6a52' d='M6 8L1 3h10z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 40px; }
+      select:focus, input:focus { outline: none; border-color: var(--green-500); }
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 14px 28px;
+        border: none;
+        border-radius: var(--radius);
+        font-family: 'Space Grotesk', system-ui, sans-serif;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s;
+        width: 100%;
+      }
+      .btn-primary { background: var(--green-600); color: var(--white); }
+      .btn-primary:hover { background: var(--green-700); }
+      .btn-primary:disabled { background: var(--sand-300); cursor: not-allowed; }
+      .btn-outline { background: transparent; color: var(--green-700); border: 2px solid var(--green-600); }
+      .btn-outline:hover { background: var(--green-50); }
+      .btn-row { display: flex; gap: 12px; margin-top: 20px; }
+      .btn-row .btn { flex: 1; }
+      .zone-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 14px;
+        background: var(--green-100);
+        color: var(--green-800);
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        margin: 4px 4px 4px 0;
+      }
+      .report-section {
+        border-top: 1px solid var(--sand-200);
+        padding-top: 20px;
+        margin-top: 20px;
+      }
+      .report-section:first-child { border-top: none; padding-top: 0; margin-top: 0; }
+      .report-section h3 {
+        font-size: 1rem;
+        color: var(--green-800);
+        margin-bottom: 12px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .variety-card {
+        background: var(--green-50);
+        border-radius: var(--radius);
+        padding: 16px;
+        margin-bottom: 10px;
+        border-left: 4px solid var(--green-500);
+      }
+      .variety-card h4 { font-size: 0.95rem; color: var(--green-800); margin-bottom: 4px; }
+      .variety-card p { font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; }
+      .fert-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.85rem;
+      }
+      .fert-table th {
+        background: var(--green-800);
+        color: var(--white);
+        padding: 10px 12px;
+        text-align: left;
+        font-weight: 600;
+      }
+      .fert-table th:first-child { border-radius: 8px 0 0 0; }
+      .fert-table th:last-child { border-radius: 0 8px 0 0; }
+      .fert-table td {
+        padding: 10px 12px;
+        border-bottom: 1px solid var(--sand-200);
+      }
+      .fert-table tr:nth-child(even) td { background: var(--green-50); }
+      .intercrop-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        gap: 10px;
+      }
+      .intercrop-item {
+        background: var(--sand-100);
+        border-radius: var(--radius);
+        padding: 14px;
+        text-align: center;
+        border: 1px solid var(--sand-200);
+      }
+      .intercrop-item .emoji { font-size: 1.5rem; margin-bottom: 4px; }
+      .intercrop-item .name { font-size: 0.85rem; font-weight: 600; color: var(--green-800); }
+      .intercrop-item .note { font-size: 0.75rem; color: var(--text-muted); margin-top: 2px; }
+      .fade-in { animation: fadeIn 0.4s ease; }
+      @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+      .screen { display: none; }
+      .screen.active { display: block; }
+      .hero {
+        text-align: center;
+        padding: 40px 20px 20px;
+      }
+      .hero-emoji { font-size: 4rem; margin-bottom: 12px; }
+      .hero h2 { font-size: 1.6rem; color: var(--green-800); margin-bottom: 8px; }
+      .hero p { color: var(--text-muted); font-size: 0.95rem; line-height: 1.6; max-width: 400px; margin: 0 auto 24px; }
+      .info-row {
+        display: flex;
+        gap: 12px;
+        margin-bottom: 8px;
+        align-items: flex-start;
+      }
+      .info-row .label {
+        font-size: 0.8rem;
+        font-weight: 700;
+        color: var(--text-muted);
+        min-width: 90px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+      .info-row .value {
+        font-size: 0.9rem;
+        color: var(--text);
+      }
+      @media (max-width: 480px) {
+        .container { padding: 12px; }
+        .card { padding: 16px; }
+        #map { height: 280px; }
+        .hero-emoji { font-size: 3rem; }
+        .hero h2 { font-size: 1.3rem; }
+      }
+    </style>
+  </head>
   <body>
-    <div id="root"></div>
+    <div class="header">
+      <span class="header-icon">&#x1F965;</span>
+      <div>
+        <h1>Pol Sathkara</h1>
+        <p>Coconut Zone Guide &mdash; Sri Lanka</p>
+      </div>
+    </div>
+
+    <div class="steps" id="steps">
+      <div class="step-dot active" data-step="0"></div>
+      <div class="step-dot" data-step="1"></div>
+      <div class="step-dot" data-step="2"></div>
+      <div class="step-dot" data-step="3"></div>
+    </div>
+
+    <div class="screen active" id="screen-0">
+      <div class="hero fade-in">
+        <div class="hero-emoji">&#x1F334;</div>
+        <h2>Grow Better Coconuts</h2>
+        <p>Get site-specific guidance on the best coconut varieties, fertilizer schedules, and intercrops for your agro-ecological zone in Sri Lanka.</p>
+        <div class="container">
+          <button class="btn btn-primary" onclick="goTo(1)">Get Started &#x2192;</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="screen" id="screen-1">
+      <div class="container fade-in">
+        <div class="card">
+          <h2>&#x1F4CD; Select Your Location</h2>
+          <p class="subtitle">Tap the map or choose your district and zone below.</p>
+          <div id="map"></div>
+          <p class="map-hint">Tap anywhere in Sri Lanka to pick your location</p>
+        </div>
+        <div class="card">
+          <div class="field">
+            <label>District</label>
+            <select id="district" onchange="onDistrictChange()">
+              <option value="">&mdash; Select district &mdash;</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Agro-Ecological Zone</label>
+            <select id="agroZone" onchange="onZoneChange()">
+              <option value="">&mdash; Select zone &mdash;</option>
+            </select>
+          </div>
+          <div id="selectedZoneInfo" style="display:none; margin-top:12px;">
+            <div class="info-row"><span class="label">Zone</span><span class="value" id="zoneLabel"></span></div>
+            <div class="info-row"><span class="label">Rainfall</span><span class="value" id="zoneRainfall"></span></div>
+            <div class="info-row"><span class="label">Climate</span><span class="value" id="zoneClimate"></span></div>
+          </div>
+          <div class="btn-row">
+            <button class="btn btn-outline" onclick="goTo(0)">&larr; Back</button>
+            <button class="btn btn-primary" id="btn-to-2" disabled onclick="goTo(2)">Next &rarr;</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="screen" id="screen-2">
+      <div class="container fade-in">
+        <div class="card">
+          <h2>&#x1F334; Your Plantation</h2>
+          <p class="subtitle">Tell us about your coconut palms.</p>
+          <div class="field">
+            <label>Number of Palms</label>
+            <input type="number" id="palmCount" value="100" min="1" max="50000" />
+          </div>
+          <div class="field">
+            <label>Palm Age (years)</label>
+            <select id="palmAge">
+              <option value="young">Young (0&ndash;5 years)</option>
+              <option value="bearing" selected>Bearing (5&ndash;40 years)</option>
+              <option value="old">Old (40+ years)</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Current Yield (nuts/palm/year)</label>
+            <select id="currentYield">
+              <option value="low">Low (&lt; 40)</option>
+              <option value="medium" selected>Medium (40&ndash;80)</option>
+              <option value="high">High (&gt; 80)</option>
+            </select>
+          </div>
+          <div class="btn-row">
+            <button class="btn btn-outline" onclick="goTo(1)">&larr; Back</button>
+            <button class="btn btn-primary" onclick="generateReport()">Generate Report &rarr;</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="screen" id="screen-3">
+      <div class="container fade-in" id="report-content"></div>
+    </div>
+
+    <script>
+    var ZONES = {
+      "WL1": { name: "Wet Zone Lowland 1", climate: "Wet", rainfall: "> 2,500 mm", districts: ["Colombo", "Gampaha", "Kalutara", "Galle", "Matara"] },
+      "WL2": { name: "Wet Zone Lowland 2", climate: "Wet", rainfall: "2,000–2,500 mm", districts: ["Colombo", "Gampaha", "Kalutara", "Ratnapura"] },
+      "WL3": { name: "Wet Zone Lowland 3", climate: "Wet", rainfall: "1,750–2,000 mm", districts: ["Gampaha", "Kurunegala", "Kegalle"] },
+      "WL4": { name: "Wet Zone Lowland 4", climate: "Wet", rainfall: "1,500–1,750 mm", districts: ["Gampaha", "Kurunegala"] },
+      "IL1": { name: "Intermediate Lowland 1", climate: "Intermediate", rainfall: "1,500–1,750 mm", districts: ["Kurunegala", "Puttalam", "Matale", "Kegalle"] },
+      "IL2": { name: "Intermediate Lowland 2", climate: "Intermediate", rainfall: "1,250–1,500 mm", districts: ["Kurunegala", "Puttalam", "Anuradhapura"] },
+      "IL3": { name: "Intermediate Lowland 3", climate: "Intermediate", rainfall: "1,000–1,250 mm", districts: ["Kurunegala", "Anuradhapura", "Matale"] },
+      "DL1": { name: "Dry Zone Lowland 1", climate: "Dry", rainfall: "1,000–1,250 mm", districts: ["Puttalam", "Anuradhapura", "Polonnaruwa", "Hambantota"] },
+      "DL2": { name: "Dry Zone Lowland 2", climate: "Dry", rainfall: "750–1,000 mm", districts: ["Anuradhapura", "Trincomalee", "Batticaloa", "Hambantota", "Jaffna", "Kilinochchi", "Mullaitivu"] },
+      "DL3": { name: "Dry Zone Lowland 3", climate: "Dry", rainfall: "< 750 mm", districts: ["Jaffna", "Kilinochchi", "Mannar"] }
+    };
+
+    var VARIETIES = {
+      "Wet": [
+        { name: "CRIC 60", type: "Tall", desc: "High-yielding tall variety bred for wet zone. 80–100 nuts/palm/year. Tolerant to leaf blight." },
+        { name: "CRIC 65", type: "Tall", desc: "Good copra content, well-suited for coconut oil production. 70–90 nuts/palm/year." },
+        { name: "San Ramon", type: "Tall", desc: "Large nut size, good for fresh consumption. Good performance in high-rainfall areas." },
+        { name: "CRISL Dwarf Green", type: "Dwarf", desc: "Tender coconut water variety. Early bearing (3–4 years). Ideal for home gardens." }
+      ],
+      "Intermediate": [
+        { name: "CRIC 60", type: "Tall", desc: "Performs best in intermediate zone. 80–120 nuts/palm/year under good management." },
+        { name: "CRIC 65", type: "Tall", desc: "High copra out-turn. 75–100 nuts/palm/year. Drought-tolerant once established." },
+        { name: "Typica (Sri Lanka Tall)", type: "Tall", desc: "Traditional variety. Hardy and well-adapted. 50–70 nuts/palm/year." },
+        { name: "CRISL Hybrid DT", type: "Hybrid", desc: "Dwarf × Tall hybrid. Early bearing, high yield (100+ nuts/palm/year). Needs good management." }
+      ],
+      "Dry": [
+        { name: "San Ramon", type: "Tall", desc: "Drought-tolerant, large nuts. Performs well under irrigation. 60–80 nuts/palm/year." },
+        { name: "Typica (Sri Lanka Tall)", type: "Tall", desc: "Most drought-hardy. Lower yield but very resilient. 40–60 nuts/palm/year." },
+        { name: "CRISL Hybrid DT", type: "Hybrid", desc: "Good under irrigation. High potential yield but needs supplemental water in dry spells." },
+        { name: "Gon Thembili", type: "Semi-Tall", desc: "King coconut type. Sweet water, cultural importance. 50–70 nuts/palm/year." }
+      ]
+    };
+
+    var FERTILIZER = {
+      "young": {
+        label: "Young Palms (0–5 yrs)",
+        schedule: [
+          { year: "1st year", urea: 250, tsp: 500, mop: 250, dolomite: 500, frequency: "2 splits" },
+          { year: "2nd year", urea: 500, tsp: 750, mop: 500, dolomite: 750, frequency: "2 splits" },
+          { year: "3rd year", urea: 750, tsp: 1000, mop: 750, dolomite: 1000, frequency: "2 splits" },
+          { year: "4–5th year", urea: 800, tsp: 1250, mop: 1000, dolomite: 1000, frequency: "2 splits" }
+        ]
+      },
+      "bearing": {
+        label: "Bearing Palms (5–40 yrs)",
+        schedule: [
+          { year: "Annual", urea: 800, tsp: 1500, mop: 1250, dolomite: 1000, frequency: "2 splits (Apr & Oct)" }
+        ]
+      },
+      "old": {
+        label: "Old Palms (40+ yrs)",
+        schedule: [
+          { year: "Annual", urea: 600, tsp: 1000, mop: 1000, dolomite: 750, frequency: "2 splits" }
+        ]
+      }
+    };
+
+    var INTERCROPS = {
+      "Wet": [
+        { name: "Pepper", emoji: "🌶️", note: "Vine on palm trunks" },
+        { name: "Cocoa", emoji: "🍫", note: "Shade-tolerant" },
+        { name: "Coffee", emoji: "☕", note: "Under partial shade" },
+        { name: "Banana", emoji: "🍌", note: "Good short-term income" },
+        { name: "Cinnamon", emoji: "🪵", note: "High export value" },
+        { name: "Pineapple", emoji: "🍍", note: "Good ground cover" },
+        { name: "Ginger", emoji: "🫚", note: "Shade-loving" },
+        { name: "Turmeric", emoji: "🟡", note: "Low maintenance" }
+      ],
+      "Intermediate": [
+        { name: "Pepper", emoji: "🌶️", note: "Best intercrop choice" },
+        { name: "Banana", emoji: "🍌", note: "Quick returns" },
+        { name: "Cocoa", emoji: "🍫", note: "With irrigation" },
+        { name: "Cashew", emoji: "🥜", note: "Drought-tolerant" },
+        { name: "Passion Fruit", emoji: "💜", note: "Good market demand" },
+        { name: "Papaya", emoji: "🍈", note: "Fast growing" }
+      ],
+      "Dry": [
+        { name: "Cashew", emoji: "🥜", note: "Very drought-tolerant" },
+        { name: "Mango", emoji: "🥭", note: "Long-term investment" },
+        { name: "Groundnut", emoji: "🥜", note: "Nitrogen-fixing" },
+        { name: "Cowpea", emoji: "🫘", note: "Short season crop" },
+        { name: "Sesame", emoji: "🌾", note: "Low water needs" },
+        { name: "Drumstick", emoji: "🌿", note: "Moringa, very hardy" }
+      ]
+    };
+
+    var DISTRICT_COORDS = {
+      "Colombo": [6.93, 79.85], "Gampaha": [7.08, 80.02], "Kalutara": [6.58, 80.22],
+      "Galle": [6.05, 80.22], "Matara": [5.95, 80.53], "Ratnapura": [6.68, 80.40],
+      "Kurunegala": [7.49, 80.36], "Kegalle": [7.25, 80.35], "Puttalam": [8.03, 79.84],
+      "Matale": [7.47, 80.62], "Anuradhapura": [8.31, 80.41], "Polonnaruwa": [7.94, 81.00],
+      "Hambantota": [6.12, 81.12], "Trincomalee": [8.57, 81.23], "Batticaloa": [7.73, 81.70],
+      "Jaffna": [9.66, 80.01], "Kilinochchi": [9.38, 80.38], "Mullaitivu": [9.27, 80.81],
+      "Mannar": [8.98, 79.90]
+    };
+
+    var DISTRICTS = Object.keys(DISTRICT_COORDS).sort();
+    var currentStep = 0;
+    var selectedZone = null;
+    var map = null;
+    var marker = null;
+
+    function initDistrictSelect() {
+      var sel = document.getElementById('district');
+      DISTRICTS.forEach(function(d) {
+        var opt = document.createElement('option');
+        opt.value = d; opt.textContent = d;
+        sel.appendChild(opt);
+      });
+    }
+
+    function onDistrictChange() {
+      var district = document.getElementById('district').value;
+      var zoneSel = document.getElementById('agroZone');
+      zoneSel.innerHTML = '<option value="">— Select zone —</option>';
+      document.getElementById('selectedZoneInfo').style.display = 'none';
+      document.getElementById('btn-to-2').disabled = true;
+      selectedZone = null;
+      if (!district) return;
+
+      Object.keys(ZONES).forEach(function(code) {
+        var z = ZONES[code];
+        if (z.districts.indexOf(district) !== -1) {
+          var opt = document.createElement('option');
+          opt.value = code;
+          opt.textContent = code + " — " + z.name;
+          zoneSel.appendChild(opt);
+        }
+      });
+
+      if (DISTRICT_COORDS[district] && map) {
+        map.setView(DISTRICT_COORDS[district], 10);
+      }
+    }
+
+    function onZoneChange() {
+      var code = document.getElementById('agroZone').value;
+      if (!code) {
+        document.getElementById('selectedZoneInfo').style.display = 'none';
+        document.getElementById('btn-to-2').disabled = true;
+        selectedZone = null;
+        return;
+      }
+      selectedZone = { code: code, name: ZONES[code].name, climate: ZONES[code].climate, rainfall: ZONES[code].rainfall };
+      document.getElementById('zoneLabel').textContent = code + " — " + ZONES[code].name;
+      document.getElementById('zoneRainfall').textContent = ZONES[code].rainfall;
+      document.getElementById('zoneClimate').textContent = ZONES[code].climate;
+      document.getElementById('selectedZoneInfo').style.display = 'block';
+      document.getElementById('btn-to-2').disabled = false;
+    }
+
+    function initMap() {
+      map = L.map('map').setView([7.87, 80.77], 7);
+      L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}', {
+        attribution: '&copy; Esri',
+        maxZoom: 18
+      }).addTo(map);
+
+      map.on('click', function(e) {
+        var lat = e.latlng.lat, lng = e.latlng.lng;
+        if (lat < 5.8 || lat > 9.9 || lng < 79.4 || lng > 82.0) return;
+        if (marker) map.removeLayer(marker);
+        marker = L.marker([lat, lng]).addTo(map);
+
+        var closestDist = null, minD = Infinity;
+        Object.keys(DISTRICT_COORDS).forEach(function(name) {
+          var coords = DISTRICT_COORDS[name];
+          var d = Math.sqrt(Math.pow(lat - coords[0], 2) + Math.pow(lng - coords[1], 2));
+          if (d < minD) { minD = d; closestDist = name; }
+        });
+        if (closestDist) {
+          document.getElementById('district').value = closestDist;
+          onDistrictChange();
+        }
+      });
+    }
+
+    function goTo(step) {
+      var screens = document.querySelectorAll('.screen');
+      for (var i = 0; i < screens.length; i++) screens[i].classList.remove('active');
+      document.getElementById('screen-' + step).classList.add('active');
+      var dots = document.querySelectorAll('.step-dot');
+      for (var i = 0; i < dots.length; i++) {
+        dots[i].classList.toggle('active', i === step);
+        dots[i].classList.toggle('done', i < step);
+      }
+      currentStep = step;
+      if (step === 1 && !map) setTimeout(initMap, 100);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function generateReport() {
+      if (!selectedZone) return;
+      var palmCount = parseInt(document.getElementById('palmCount').value) || 100;
+      var palmAge = document.getElementById('palmAge').value;
+      var currentYield = document.getElementById('currentYield').value;
+      var climate = selectedZone.climate;
+      var varieties = VARIETIES[climate];
+      var fert = FERTILIZER[palmAge];
+      var intercrops = INTERCROPS[climate];
+
+      var varietyHtml = varieties.map(function(v) {
+        return '<div class="variety-card"><h4>' + v.name + ' <span style="font-weight:400;color:var(--text-muted);">(' + v.type + ')</span></h4><p>' + v.desc + '</p></div>';
+      }).join('');
+
+      var fertRows = fert.schedule.map(function(r) {
+        return '<tr><td><strong>' + r.year + '</strong></td><td>' + r.urea + 'g</td><td>' + r.tsp + 'g</td><td>' + r.mop + 'g</td><td>' + r.dolomite + 'g</td><td>' + r.frequency + '</td></tr>';
+      }).join('');
+
+      var intercropHtml = intercrops.map(function(c) {
+        return '<div class="intercrop-item"><div class="emoji">' + c.emoji + '</div><div class="name">' + c.name + '</div><div class="note">' + c.note + '</div></div>';
+      }).join('');
+
+      var f0 = fert.schedule[0];
+      var totalLine = '<strong>' + Math.round(f0.urea * palmCount / 1000) + ' kg Urea</strong>, <strong>' + Math.round(f0.tsp * palmCount / 1000) + ' kg TSP</strong>, <strong>' + Math.round(f0.mop * palmCount / 1000) + ' kg MOP</strong>, <strong>' + Math.round(f0.dolomite * palmCount / 1000) + ' kg Dolomite</strong>';
+
+      var recs = getRecommendations(climate, palmAge, currentYield);
+
+      document.getElementById('report-content').innerHTML =
+        '<div class="card">' +
+        '<div style="text-align:center;margin-bottom:16px;"><span style="font-size:2.5rem;">📋</span><h2 style="margin-top:8px;">Your Coconut Advisory Report</h2></div>' +
+        '<div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px;">' +
+        '<span class="zone-badge">📍 ' + selectedZone.code + '</span>' +
+        '<span class="zone-badge">🌧️ ' + selectedZone.rainfall + '</span>' +
+        '<span class="zone-badge">🌴 ' + palmCount + ' palms</span>' +
+        '<span class="zone-badge">📅 ' + fert.label + '</span>' +
+        '</div>' +
+        '<div class="report-section"><h3>🌴 Recommended Varieties</h3>' + varietyHtml + '</div>' +
+        '<div class="report-section"><h3>🧪 Fertilizer Schedule</h3>' +
+        '<p style="font-size:0.85rem;color:var(--text-muted);margin-bottom:12px;">Grams per palm per year — ' + fert.label + '</p>' +
+        '<div style="overflow-x:auto;"><table class="fert-table"><thead><tr><th>Period</th><th>Urea</th><th>TSP</th><th>MOP</th><th>Dolomite</th><th>Timing</th></tr></thead><tbody>' + fertRows + '</tbody></table></div>' +
+        '<p style="font-size:0.8rem;color:var(--text-muted);margin-top:10px;">💡 Total annual fertilizer for ' + palmCount + ' palms: ' + totalLine + '</p></div>' +
+        '<div class="report-section"><h3>🌿 Recommended Intercrops</h3><div class="intercrop-grid">' + intercropHtml + '</div></div>' +
+        '<div class="report-section"><h3>📌 Key Recommendations</h3>' + recs + '</div>' +
+        '<div class="btn-row"><button class="btn btn-outline" onclick="goTo(2)">← Modify</button><button class="btn btn-primary" onclick="window.print()">🖨️ Print Report</button></div>' +
+        '</div>';
+
+      goTo(3);
+    }
+
+    function getRecommendations(climate, age, yld) {
+      var recs = [];
+      if (climate === "Dry") {
+        recs.push("Implement moisture conservation with husk burial in circular trenches around palms.");
+        recs.push("Consider drip irrigation during dry spells (40–50 L/palm/week).");
+      }
+      if (climate === "Wet") {
+        recs.push("Ensure proper drainage to prevent waterlogging and root rot.");
+        recs.push("Monitor for rhinoceros beetle and red palm weevil — more common in wet zones.");
+      }
+      recs.push("Apply fertilizer in two split doses: first with the onset of South-West monsoon (April/May), second with North-East monsoon (October/November).");
+      if (age === "young") {
+        recs.push("Provide shade for young palms in the first 2 years using banana or gliricidia.");
+        recs.push("Apply organic mulch (coconut husks, leaves) around the base to retain moisture.");
+      }
+      if (age === "old") {
+        recs.push("Consider under-planting with new improved varieties for future replanting.");
+      }
+      if (yld === "low") {
+        recs.push("Conduct a soil test to identify nutrient deficiencies — contact your nearest CRI office.");
+        recs.push("Consider crown cleaning and removal of dead fronds to improve yield.");
+      }
+      recs.push("Maintain a spacing of 7.8m × 7.8m (triangular) for optimal light interception.");
+      return '<ul style="list-style:none;padding:0;">' + recs.map(function(r) {
+        return '<li style="padding:8px 0 8px 24px;position:relative;font-size:0.9rem;line-height:1.5;border-bottom:1px solid var(--sand-200);"><span style="position:absolute;left:0;">✅</span>' + r + '</li>';
+      }).join('') + '</ul>';
+    }
+
+    initDistrictSelect();
+    </script>
   </body>
 </html>
