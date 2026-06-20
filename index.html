@@ -4,6 +4,8 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 <meta name="theme-color" content="#2D4A22" />
+<meta name="apple-mobile-web-app-capable" content="yes">
+<link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoiUG9sIFNhdGhrYXJhIiwic2hvcnRfbmFtZSI6IlBvbCBTYXRoa2FyYSIsInN0YXJ0X3VybCI6Ii4iLCJkaXNwbGF5Ijoic3RhbmRhbG9uZSIsImJhY2tncm91bmRfY29sb3IiOiIjRjVGMEUzIiwidGhlbWVfY29sb3IiOiIjMkQ0QTIyIiwiaWNvbnMiOlt7InNyYyI6ImRhdGE6aW1hZ2Uvc3ZnK3htbCw8c3ZnIHhtbG5zPSdodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2Zycgdmlld0JveD0nMCAwIDEwMCAxMDAnPjx0ZXh0IHk9Jy45ZW0nIGZvbnQtc2l6ZT0nOTAnPvCfpaU8L3RleHQ+PC9zdmc+Iiwic2l6ZXMiOiJhbnkiLCJ0eXBlIjoiaW1hZ2Uvc3ZnK3htbCJ9XX0=">
 <meta name="description" content="Site-specific coconut growing guidance for Sri Lanka." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -100,6 +102,10 @@ table.dt tr:last-child td{border-bottom:none;}
   .pfooter{position:absolute;bottom:4mm;left:8mm;right:8mm;font-size:8pt;color:#666;display:flex;justify-content:space-between;border-top:1px solid #ccc;padding-top:2px;}
   .psheet{counter-increment:pg;}
   .pfooter .pn::after{content:counter(pg);}
+  #chatPanel,#chatFab,.search-overlay,.price-ticker{display:none !important;}
+  #view-weather,#view-pests{display:block !important;position:static !important;opacity:1 !important;visibility:visible !important;}
+  .pest-card{page-break-inside:avoid;}
+  .rain-chart{height:60px !important;}
 }
 .leaflet-popup-content{font-family:'Manrope';font-size:13px;}
 .leaflet-popup-content b{font-family:'Space Grotesk';color:var(--green);}
@@ -151,6 +157,97 @@ table.dt tr:last-child td{border-bottom:none;}
 .cinput button:hover{background:#3a7d2c;}
 .cinput button:disabled{opacity:.5;cursor:not-allowed;}
 .cpowered{text-align:center;font-size:9px;color:#aaa;padding:2px 10px 6px;background:#fff;}
+/* === Dark Mode === */
+body.dark{--green:#4caf50;--green800:#4caf50;--sand:#1a1a2e;--ink:#e0e0e0;--line:#3a3a50;--wet:#4caf50;--int:#e0a030;--dry:#e07040;}
+body.dark{background:#1a1a2e;color:#e0e0e0;}
+body.dark .card,.dark table.dt th,.dark .crop summary,.dark .crop .body{background:#2d2d44;border-color:#3a3a50;}
+body.dark .chip{background:#3a3a50;border-color:#4a4a60;color:#aadfa0;}
+body.dark #chatPanel{background:#1a1a2e;}
+body.dark .cbubble.bot{background:#2d2d44;color:#e0e0e0;}
+body.dark .cinput{background:#2d2d44;border-color:#3a3a50;}
+body.dark .cinput input{background:#1a1a2e;color:#e0e0e0;border-color:#3a3a50;}
+body.dark .cexamples button,.dark .crelated button{background:#2d2d44;border-color:#3a3a50;color:#4caf50;}
+body.dark .cpowered{background:#2d2d44;color:#666;}
+body.dark .legend{background:rgba(30,30,50,.94);color:#e0e0e0;}
+body.dark .hint{background:rgba(76,175,80,.92);}
+body.dark nav.tabs{background:#2d2d44;border-color:#3a3a50;}
+body.dark nav.tabs button{color:#888;}
+body.dark .sheet{background:#1a1a2e;}
+body.dark .muted{color:#888;}
+body.dark .fact .fl{color:#8aba7f;}
+body.dark table.dt td{border-color:#3a3a50;}
+body.dark .gbtn{background:#2d2d44;color:#4caf50;}
+body.dark #chatFab{background:linear-gradient(135deg,#4caf50,#2d8a4e);}
+/* === Font Sizes === */
+body.font-lg{font-size:17px;}
+body.font-lg .cbubble{font-size:15.5px;}
+body.font-lg nav.tabs button{font-size:12px;}
+body.font-xl{font-size:20px;}
+body.font-xl .cbubble{font-size:18px;}
+body.font-xl nav.tabs button{font-size:13.5px;}
+/* === Header Controls === */
+.hdr-controls{display:flex;align-items:center;gap:4px;margin-left:6px;}
+.hdr-btn{background:rgba(255,255,255,.16);border:none;color:#fff;width:30px;height:30px;border-radius:50%;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s;padding:0;line-height:1;}
+.hdr-btn:hover{background:rgba(255,255,255,.3);}
+/* === Scrollable Nav === */
+nav.tabs{overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+nav.tabs::-webkit-scrollbar{display:none;}
+nav.tabs button{flex:0 0 auto;min-width:60px;padding:9px 10px 7px;}
+/* === Weather View === */
+#view-weather,#view-pests{overflow-y:auto;-webkit-overflow-scrolling:touch;padding:12px;background:var(--sand);}
+.weather-zone{margin-bottom:16px;}
+.weather-zone h3{font-size:14px;margin:0 0 8px;color:var(--green);}
+.rain-chart{display:flex;align-items:flex-end;gap:3px;height:100px;padding:4px 0;}
+.rain-bar{flex:1;border-radius:4px 4px 0 0;min-width:0;position:relative;transition:opacity .2s;}
+.rain-bar.current{outline:2px solid #ff5722;outline-offset:1px;}
+.rain-bar .rlabel{position:absolute;bottom:-16px;left:50%;transform:translateX(-50%);font-size:8px;white-space:nowrap;}
+.rain-bar .rval{position:absolute;top:-14px;left:50%;transform:translateX(-50%);font-size:7px;color:var(--ink);opacity:.7;}
+.rain-legend{display:flex;gap:12px;margin-top:20px;font-size:11px;flex-wrap:wrap;}
+.rain-legend span{display:flex;align-items:center;gap:4px;}
+.rain-legend .dot{width:10px;height:10px;border-radius:2px;}
+/* === Price Ticker === */
+.price-ticker{background:var(--green);color:#fff;padding:6px 0;overflow:hidden;white-space:nowrap;font-size:12px;font-weight:600;}
+.price-ticker .scroll{display:inline-block;animation:tickScroll 25s linear infinite;}
+@keyframes tickScroll{0%{transform:translateX(100%);}100%{transform:translateX(-100%);}}
+.price-ticker .item{display:inline;margin:0 24px;}
+.price-ticker .item .pname{opacity:.8;}
+.price-ticker .item .pprice{margin-left:4px;}
+.price-note{font-size:9px;text-align:center;opacity:.7;padding:2px 0;}
+/* === Pest Gallery === */
+.pest-card{background:#fff;border:1px solid var(--line);border-radius:14px;margin-bottom:10px;overflow:hidden;}
+body.dark .pest-card{background:#2d2d44;border-color:#3a3a50;}
+.pest-card summary{list-style:none;padding:12px 14px;display:flex;align-items:center;gap:10px;cursor:pointer;font-weight:700;font-size:14px;}
+.pest-card summary::-webkit-details-marker{display:none;}
+.pest-card summary .pest-icon{font-size:28px;}
+.pest-card summary .arr{margin-left:auto;transition:transform .2s;color:#999;}
+.pest-card[open] summary .arr{transform:rotate(180deg);}
+.pest-card .pest-body{padding:0 14px 14px;font-size:13px;line-height:1.6;}
+.pest-card .pest-body b{color:var(--green);display:block;margin-top:6px;font-size:11.5px;text-transform:uppercase;}
+/* === Voice Mic === */
+.mic-btn{background:none;border:2px solid var(--green);color:var(--green);border-radius:50%;width:42px;height:42px;font-size:20px;cursor:pointer;flex:0 0 auto;transition:all .2s;display:flex;align-items:center;justify-content:center;}
+.mic-btn.listening{background:#ff1744;border-color:#ff1744;color:#fff;animation:micPulse 1s infinite;}
+@keyframes micPulse{0%,100%{box-shadow:0 0 0 0 rgba(255,23,68,.5);}50%{box-shadow:0 0 0 10px rgba(255,23,68,0);}}
+/* === Search Overlay === */
+.search-overlay{position:fixed;inset:0;z-index:1100;background:rgba(0,0,0,.6);display:flex;flex-direction:column;align-items:center;padding-top:60px;opacity:0;visibility:hidden;transition:all .3s;}
+.search-overlay.open{opacity:1;visibility:visible;}
+.search-box{width:90%;max-width:500px;background:#fff;border-radius:16px;padding:16px;box-shadow:0 8px 32px rgba(0,0,0,.3);}
+body.dark .search-box{background:#2d2d44;color:#e0e0e0;}
+.search-box input{width:100%;border:2px solid var(--line);border-radius:12px;padding:12px 14px;font-size:16px;font-family:'Manrope';outline:none;box-sizing:border-box;margin-bottom:8px;}
+body.dark .search-box input{background:#1a1a2e;color:#e0e0e0;border-color:#3a3a50;}
+.search-box input:focus{border-color:var(--green);}
+.search-results{max-height:50vh;overflow-y:auto;}
+.search-results .sr-item{padding:10px 12px;border-bottom:1px solid var(--line);cursor:pointer;font-size:13px;border-radius:8px;margin-bottom:2px;}
+.search-results .sr-item:hover{background:rgba(45,74,34,.08);}
+.search-results .sr-item b{color:var(--green);}
+.search-results .sr-empty{padding:16px;text-align:center;color:#999;font-size:13px;}
+/* === Seasonal Calendar === */
+.cal-timeline{display:grid;grid-template-columns:1fr;gap:4px;margin-top:8px;}
+.cal-month{display:flex;align-items:stretch;gap:8px;padding:8px 10px;border-radius:8px;font-size:12px;transition:background .2s;}
+.cal-month.current{background:rgba(76,175,80,.15);border:1px solid var(--green);}
+.cal-month .cm-name{font-weight:800;min-width:36px;color:var(--green);}
+.cal-month .cm-bar{flex:1;border-radius:4px;padding:4px 8px;color:#fff;font-weight:600;font-size:11px;}
+/* === Share Button === */
+.sharebtn{display:inline-flex;align-items:center;gap:6px;background:var(--green);color:#fff;border:none;padding:12px 20px;border-radius:14px;font-family:'Space Grotesk';font-weight:700;font-size:14px;cursor:pointer;margin-top:6px;margin-right:8px;box-shadow:0 4px 12px rgba(45,74,34,.3);}
 </style>
 </head>
 <body>
@@ -158,6 +255,11 @@ table.dt tr:last-child td{border-bottom:none;}
   <header class="topbar">
     <span class="logo">🥥</span>
     <div><h1>Pol Sathkara<small data-t="subtitle">Coconut Zone Guide · Sri Lanka</small></h1></div>
+    <div class="hdr-controls">
+      <button class="hdr-btn" id="darkToggle" title="Dark mode">🌙</button>
+      <button class="hdr-btn" id="fontToggle" title="Font size">A</button>
+      <button class="hdr-btn" id="searchToggle" title="Search">🔍</button>
+    </div>
     <div class="langsw" id="langsw">
       <button data-lang="en">EN</button>
       <button data-lang="si">සි</button>
@@ -183,12 +285,26 @@ table.dt tr:last-child td{border-bottom:none;}
       <button class="gbtn" id="pinBtn" data-t="pinBtn">📍 Drop pin on my location</button>
       <div class="hint" id="ghint" data-t="hintGoogle">Tap the map to drop a pin & find your zone</div>
     </section>
+    <section class="view" id="view-weather" style="position:absolute;inset:0;"></section>
+    <section class="view" id="view-pests" style="position:absolute;inset:0;"></section>
+  </div>
+  <div class="price-ticker" id="priceTicker">
+    <div class="scroll" id="priceScroll"></div>
   </div>
   <nav class="tabs">
     <button class="active" data-tab="agro"><span class="ic">🗺️</span><span data-t="tabAgro">Agro Ecological</span></button>
     <button data-tab="clim"><span class="ic">🌦️</span><span data-t="tabClim">Climatic Zones</span></button>
     <button data-tab="google"><span class="ic">🛰️</span><span data-t="tabGoogle">Google Map</span></button>
+    <button data-tab="weather"><span class="ic">🌤️</span><span data-t="tabWeather">Weather</span></button>
+    <button data-tab="pests"><span class="ic">🐛</span><span data-t="tabPests">Pests</span></button>
   </nav>
+</div>
+
+<div class="search-overlay" id="searchOverlay">
+  <div class="search-box">
+    <input id="searchInput" type="text" placeholder="Search zones, topics..." autocomplete="off">
+    <div class="search-results" id="searchResults"></div>
+  </div>
 </div>
 
 <div class="sheet" id="sheet">
@@ -220,6 +336,7 @@ table.dt tr:last-child td{border-bottom:none;}
   <div class="cmsgs" id="chatMsgs" role="log" aria-live="polite"></div>
   <div class="cinput">
     <input id="chatInput" type="text" autocomplete="off" maxlength="300" aria-label="Type your question">
+    <button id="chatMic" class="mic-btn" aria-label="Voice input" style="display:none">🎤</button>
     <button id="chatSend" aria-label="Send message">➤</button>
   </div>
   <div class="cpowered" id="chatPowered">Powered by Pol Sathkara Knowledge Base</div>
@@ -6889,7 +7006,30 @@ var T={
     descWet:"High rainfall (>2500mm), no pronounced dry season. Lush perennial cropping.",
     descInt:"Moderate rainfall (1750–2500mm) with a short dry spell.",
     descDry:"Lower rainfall (<1750mm) with a long dry season; irrigation often needed.",
-    climDossierHint:"Open the Agro-Ecological tab and tap a sub-zone for variety & fertilizer recommendations specific to your location."
+    climDossierHint:"Open the Agro-Ecological tab and tap a sub-zone for variety & fertilizer recommendations specific to your location.",
+    tabWeather:"Weather",tabPests:"Pests",
+    shareBtn:"Share",
+    weatherTitle:"Seasonal Weather Guide",wetZone:"Wet Zone",intZone:"Intermediate Zone",dryZone:"Dry Zone",
+    monthNames:"Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec",
+    rainfallMm:"Rainfall (mm)",currentMonth:"Current month",
+    priceNote:"Prices from CDA weekly auction, visit cda.gov.lk for latest",
+    pestTitle:"Coconut Pests & Diseases",
+    pestRPW:"Red Palm Weevil",pestRPWsym:"Wilting crown, holes in trunk, sawdust-like frass at trunk base",pestRPWtx:"Pheromone traps, inject trunk with Carbosulfan/Chlorpyrifos, remove infected palms, field sanitation",
+    pestMite:"Coconut Mite",pestMitesym:"Triangular brown patches under perianth, scarred nuts, reduced copra",pestMitetx:"Release predatory mites (Neoseiulus), spray Wettable Sulfur, maintain field hygiene",
+    pestBB:"Black Beetle",pestBBsym:"V-shaped cuts on unopened fronds, bore holes at crown base",pestBBtx:"Maintain clean plantations, apply Metarhizium to compost heaps, pheromone traps",
+    pestRB:"Rhinoceros Beetle",pestRBsym:"Diamond-shaped holes in fronds, bore holes in crown, wilting",pestRBtx:"Remove decaying logs/stumps, use Oryctes virus or Metarhizium fungus, light traps",
+    pestLR:"Leaf Rot",pestLRsym:"Yellowing and drying of leaflets, lesions on fronds, progressive wilting",pestLRtx:"Remove and burn affected fronds, apply Bordeaux mixture, improve drainage",
+    pestBR:"Bud Rot",pestBRsym:"Yellowing of spear leaf, rotting of bud/growing point, foul smell",pestBRtx:"Cut and remove rotted tissue, apply Bordeaux paste, improve drainage, preventive copper spray",
+    pestSB:"Stem Bleeding",pestSBsym:"Dark brown liquid oozing from trunk cracks, bark discoloration",pestSBtx:"Chisel out affected tissue, apply coal tar + Tridemorph, improve nutrition",
+    pestGLS:"Grey Leaf Spot",pestGLSsym:"Grey oval spots on leaflets, premature leaf drying",pestGLStx:"Apply Mancozeb or Copper Oxychloride spray, balanced fertilization",
+    calTitle:"Seasonal Calendar",
+    calJan:"Fertilizer application (Maha season end)",calFeb:"Fertilizer application, nursery prep",
+    calMar:"Seedling planting begins",calApr:"Main planting season",
+    calMay:"Monsoon prep, pest control",calJun:"Pest monitoring, intercrop planting",
+    calJul:"Fertilizer (Yala season)",calAug:"Yala fertilizer, weeding",
+    calSep:"Harvest peak begins",calOct:"Peak harvest season",
+    calNov:"Land prep, drainage work",calDec:"Drainage maintenance, off-season planning",
+    searchPlaceholder:"Search zones, topics...",noResults:"No results found"
   },
   si:{
     chatTitle:"පොල් උපදේශක", chatSubtitle:"පොල් වගාව ගැන අසන්න",
@@ -6925,7 +7065,26 @@ var T={
     descWet:"ඉහළ වර්ෂාපතනය (>2500mm), පැහැදිලි වියළි කාලයක් නැත. බහුවාර්ෂික බෝග සඳහා සුදුසුයි.",
     descInt:"මධ්‍යම වර්ෂාපතනය (1750–2500mm) කෙටි වියළි කාලයක් සහිතව.",
     descDry:"අඩු වර්ෂාපතනය (<1750mm) දිගු වියළි කාලයක් සහිතව; බොහෝ විට වාරිමාර්ග අවශ්‍යයි.",
-    climDossierHint:"කෘෂි-පාරිසරික පටිත්ත විවෘත කර ඔබේ ස්ථානයට විශේෂිත ප්‍රභේද හා පොහොර නිර්දේශ සඳහා උප-කලාපයක් තට්ටු කරන්න."
+    climDossierHint:"කෘෂි-පාරිසරික පටිත්ත විවෘත කර ඔබේ ස්ථානයට විශේෂිත ප්‍රභේද හා පොහොර නිර්දේශ සඳහා උප-කලාපයක් තට්ටු කරන්න.",
+    tabWeather:"කාලගුණය",tabPests:"පළිබෝධ",shareBtn:"බෙදාගන්න",
+    weatherTitle:"සෘතුමය කාලගුණ මාර්ගෝපදේශය",wetZone:"තෙත් කලාපය",intZone:"අතරමැදි කලාපය",dryZone:"වියළි කලාපය",
+    monthNames:"ජන,පෙබ,මාර්,අප්‍රේ,මැයි,ජූනි,ජූලි,අගෝ,සැප්,ඔක්,නොවැ,දෙසැ",
+    rainfallMm:"වර්ෂාපතනය (mm)",currentMonth:"වත්මන් මාසය",
+    priceNote:"CDA සතිපතා වෙන්දේසියෙන් මිල ගණන්, cda.gov.lk බලන්න",
+    pestTitle:"පොල් පළිබෝධ සහ රෝග",
+    pestRPW:"රතු පණුවා",pestRPWsym:"මුදුන වියළීම, කඳ සිදුරු",pestRPWtx:"ෆෙරමෝන උගුල්, කාබෝසල්ෆාන් එන්නත්",
+    pestMite:"පොල් මයිට්",pestMitesym:"දුඹුරු පැල්ලම්, සීරුණු ගෙඩි",pestMitetx:"සතුරු මයිටා, ගන්ධක ඉසීම",
+    pestBB:"කළු කුරුමිණියා",pestBBsym:"V හැඩ කැපීම්",pestBBtx:"වගා පිරිසිදුව, මෙටාරයිසියම්",
+    pestRB:"ගේන්දගොයි කුරුමිණියා",pestRBsym:"දියමන්ති හැඩ සිදුරු",pestRBtx:"දිරා ගිය ලී ඉවත් කරන්න",
+    pestLR:"පත්‍ර කුණුවීම",pestLRsym:"පත්‍ර කහවීම",pestLRtx:"බෝර්ඩෝ මිශ්‍රණය",
+    pestBR:"මුකුල කුණුවීම",pestBRsym:"දරු පත්‍රය කහවීම",pestBRtx:"බෝර්ඩෝ පේස්ට්",
+    pestSB:"කඳ ලේ ගැලීම",pestSBsym:"තද දුඹුරු දියර",pestSBtx:"කොයිල් ටාර්",
+    pestGLS:"අළු පත්‍ර ලප",pestGLSsym:"අළු ඕවල් ලප",pestGLStx:"මැංකොසෙබ් ඉසීම",
+    calTitle:"සෘතුමය දින දර්ශනය",
+    calJan:"පොහොර (මහ අවසානය)",calFeb:"පැල තවාන්",calMar:"පැල සිටුවීම",calApr:"සිටුවීමේ කාලය",
+    calMay:"මෝසම් සූදානම",calJun:"පළිබෝධ නිරීක්ෂණය",calJul:"පොහොර (යල)",calAug:"යල පොහොර",
+    calSep:"අස්වනු උපරිමය",calOct:"අස්වනු කන්නය",calNov:"ඉඩම් සැකසීම",calDec:"ජලවහන නඩත්තු",
+    searchPlaceholder:"සොයන්න...",noResults:"ප්‍රතිඵල නැත"
   },
   ta:{
     chatTitle:"தென்னை ஆலோசகர்", chatSubtitle:"தென்னை சாகுபடி பற்றி கேளுங்கள்",
@@ -6961,7 +7120,26 @@ var T={
     descWet:"அதிக மழைப்பொழிவு (>2500mm), தெளிவான வறண்ட காலம் இல்லை. பல்லாண்டு பயிர்களுக்கு ஏற்றது.",
     descInt:"மிதமான மழைப்பொழிவு (1750–2500mm) குறுகிய வறண்ட காலத்துடன்.",
     descDry:"குறைந்த மழைப்பொழிவு (<1750mm) நீண்ட வறண்ட காலத்துடன்; பெரும்பாலும் நீர்ப்பாசனம் தேவை.",
-    climDossierHint:"வேளாண்-சூழலியல் தாவலைத் திறந்து, உங்கள் இருப்பிடத்திற்கான இரகம் & உர பரிந்துரைகளுக்கு துணை-மண்டலத்தைத் தட்டவும்."
+    climDossierHint:"வேளாண்-சூழலியல் தாவலைத் திறந்து, உங்கள் இருப்பிடத்திற்கான இரகம் & உர பரிந்துரைகளுக்கு துணை-மண்டலத்தைத் தட்டவும்.",
+    tabWeather:"வானிலை",tabPests:"பூச்சிகள்",shareBtn:"பகிர்",
+    weatherTitle:"பருவகால வானிலை வழிகாட்டி",wetZone:"ஈர வலயம்",intZone:"இடைநிலை வலயம்",dryZone:"வறண்ட வலயம்",
+    monthNames:"ஜன,பிப்,மார்,ஏப்,மே,ஜூன்,ஜூலை,ஆக,செப்,அக்,நவ,டிச",
+    rainfallMm:"மழைப்பொழிவு (mm)",currentMonth:"தற்போதைய மாதம்",
+    priceNote:"CDA வார ஏலத்திலிருந்து விலைகள், cda.gov.lk பார்க்கவும்",
+    pestTitle:"தென்னை பூச்சிகள் & நோய்கள்",
+    pestRPW:"சிவப்பு கூன்வண்டு",pestRPWsym:"மகுடம் வாடுதல், தண்டில் துளைகள்",pestRPWtx:"பெரோமோன் பொறிகள், கார்போசல்பான் ஊசி",
+    pestMite:"தென்னை பேன்",pestMitesym:"பழுப்பு புள்ளிகள், சேதமான காய்கள்",pestMitetx:"எதிரி பேன், கந்தகம் தெளிப்பு",
+    pestBB:"கருப்பு வண்டு",pestBBsym:"V வடிவ வெட்டுக்கள்",pestBBtx:"தூய்மை, மெட்டாரிசியம்",
+    pestRB:"காண்டாமிருக வண்டு",pestRBsym:"வைர வடிவ துளைகள்",pestRBtx:"அழுகிய மரங்களை அகற்று",
+    pestLR:"இலை அழுகல்",pestLRsym:"இலைகள் மஞ்சள்",pestLRtx:"போர்டோ கலவை",
+    pestBR:"முகுளம் அழுகல்",pestBRsym:"ஈட்டி இலை மஞ்சள்",pestBRtx:"போர்டோ பேஸ்ட்",
+    pestSB:"தண்டு இரத்தப்போக்கு",pestSBsym:"அடர் பழுப்பு திரவம்",pestSBtx:"நிலக்கரி தார்",
+    pestGLS:"சாம்பல் இலை புள்ளி",pestGLSsym:"சாம்பல் நீள்வட்ட புள்ளிகள்",pestGLStx:"மான்கோசெப் தெளிப்பு",
+    calTitle:"பருவகால நாட்காட்டி",
+    calJan:"உரம் (மகா இறுதி)",calFeb:"நாற்றங்கால்",calMar:"நடவு தொடக்கம்",calApr:"நடவு காலம்",
+    calMay:"பருவமழை தயாரிப்பு",calJun:"பூச்சி கண்காணிப்பு",calJul:"உரம் (யாலா)",calAug:"யாலா உரம்",
+    calSep:"அறுவடை உச்சம்",calOct:"அறுவடை காலம்",calNov:"நிலம் தயாரிப்பு",calDec:"வடிகால் பராமரிப்பு",
+    searchPlaceholder:"தேடு...",noResults:"முடிவுகள் இல்லை"
   }
 };
 var lang=(function(){try{return localStorage.getItem('polLang')||'en';}catch(e){return 'en';}})();
@@ -6981,6 +7159,8 @@ function switchLang(l){
   applyStaticT();
   render();
   if(typeof chatApplyLang==='function')chatApplyLang();
+  if(typeof renderWeather==='function'&&document.getElementById('view-weather').classList.contains('active'))renderWeather();
+  if(typeof renderPests==='function'&&document.getElementById('view-pests').classList.contains('active'))renderPests();
 }
 // re-render currently open dossier (if any) in the active language
 function render(){
@@ -7096,15 +7276,18 @@ function findZoneAt(lng,lat){
 }
 
 // ---- Tabs ----
-var tabMap={agro:'view-agro',clim:'view-clim',google:'view-google'};
+var tabMap={agro:'view-agro',clim:'view-clim',google:'view-google',weather:'view-weather',pests:'view-pests'};
+var tabInited={weather:false,pests:false,clim:false,google:false};
 document.querySelectorAll('nav.tabs button').forEach(function(b){
   b.onclick=function(){
     document.querySelectorAll('nav.tabs button').forEach(function(x){x.classList.remove('active');});
     b.classList.add('active');
-    var t=b.dataset.tab;
+    var tb=b.dataset.tab;
     document.querySelectorAll('.view').forEach(function(v){v.classList.remove('active');});
-    document.getElementById(tabMap[t]).classList.add('active');
-    setTimeout(function(){ if(maps[t])maps[t].invalidateSize(); },320);
+    document.getElementById(tabMap[tb]).classList.add('active');
+    if(tb==='weather'){if(!tabInited.weather){tabInited.weather=true;}renderWeather();}
+    if(tb==='pests'){if(!tabInited.pests){tabInited.pests=true;}renderPests();}
+    setTimeout(function(){ if(maps[tb])maps[tb].invalidateSize(); },320);
   };
 });
 
@@ -7183,7 +7366,7 @@ function openDossier(fid){
   for(var nm in ic){ icHtml+=cropBlock(nm,ic[nm]); }
   if(icHtml){ html+='<div class="card"><h3>🌾 '+t('intercropOptions')+' — '+esc(kind)+'</h3><p class="muted" style="margin-top:-4px">'+t('intercropHint')+'</p>'+icHtml+'</div>'; }
 
-  html+='<button class="printbtn" onclick="printReport()">'+t('printBtn')+'</button>';
+  html+='<div style="display:flex;gap:8px;flex-wrap:wrap"><button class="sharebtn" onclick="shareZone()">📤 '+t('shareBtn')+'</button><button class="printbtn" style="flex:1" onclick="printReport()">'+t('printBtn')+'</button></div>';
   document.getElementById('dCon').innerHTML=html;
   document.getElementById('dCon').scrollTop=0;
   document.getElementById('sheet').classList.add('open');
@@ -7204,7 +7387,7 @@ function openClimDossier(name){
   var html='<div class="card"><h3>🌦️ '+t('aboutClimate')+'</h3><p>'+esc(desc)+'</p><p class="muted">'+t('climDossierHint')+'</p></div>';
   var ic=intercropFor(kind);var icHtml='';for(var nm in ic){icHtml+=cropBlock(nm,ic[nm]);}
   if(icHtml)html+='<div class="card"><h3>🌾 '+t('intercropOptions')+' — '+esc(kind)+'</h3>'+icHtml+'</div>';
-  html+='<button class="printbtn" onclick="printReport()">'+t('printBtn')+'</button>';
+  html+='<div style="display:flex;gap:8px;flex-wrap:wrap"><button class="sharebtn" onclick="shareZone()">📤 '+t('shareBtn')+'</button><button class="printbtn" style="flex:1" onclick="printReport()">'+t('printBtn')+'</button></div>';
   document.getElementById('dCon').innerHTML=html;
   document.getElementById('dCon').scrollTop=0;
   document.getElementById('sheet').classList.add('open');
@@ -7553,6 +7736,192 @@ function chatApplyLang(){
   document.getElementById('chatClear').title=t('chatNewChat');
   chatRender();
 }
+// ====== FEATURE: Dark Mode ======
+(function initDarkMode(){
+  var dk=false;try{dk=localStorage.getItem('polDark')==='1';}catch(e){}
+  if(dk)document.body.classList.add('dark');
+  var btn=document.getElementById('darkToggle');
+  function upd(){btn.textContent=document.body.classList.contains('dark')?'☀️':'🌙';}
+  upd();
+  btn.onclick=function(){
+    document.body.classList.toggle('dark');
+    try{localStorage.setItem('polDark',document.body.classList.contains('dark')?'1':'0');}catch(e){}
+    upd();
+  };
+})();
+// ====== FEATURE: Font Size ======
+(function initFontSize(){
+  var sizes=['','font-lg','font-xl'];var labels=['A','A+','A++'];
+  var idx=0;try{idx=parseInt(localStorage.getItem('polFont'))||0;}catch(e){}
+  if(idx>=sizes.length)idx=0;
+  if(sizes[idx])document.body.classList.add(sizes[idx]);
+  var btn=document.getElementById('fontToggle');
+  btn.textContent=labels[idx];
+  btn.onclick=function(){
+    if(sizes[idx])document.body.classList.remove(sizes[idx]);
+    idx=(idx+1)%sizes.length;
+    if(sizes[idx])document.body.classList.add(sizes[idx]);
+    btn.textContent=labels[idx];
+    try{localStorage.setItem('polFont',idx);}catch(e){}
+  };
+})();
+// ====== FEATURE: Search Overlay ======
+(function initSearch(){
+  var overlay=document.getElementById('searchOverlay');
+  var input=document.getElementById('searchInput');
+  var results=document.getElementById('searchResults');
+  document.getElementById('searchToggle').onclick=function(){
+    overlay.classList.add('open');input.value='';results.innerHTML='';
+    setTimeout(function(){input.focus();},100);
+  };
+  overlay.onclick=function(e){if(e.target===overlay)overlay.classList.remove('open');};
+  input.addEventListener('input',function(){
+    var q=input.value.trim();
+    if(q.length<2){results.innerHTML='';return;}
+    var hits=chatSearchAll(q);
+    var zoneHits=[];
+    if(typeof AGRO!=='undefined'){
+      for(var i=0;i<AGRO.features.length;i++){
+        var p=AGRO.features[i].properties;
+        var nm=(p.ZONE||'')+(p.AGRO_ECO_Z||'');
+        if(nm.toLowerCase().indexOf(q.toLowerCase())>=0)zoneHits.push({name:p.ZONE||p.AGRO_ECO_Z,fid:p.FINAL_ID});
+      }
+    }
+    var html='';
+    zoneHits.slice(0,3).forEach(function(z){
+      html+='<div class="sr-item" data-fid="'+z.fid+'"><b>🗺️ '+esc(z.name)+'</b></div>';
+    });
+    hits.slice(0,5).forEach(function(h){
+      var lbl=h.entry.keywords[0];lbl=lbl.charAt(0).toUpperCase()+lbl.slice(1);
+      html+='<div class="sr-item" data-kw="'+esc(h.entry.keywords.slice(0,3).join(' '))+'"><b>💬 '+esc(lbl)+'</b></div>';
+    });
+    if(!html)html='<div class="sr-empty">'+t('noResults')+'</div>';
+    results.innerHTML=html;
+    results.querySelectorAll('.sr-item').forEach(function(el){
+      el.onclick=function(){
+        overlay.classList.remove('open');
+        if(el.dataset.fid){openDossier(parseInt(el.dataset.fid));}
+        else if(el.dataset.kw){
+          document.getElementById('chatFab').click();
+          setTimeout(function(){chatHandle(el.dataset.kw);},300);
+        }
+      };
+    });
+  });
+})();
+// ====== FEATURE: Weather View ======
+var RAINFALL_DATA={
+  wet:[350,280,260,310,380,300,250,240,290,370,400,380],
+  int:[180,140,150,220,250,160,120,110,150,250,300,250],
+  dry:[80,50,40,60,50,30,20,20,50,150,250,180]
+};
+function renderWeather(){
+  var el=document.getElementById('view-weather');
+  var months=t('monthNames').split(',');
+  var curM=new Date().getMonth();
+  var zones=[
+    {key:'wet',name:t('wetZone'),color:'var(--wet)',data:RAINFALL_DATA.wet},
+    {key:'int',name:t('intZone'),color:'var(--int)',data:RAINFALL_DATA.int},
+    {key:'dry',name:t('dryZone'),color:'var(--dry)',data:RAINFALL_DATA.dry}
+  ];
+  var html='<h2 style="margin:0 0 12px;font-size:16px;color:var(--green)">🌤️ '+t('weatherTitle')+'</h2>';
+  html+='<div class="rain-legend"><span><span class="dot" style="background:var(--wet)"></span>'+t('wetZone')+'</span><span><span class="dot" style="background:var(--int)"></span>'+t('intZone')+'</span><span><span class="dot" style="background:var(--dry)"></span>'+t('dryZone')+'</span><span>▣ '+t('currentMonth')+'</span></div>';
+  zones.forEach(function(z){
+    var max=Math.max.apply(null,z.data);
+    html+='<div class="weather-zone"><h3>'+z.name+' — '+t('rainfallMm')+'</h3><div class="rain-chart">';
+    for(var i=0;i<12;i++){
+      var h=Math.round((z.data[i]/max)*80);
+      html+='<div class="rain-bar'+(i===curM?' current':'')+'" style="height:'+h+'px;background:'+z.color+'"><span class="rval">'+z.data[i]+'</span><span class="rlabel">'+months[i]+'</span></div>';
+    }
+    html+='</div></div>';
+  });
+  // Seasonal Calendar
+  html+='<div class="card" style="margin-top:16px"><h3>📅 '+t('calTitle')+'</h3><div class="cal-timeline">';
+  var calKeys=['calJan','calFeb','calMar','calApr','calMay','calJun','calJul','calAug','calSep','calOct','calNov','calDec'];
+  var calColors=['#8BC34A','#8BC34A','#4CAF50','#4CAF50','#2196F3','#2196F3','#FF9800','#FF9800','#f44336','#f44336','#795548','#795548'];
+  for(var i=0;i<12;i++){
+    html+='<div class="cal-month'+(i===curM?' current':'')+'"><span class="cm-name">'+months[i]+'</span><span class="cm-bar" style="background:'+calColors[i]+'">'+t(calKeys[i])+'</span></div>';
+  }
+  html+='</div></div>';
+  // Price ticker note
+  html+='<p class="muted" style="margin-top:12px;text-align:center">'+t('priceNote')+'</p>';
+  el.innerHTML=html;
+}
+// ====== FEATURE: Price Ticker ======
+(function initPriceTicker(){
+  var prices=[
+    {name:'Coconut (1000 nuts)',price:'Rs. 42,000-48,000'},
+    {name:'Copra (MT)',price:'Rs. 230,000-250,000'},
+    {name:'Coconut Oil (MT)',price:'Rs. 480,000-520,000'},
+    {name:'Desiccated Coconut (MT)',price:'Rs. 680,000-750,000'},
+    {name:'Coir Fibre (MT)',price:'Rs. 85,000-95,000'}
+  ];
+  var html='';
+  prices.forEach(function(p){
+    html+='<span class="item"><span class="pname">'+p.name+'</span><span class="pprice">'+p.price+'</span></span>';
+  });
+  // duplicate for seamless scroll
+  document.getElementById('priceScroll').innerHTML=html+html;
+})();
+// ====== FEATURE: Pest Gallery ======
+var PESTS=[
+  {icon:'🪲',nameKey:'pestRPW',symKey:'pestRPWsym',txKey:'pestRPWtx'},
+  {icon:'🪲',nameKey:'pestMite',symKey:'pestMitesym',txKey:'pestMitetx'},
+  {icon:'🪲',nameKey:'pestBB',symKey:'pestBBsym',txKey:'pestBBtx'},
+  {icon:'🪲',nameKey:'pestRB',symKey:'pestRBsym',txKey:'pestRBtx'},
+  {icon:'🍄',nameKey:'pestLR',symKey:'pestLRsym',txKey:'pestLRtx'},
+  {icon:'🍄',nameKey:'pestBR',symKey:'pestBRsym',txKey:'pestBRtx'},
+  {icon:'🍄',nameKey:'pestSB',symKey:'pestSBsym',txKey:'pestSBtx'},
+  {icon:'🍄',nameKey:'pestGLS',symKey:'pestGLSsym',txKey:'pestGLStx'}
+];
+function renderPests(){
+  var el=document.getElementById('view-pests');
+  var html='<h2 style="margin:0 0 12px;font-size:16px;color:var(--green)">🐛 '+t('pestTitle')+'</h2>';
+  PESTS.forEach(function(p){
+    html+='<details class="pest-card"><summary><span class="pest-icon">'+p.icon+'</span>'+t(p.nameKey)+'<span class="arr">▾</span></summary>';
+    html+='<div class="pest-body"><b>Symptoms:</b>'+esc(t(p.symKey))+'<b>Treatment:</b>'+esc(t(p.txKey))+'</div></details>';
+  });
+  el.innerHTML=html;
+}
+// ====== FEATURE: Share ======
+function shareZone(){
+  var title=document.getElementById('dTitle').textContent;
+  var text='Check out '+title+' on Pol Sathkara - Coconut Zone Guide';
+  var url=window.location.href;
+  if(navigator.share){
+    navigator.share({title:'Pol Sathkara',text:text,url:url}).catch(function(){});
+  }else{
+    var ta=document.createElement('textarea');ta.value=text+' '+url;document.body.appendChild(ta);ta.select();
+    try{document.execCommand('copy');alert('Copied to clipboard!');}catch(e){alert('Copy: '+text+' '+url);}
+    document.body.removeChild(ta);
+  }
+}
+// ====== FEATURE: Voice Input ======
+(function initVoice(){
+  var SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  if(!SR)return;
+  var mic=document.getElementById('chatMic');
+  mic.style.display='flex';
+  var recog=new SR();recog.continuous=false;recog.interimResults=false;
+  var listening=false;
+  mic.onclick=function(){
+    if(listening){recog.stop();return;}
+    recog.lang=(lang==='si'?'si-LK':lang==='ta'?'ta-LK':'en-US');
+    recog.start();listening=true;mic.classList.add('listening');
+  };
+  recog.onresult=function(e){
+    var txt=e.results[0][0].transcript;
+    document.getElementById('chatInput').value=txt;
+  };
+  recog.onend=function(){listening=false;mic.classList.remove('listening');};
+  recog.onerror=function(){listening=false;mic.classList.remove('listening');};
+})();
+// ====== FEATURE: PWA / Service Worker ======
+if('serviceWorker' in navigator){
+  var swCode='self.addEventListener("install",function(e){e.waitUntil(caches.open("pol-v1").then(function(c){return c.addAll(["./"])}))});self.addEventListener("fetch",function(e){e.respondWith(caches.match(e.request).then(function(r){return r||fetch(e.request)}))})';
+  var blob=new Blob([swCode],{type:'application/javascript'});
+  navigator.serviceWorker.register(URL.createObjectURL(blob)).catch(function(){});
+}
 (function initChat(){
   var fab=document.getElementById('chatFab'),panel=document.getElementById('chatPanel');
   fab.onclick=function(){panel.classList.add('open');fab.style.display='none';document.getElementById('chatInput').focus();};
@@ -7567,6 +7936,7 @@ function chatApplyLang(){
 initAgro(); initClim(); initGoogle();
 switchLang(lang);
 window.openDossier=openDossier;
+window.shareZone=shareZone;
 
 </script>
 </body>
