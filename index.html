@@ -218,6 +218,14 @@ body.dark .mite-sel{background:#1a1a2e;color:#e0e0e0;border-color:#3a3a50;}
 .mite-row span{font-weight:700;flex:1 1 100%;}
 .mite-row a{color:var(--green);font-weight:600;text-decoration:none;}
 .mite-row a:hover{text-decoration:underline;}
+@media (max-width:420px){
+  header.topbar{padding:8px 10px;gap:7px;}
+  header.topbar h1{font-size:14px;line-height:1.2;}
+  header.topbar small{font-size:10px;line-height:1.25;}
+  header.topbar .logo{font-size:19px;}
+  .hdr-btn{width:27px;height:27px;font-size:13px;}
+  .langsw button{padding:9px 9px;font-size:12px;}
+}
 /* === Zone variety / yield lists === */
 .zlist{margin:6px 0 0;padding-left:20px;}
 .zlist li{margin:5px 0;line-height:1.5;font-size:13.5px;}
@@ -231,6 +239,9 @@ body.dark .map-unavailable{color:#999;}
 .view-loading{display:flex;align-items:center;justify-content:center;height:100%;font-size:14px;color:#888;font-weight:600;gap:8px;}
 /* === Weather View === */
 #view-weather,#view-pests{overflow-y:auto;-webkit-overflow-scrolling:touch;padding:12px;background:var(--sand);}
+/* Clearance for the floating chat button and cache badge, which otherwise sit on top
+   of the last card with no way to scroll it out from under them. */
+#view-weather,#view-pests,#view-offices{padding-bottom:92px;}
 .weather-zone{margin-bottom:16px;}
 .weather-zone h3{font-size:14px;margin:0 0 8px;color:var(--green);}
 .rain-chart{display:flex;align-items:flex-end;gap:3px;height:100px;padding:4px 0;}
@@ -7366,8 +7377,13 @@ function switchLang(l){
   applyStaticT();
   render();
   if(typeof chatApplyLang==='function')chatApplyLang();
-  if(typeof renderWeather==='function'&&document.getElementById('view-weather').classList.contains('active'))renderWeather();
-  if(typeof renderPests==='function'&&document.getElementById('view-pests').classList.contains('active'))renderPests();
+  // Every JS-rendered view has to be rebuilt: its labels were baked in at render
+  // time, so without this they keep the previous language until the tab is revisited.
+  var rerender={weather:'renderWeather',pests:'renderPests',offices:'renderOffices'};
+  Object.keys(rerender).forEach(function(v){
+    var fn=window[rerender[v]];
+    if(typeof fn==='function'&&document.getElementById('view-'+v).classList.contains('active'))fn();
+  });
 }
 // re-render currently open dossier (if any) in the active language
 function render(){
@@ -7534,7 +7550,10 @@ function tbl(rows){
   rows.forEach(function(r){h+='<tr><td>'+esc(r.label)+'</td><td><b>'+esc(r.value)+'</b></td></tr>';});
   return h+'</tbody></table>';
 }
-function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+// Escapes quotes as well as angle brackets: esc() is interpolated into attribute
+// values (data-name, option value) as well as text, and the office data comes from
+// CSVs, so an apostrophe in a place name must not be able to break out of an attribute.
+function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
 
 function intercropFor(kind){ // kind like 'Wet Zone'
   return INTERCROP[kind]||{};
@@ -7542,6 +7561,17 @@ function intercropFor(kind){ // kind like 'Wet Zone'
 // Crops with a CRI flashcard PDF shipped in intercrop-pdfs/. The guide is the same
 // document whichever zone it is opened from, so it is stored once per crop.
 var INTERCROP_PDFS=["Avocado", "Banana", "CO3", "Cashew", "Cassava", "Cinnomon", "Cocoa", "Coffee", "Dragonfruit", "Durian", "Ginger", "Guava", "Lime", "Mango", "Papaya", "PassionFruit", "Pepper", "Pineapple", "Pomegranate", "Rambutan", "Taro", "Tea", "Tumeric"];
+// The dossier covers the whole screen at a higher layer than the chat panel, so an
+// open chat would be left visible-but-unreachable underneath it, with its launcher
+// hidden too. Dismiss it and restore the launcher whenever the dossier opens.
+function openSheet(){
+  var panel=document.getElementById('chatPanel'),fab=document.getElementById('chatFab');
+  if(panel&&panel.classList.contains('open')){
+    panel.classList.remove('open');
+    if(fab)fab.style.display='flex';
+  }
+  document.getElementById('sheet').classList.add('open');
+}
 function cropBlock(name,c){
   var em=EMOJI[name]||'🌱';
   var rows='';
@@ -7633,7 +7663,7 @@ function openDossier(fid){
   html+='<button class="sharebtn" style="width:100%;justify-content:center;margin-top:8px;background:#2196F3;" onclick="document.getElementById(\'feedbackOverlay\').classList.add(\'open\')">💬 '+t('fbTitle')+'</button>';
   document.getElementById('dCon').innerHTML=html;
   document.getElementById('dCon').scrollTop=0;
-  document.getElementById('sheet').classList.add('open');
+  openSheet();
 }
 function fact(l,v){return '<div class="fact"><span class="fl">'+l+'</span><span>'+esc(v)+'</span></div>';}
 
@@ -7668,7 +7698,7 @@ function openClimDossier(name){
   html+='<button class="sharebtn" style="width:100%;justify-content:center;margin-top:8px;background:#2196F3;" onclick="document.getElementById(\'feedbackOverlay\').classList.add(\'open\')">💬 '+t('fbTitle')+'</button>';
   document.getElementById('dCon').innerHTML=html;
   document.getElementById('dCon').scrollTop=0;
-  document.getElementById('sheet').classList.add('open');
+  openSheet();
 }
 
 document.getElementById('dClose').onclick=function(){document.getElementById('sheet').classList.remove('open');};
@@ -8070,11 +8100,20 @@ function chatApplyLang(){
     var ofcHits=[];
     if(typeof OFFICES!=='undefined'){
       var lq=q.toLowerCase();
+      var scored=[];
       for(var oi=0;oi<OFFICES.length;oi++){
         var o=OFFICES[oi];
-        var hay=(o.name+' '+o.addr+' '+(o.district||'')+' '+o.type).toLowerCase();
-        if(hay.indexOf(lq)>=0)ofcHits.push(o);
+        // Rank by where the term matched. Searching a town should surface the office
+        // named after it, not one whose street address merely mentions it.
+        var nm=o.name.toLowerCase(), rank=-1;
+        if(nm.indexOf(lq)===0)rank=0;
+        else if(nm.indexOf(lq)>=0)rank=1;
+        else if((o.district||'').toLowerCase().indexOf(lq)>=0)rank=2;
+        else if((o.addr+' '+o.type).toLowerCase().indexOf(lq)>=0)rank=3;
+        if(rank>=0)scored.push({o:o,r:rank});
       }
+      scored.sort(function(a,b){return a.r-b.r;});
+      ofcHits=scored.map(function(x){return x.o;});
     }
     var cropHits=[];
     if(typeof INTERCROP_PDFS!=='undefined'){
@@ -8597,12 +8636,17 @@ function ttsStop(){
   var indicator=document.getElementById('cacheIndicator');
   var dot=document.getElementById('cacheDot');
   var txt=document.getElementById('cacheText');
+  var hideTimer=null;
   function show(cached,date){
     indicator.classList.add('show');
     dot.className='cache-dot'+(cached?'':' stale');
     txt.textContent=cached
       ? t('cacheOk')+(date?' · '+new Date(date).toLocaleDateString():'')
       : t('cacheStale');
+    // "Cached" is reassurance, not a task: on a phone it otherwise sits permanently
+    // on top of a card. Not-yet-cached stays up, because that one is actionable.
+    clearTimeout(hideTimer);
+    if(cached)hideTimer=setTimeout(function(){indicator.classList.remove('show');},5000);
   }
   function updateStatus(){
     bar.classList.toggle('show',!navigator.onLine);
