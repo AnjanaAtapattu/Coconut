@@ -13,7 +13,7 @@
    a subpath (GitHub Pages project sites are served at /<repo>/).
 */
 
-var VERSION = 'v3';
+var VERSION = 'v4';
 var SHELL_CACHE = 'pol-shell-' + VERSION;
 var ASSET_CACHE = 'pol-assets-' + VERSION;
 var TILE_CACHE = 'pol-tiles-' + VERSION;
@@ -107,7 +107,26 @@ self.addEventListener('fetch', function (e) {
     return;
   }
 
-  // 3. Same-origin assets: cache first.
+  // 3. Crop guide PDFs: cached on first open, never precached. Together they are
+  // several megabytes, and a grower needs only the crops they actually grow — but
+  // once opened, the guide must still be there in the field with no signal.
+  if(/\/intercrop-pdfs\/.+\.pdf$/i.test(url.pathname)){
+    e.respondWith(
+      caches.match(req).then(function (hit) {
+        if (hit) return hit;
+        return fetch(req).then(function (res) {
+          if (res && res.status === 200) {
+            var copy = res.clone();
+            caches.open(ASSET_CACHE).then(function (c) { c.put(req, copy); });
+          }
+          return res;
+        });
+      })
+    );
+    return;
+  }
+
+  // 4. Same-origin assets: cache first.
   if (url.origin === self.location.origin) {
     e.respondWith(
       caches.match(req).then(function (hit) {
@@ -124,7 +143,7 @@ self.addEventListener('fetch', function (e) {
     return;
   }
 
-  // 4. Cross-origin libraries/fonts: stale-while-revalidate.
+  // 5. Cross-origin libraries/fonts: stale-while-revalidate.
   e.respondWith(
     caches.match(req).then(function (hit) {
       var net = fetch(req).then(function (res) {

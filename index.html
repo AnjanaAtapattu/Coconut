@@ -208,6 +208,8 @@ body.font-xl nav.tabs button{font-size:13.5px;}
 nav.tabs{overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
 nav.tabs::-webkit-scrollbar{display:none;}
 nav.tabs button{flex:0 0 auto;min-width:60px;min-height:44px;padding:9px 10px 7px;}
+.cropdoc a{display:inline-block;margin-top:4px;color:var(--green);font-weight:700;text-decoration:none;font-size:13px;}
+.cropdoc a:hover{text-decoration:underline;}
 .mite-box{margin-top:10px;padding:10px;border-radius:10px;background:rgba(255,152,0,.09);border:1px solid rgba(255,152,0,.35);}
 body.dark .mite-box{background:rgba(255,152,0,.12);}
 .mite-sel{display:block;width:100%;margin-top:6px;padding:7px 8px;border-radius:8px;border:1px solid var(--line);font-family:inherit;font-size:12px;background:#fff;color:var(--ink);}
@@ -7204,6 +7206,7 @@ var T={
     agroClimZone:"Agro-Climatic Zone of Sri Lanka",
     suitableVarieties:"Suitable Coconut Varieties",
     showOffices:"🏢 Show offices",
+    cropGuide:"Open crop guide (PDF)",
     mitePacketTitle:"Where to collect mite packets",mitePickDistrict:"Select your district…",
     mapOffline:"Maps need a connection the first time. Reconnect once and they will work offline after that."
   },
@@ -7272,6 +7275,7 @@ var T={
     agroClimZone:"ශ්‍රී ලංකාවේ කෘෂි-දේශගුණික කලාපය",
     suitableVarieties:"සුදුසු පොල් ප්‍රභේද",
     showOffices:"🏢 කාර්යාල පෙන්වන්න",
+    cropGuide:"බෝග මාර්ගෝපදේශය විවෘත කරන්න (PDF)",
     mitePacketTitle:"මයිටා පැකට් ලබාගත හැකි ස්ථාන",mitePickDistrict:"ඔබේ දිස්ත්‍රික්කය තෝරන්න…",
     mapOffline:"සිතියම් සඳහා පළමු වතාවේ සම්බන්ධතාවයක් අවශ්‍යයි. වරක් සම්බන්ධ වූ පසු ඒවා නොබැඳිව ක්‍රියා කරයි."
   },
@@ -7340,6 +7344,7 @@ var T={
     agroClimZone:"இலங்கையின் வேளாண்-காலநிலை மண்டலம்",
     suitableVarieties:"பொருத்தமான தென்னை ரகங்கள்",
     showOffices:"🏢 அலுவலகங்களைக் காட்டு",
+    cropGuide:"பயிர் வழிகாட்டியைத் திறக்க (PDF)",
     mitePacketTitle:"மைட் பொதிகள் பெறும் இடங்கள்",mitePickDistrict:"உங்கள் மாவட்டத்தைத் தேர்வுசெய்க…",
     mapOffline:"வரைபடங்களுக்கு முதல் முறை இணைப்பு தேவை. ஒரு முறை இணைந்தால் பின்னர் அவை ஆஃப்லைனில் வேலை செய்யும்."
   }
@@ -7534,11 +7539,19 @@ function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'
 function intercropFor(kind){ // kind like 'Wet Zone'
   return INTERCROP[kind]||{};
 }
+// Crops with a CRI flashcard PDF shipped in intercrop-pdfs/. The guide is the same
+// document whichever zone it is opened from, so it is stored once per crop.
+var INTERCROP_PDFS=["Avocado", "Banana", "CO3", "Cashew", "Cassava", "Cinnomon", "Cocoa", "Coffee", "Dragonfruit", "Durian", "Ginger", "Guava", "Lime", "Mango", "Papaya", "PassionFruit", "Pepper", "Pineapple", "Pomegranate", "Rambutan", "Taro", "Tea", "Tumeric"];
 function cropBlock(name,c){
   var em=EMOJI[name]||'🌱';
   var rows='';
   var fields=[['varieties','varieties'],['planting_materials','plantingMaterial'],['plant_density','plantDensity'],['best_time_to_plant','bestTime'],['available_at','availableAt'],['potential_return','potReturn'],['notes','notes']];
   fields.forEach(function(f){ var v=c[f[0]]; if(v&&String(v).trim())rows+='<div class="r"><b>'+t(f[1])+'</b>'+esc(v)+'</div>'; });
+  // CRI publishes a one-page flashcard per crop. Opening it in a new tab keeps the
+  // grower's place in the dossier, and the worker caches it for later field use.
+  if(INTERCROP_PDFS.indexOf(name)>=0){
+    rows+='<div class="r cropdoc"><a href="intercrop-pdfs/'+encodeURIComponent(name)+'.pdf" target="_blank" rel="noopener">📄 '+t('cropGuide')+'</a></div>';
+  }
   return '<details class="crop"><summary><span class="em">'+em+'</span>'+esc(name)+'<span class="arr">▾</span></summary><div class="body">'+(rows||'<div class="r muted">'+t('noExtra')+'</div>')+'</div></details>';
 }
 
@@ -8063,7 +8076,16 @@ function chatApplyLang(){
         if(hay.indexOf(lq)>=0)ofcHits.push(o);
       }
     }
+    var cropHits=[];
+    if(typeof INTERCROP_PDFS!=='undefined'){
+      var cq=q.toLowerCase();
+      cropHits=INTERCROP_PDFS.filter(function(c){return c.toLowerCase().indexOf(cq)>=0;});
+    }
     var html='';
+    cropHits.slice(0,3).forEach(function(c){
+      html+='<div class="sr-item" data-crop="'+esc(c)+'"><b>'+(EMOJI[c]||'🌱')+' '+esc(c)+'</b>'+
+            '<span class="sr-sub">'+esc(t('cropGuide'))+'</span></div>';
+    });
     ofcHits.slice(0,4).forEach(function(o){
       html+='<div class="sr-item" data-ofc="'+esc(o.name)+'"><b>'+o.icon+' '+esc(o.name)+'</b>'+
             '<span class="sr-sub">'+esc(o.addr)+'</span></div>';
@@ -8080,7 +8102,10 @@ function chatApplyLang(){
     results.querySelectorAll('.sr-item').forEach(function(el){
       el.onclick=function(){
         overlay.classList.remove('open');
-        if(el.dataset.ofc){
+        if(el.dataset.crop){
+          window.open('intercrop-pdfs/'+encodeURIComponent(el.dataset.crop)+'.pdf','_blank','noopener');
+        }
+        else if(el.dataset.ofc){
           ofcHighlight=el.dataset.ofc;
           ofcFilter='All';
           document.querySelector('nav.tabs button[data-tab="offices"]').click();
