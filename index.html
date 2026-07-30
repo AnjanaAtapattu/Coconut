@@ -46,6 +46,9 @@ body.lang-ta h1,body.lang-ta h2,body.lang-ta h3,body.lang-ta h4,body.lang-ta .he
 .gbtn2.on{background:var(--green);color:#fff;}
 .ofc-pin{background:rgba(255,255,255,.92);border:2px solid var(--green);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;line-height:1;box-shadow:0 1px 4px rgba(0,0,0,.4);}
 body.dark .ofc-pin{background:rgba(40,40,60,.92);border-color:#4caf50;}
+.ofc-cluster{background:var(--green);color:#fff;border:2px solid #fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;font-family:'Space Grotesk',sans-serif;box-shadow:0 2px 6px rgba(0,0,0,.45);cursor:pointer;}
+.ofc-cluster:hover{transform:scale(1.08);}
+body.dark .ofc-cluster{background:#2d8a4e;border-color:#1a1a2e;}
 nav.tabs{flex:0 0 auto;display:flex;background:#fff;border-top:1px solid var(--line);box-shadow:0 -2px 8px rgba(0,0,0,.06);z-index:30;padding-bottom:env(safe-area-inset-bottom);}
 nav.tabs button{flex:1;background:none;border:none;padding:9px 4px 7px;display:flex;flex-direction:column;align-items:center;gap:3px;color:#7a7a6a;font-family:'Manrope';font-weight:600;font-size:10.5px;cursor:pointer;}
 nav.tabs button .ic{font-size:21px;line-height:1;}
@@ -7466,26 +7469,57 @@ function initGoogle(){
 // The office list carries real coordinates, so it is far more useful shown on the
 // map than only as a list: a grower can see which nursery is actually closest.
 var officeLayer=null;
+function officePopup(o){
+  var dir='https://www.google.com/maps/dir/?api=1&destination='+o.lat+','+o.lng;
+  return '<b>'+esc(o.name)+'</b><br>'+esc(o.addr)+
+    (o.phone?'<br>📞 <a href="tel:'+o.phone.replace(/[^+\d]/g,'')+'">'+esc(o.phone)+'</a>':'')+
+    '<br><a href="'+dir+'" target="_blank" rel="noopener">'+t('ofcDirections')+'</a>';
+}
+// Offices cluster tightly in the coconut triangle: at the country-wide default zoom
+// roughly thirty pins land on top of one another around Kurunegala and Gampaha and
+// none of them can be tapped. Grid-bucket them per zoom level and show a count
+// instead, which avoids taking on a clustering library that would have to be fetched
+// from a CDN and would undermine offline use.
+function renderOfficePins(m){
+  if(!officeLayer)return;
+  officeLayer.clearLayers();
+  var zoom=m.getZoom(),cell=48,buckets={};
+  OFFICES.forEach(function(o){
+    var pt=m.project([o.lat,o.lng],zoom);
+    var k=Math.floor(pt.x/cell)+'_'+Math.floor(pt.y/cell);
+    (buckets[k]=buckets[k]||[]).push(o);
+  });
+  Object.keys(buckets).forEach(function(k){
+    var grp=buckets[k];
+    if(grp.length===1){
+      var o=grp[0];
+      officeLayer.addLayer(L.marker([o.lat,o.lng],{
+        icon:L.divIcon({className:'ofc-pin',html:'<span>'+o.icon+'</span>',iconSize:[26,26],iconAnchor:[13,13]}),
+        title:o.name,alt:o.name
+      }).bindPopup(officePopup(o)));
+      return;
+    }
+    var lat=0,lng=0;
+    grp.forEach(function(o){lat+=o.lat;lng+=o.lng;});
+    lat/=grp.length;lng/=grp.length;
+    var cm=L.marker([lat,lng],{
+      icon:L.divIcon({className:'ofc-cluster',html:'<span>'+grp.length+'</span>',iconSize:[34,34],iconAnchor:[17,17]}),
+      title:grp.length+' offices',alt:grp.length+' offices'
+    });
+    cm.on('click',function(){m.setView([lat,lng],Math.min(zoom+3,17));});
+    officeLayer.addLayer(cm);
+  });
+}
 function buildOfficeLayer(m){
   if(typeof OFFICES==='undefined'||!L.divIcon)return;
   officeLayer=L.layerGroup();
-  OFFICES.forEach(function(o){
-    var mk=L.marker([o.lat,o.lng],{
-      icon:L.divIcon({className:'ofc-pin',html:'<span>'+o.icon+'</span>',iconSize:[26,26],iconAnchor:[13,13]}),
-      title:o.name
-    });
-    var dir='https://www.google.com/maps/dir/?api=1&destination='+o.lat+','+o.lng;
-    mk.bindPopup('<b>'+esc(o.name)+'</b><br>'+esc(o.addr)+
-      (o.phone?'<br>📞 <a href="tel:'+o.phone.replace(/[^+\d]/g,'')+'">'+esc(o.phone)+'</a>':'')+
-      '<br><a href="'+dir+'" target="_blank" rel="noopener">'+t('ofcDirections')+'</a>');
-    officeLayer.addLayer(mk);
-  });
+  m.on('zoomend',function(){if(m.hasLayer(officeLayer))renderOfficePins(m);});
   var btn=document.getElementById('ofcMapToggle');
   if(!btn)return;
   btn.style.display='block';
   btn.onclick=function(){
     if(m.hasLayer(officeLayer)){m.removeLayer(officeLayer);btn.classList.remove('on');}
-    else{officeLayer.addTo(m);btn.classList.add('on');}
+    else{renderOfficePins(m);officeLayer.addTo(m);btn.classList.add('on');}
     btn.setAttribute('aria-pressed',m.hasLayer(officeLayer)?'true':'false');
   };
 }
