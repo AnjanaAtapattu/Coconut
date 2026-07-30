@@ -204,6 +204,11 @@ body.font-xl nav.tabs button{font-size:13.5px;}
 nav.tabs{overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
 nav.tabs::-webkit-scrollbar{display:none;}
 nav.tabs button{flex:0 0 auto;min-width:60px;min-height:44px;padding:9px 10px 7px;}
+/* === Zone variety / yield lists === */
+.zlist{margin:6px 0 0;padding-left:20px;}
+.zlist li{margin:5px 0;line-height:1.5;font-size:13.5px;}
+.zlist .ynote{color:#777;font-size:12px;}
+body.dark .zlist .ynote{color:#9a9a9a;}
 /* === Map Unavailable Fallback === */
 .map-unavailable{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;height:100%;padding:24px;text-align:center;font-size:13px;line-height:1.5;color:#777;background:var(--sand);font-weight:600;}
 .map-unavailable::first-line{font-size:34px;}
@@ -314,6 +319,8 @@ body.dark .ofc-card{background:#2d2d44;border-color:#3a3a50;}
 .ofc-card .ofc-type{font-size:11px;color:#888;text-transform:uppercase;font-weight:700;letter-spacing:.4px;}
 .ofc-card .ofc-addr{font-size:12px;margin:4px 0;color:var(--ink);opacity:.8;}
 .ofc-card .ofc-phone{font-size:12px;color:var(--green);font-weight:600;}
+.ofc-card .ofc-serves{font-size:11px;color:#888;margin:2px 0 4px;line-height:1.4;}
+body.dark .ofc-card .ofc-serves{color:#9a9a9a;}
 .ofc-card .ofc-dist{font-size:11px;color:#ff5722;font-weight:700;margin-top:4px;}
 .ofc-actions{display:flex;gap:6px;margin-top:6px;}
 .ofc-actions a,.ofc-actions button{background:var(--green);color:#fff;border:none;border-radius:8px;padding:6px 12px;font-size:11px;font-weight:700;text-decoration:none;cursor:pointer;font-family:'Manrope';}
@@ -501,7 +508,7 @@ var ZONE_DATA={
       "CRIC65",
       "CRISL98",
       "Moorock Tall",
-      "Plus Plam",
+      "Plus Palm",
       "Kapruwana",
       "Kapsetha",
       "Kapsuwaya"
@@ -513,31 +520,31 @@ var ZONE_DATA={
       },
       {
         "label": "CRIC65",
-        "value": "20,000-22,000 nuts/ha/yr"
+        "value": "20,000–22,000 nuts/ha/yr"
       },
       {
         "label": "CRISL98",
-        "value": "12,000-15,000 nuts/ha/yr"
+        "value": "12,000–15,000 nuts/ha/yr"
       },
       {
         "label": "Moorock Tall",
-        "value": "11,000"
+        "value": "11,000 nuts/ha/yr"
       },
       {
-        "label": "Plus Plam",
-        "value": "8,000-9,000"
+        "label": "Plus Palm",
+        "value": "8,000–9,000 nuts/ha/yr"
       },
       {
         "label": "Kapruwana",
-        "value": "20,000-22,000"
+        "value": "20,000–22,000 nuts/ha/yr"
       },
       {
         "label": "Kapsetha",
-        "value": "20,000-22,000"
+        "value": "20,000–22,000 nuts/ha/yr"
       },
       {
         "label": "Kapsuwaya",
-        "value": "20,000-22,000"
+        "value": "20,000–22,000 nuts/ha/yr"
       }
     ],
     "fertilizer_young": [
@@ -647,7 +654,7 @@ var ZONE_DATA={
       "CRIC65",
       "CRISL98",
       "Moorock Tall",
-      "Plus Plam",
+      "Plus Palm",
       "Kapruwana",
       "Kapsetha",
       "Kapsuwaya"
@@ -659,31 +666,31 @@ var ZONE_DATA={
       },
       {
         "label": "CRIC65",
-        "value": "20,000-22,000 nuts/ha/yr"
+        "value": "20,000–22,000 nuts/ha/yr"
       },
       {
         "label": "CRISL98",
-        "value": "12,000-15,000 nuts/ha/yr"
+        "value": "12,000–15,000 nuts/ha/yr"
       },
       {
         "label": "Moorock Tall",
-        "value": "11,000"
+        "value": "11,000 nuts/ha/yr"
       },
       {
-        "label": "Plus Plam",
-        "value": "8,000-9,000"
+        "label": "Plus Palm",
+        "value": "8,000–9,000 nuts/ha/yr"
       },
       {
         "label": "Kapruwana",
-        "value": "20,000-22,000"
+        "value": "20,000–22,000 nuts/ha/yr"
       },
       {
         "label": "Kapsetha",
-        "value": "20,000-22,000"
+        "value": "20,000–22,000 nuts/ha/yr"
       },
       {
         "label": "Kapsuwaya",
-        "value": "20,000-22,000"
+        "value": "20,000–22,000 nuts/ha/yr"
       }
     ],
     "fertilizer_young": [
@@ -793,7 +800,7 @@ var ZONE_DATA={
       "CRIC65",
       "CRISL98",
       "Moorock Tall",
-      "Plus Plam",
+      "Plus Palm",
       "Kapruwana",
       "Kapsetha",
       "Kapsuwaya"
@@ -805,31 +812,31 @@ var ZONE_DATA={
       },
       {
         "label": "CRIC65",
-        "value": "20,000-22,000 nuts/ha/yr"
+        "value": "20,000–22,000 nuts/ha/yr"
       },
       {
         "label": "CRISL98",
-        "value": "12,000-15,000 nuts/ha/yr"
+        "value": "12,000–15,000 nuts/ha/yr"
       },
       {
         "label": "Moorock Tall",
-        "value": "11,000"
+        "value": "11,000 nuts/ha/yr"
       },
       {
-        "label": "Plus Plam",
-        "value": "8,000-9,000"
+        "label": "Plus Palm",
+        "value": "8,000–9,000 nuts/ha/yr"
       },
       {
         "label": "Kapruwana",
-        "value": "20,000-22,000"
+        "value": "20,000–22,000 nuts/ha/yr"
       },
       {
         "label": "Kapsetha",
-        "value": "20,000-22,000"
+        "value": "20,000–22,000 nuts/ha/yr"
       },
       {
         "label": "Kapsuwaya",
-        "value": "20,000-22,000"
+        "value": "20,000–22,000 nuts/ha/yr"
       }
     ],
     "fertilizer_young": [
@@ -939,7 +946,7 @@ var ZONE_DATA={
       "CRIC65",
       "CRISL98",
       "Moorock Tall",
-      "Plus Plam",
+      "Plus Palm",
       "Kapruwana",
       "Kapsetha",
       "Kapsuwaya"
@@ -951,31 +958,31 @@ var ZONE_DATA={
       },
       {
         "label": "CRIC65",
-        "value": "20,000-22,000 nuts/ha/yr"
+        "value": "20,000–22,000 nuts/ha/yr"
       },
       {
         "label": "CRISL98",
-        "value": "12,000-15,000 nuts/ha/yr"
+        "value": "12,000–15,000 nuts/ha/yr"
       },
       {
         "label": "Moorock Tall",
-        "value": "11,000"
+        "value": "11,000 nuts/ha/yr"
       },
       {
-        "label": "Plus Plam",
-        "value": "8,000-9,000"
+        "label": "Plus Palm",
+        "value": "8,000–9,000 nuts/ha/yr"
       },
       {
         "label": "Kapruwana",
-        "value": "20,000-22,000"
+        "value": "20,000–22,000 nuts/ha/yr"
       },
       {
         "label": "Kapsetha",
-        "value": "20,000-22,000"
+        "value": "20,000–22,000 nuts/ha/yr"
       },
       {
         "label": "Kapsuwaya",
-        "value": "20,000-22,000"
+        "value": "20,000–22,000 nuts/ha/yr"
       }
     ],
     "fertilizer_young": [
@@ -1085,7 +1092,7 @@ var ZONE_DATA={
       "CRIC65",
       "CRISL98",
       "Moorock Tall",
-      "Plus Plam",
+      "Plus Palm",
       "Kapruwana",
       "Kapsetha",
       "Kapsuwaya"
@@ -1097,31 +1104,31 @@ var ZONE_DATA={
       },
       {
         "label": "CRIC65",
-        "value": "20,000-22,000 nuts/ha/yr"
+        "value": "20,000–22,000 nuts/ha/yr"
       },
       {
         "label": "CRISL98",
-        "value": "12,000-15,000 nuts/ha/yr"
+        "value": "12,000–15,000 nuts/ha/yr"
       },
       {
         "label": "Moorock Tall",
-        "value": "11,000"
+        "value": "11,000 nuts/ha/yr"
       },
       {
-        "label": "Plus Plam",
-        "value": "8,000-9,000"
+        "label": "Plus Palm",
+        "value": "8,000–9,000 nuts/ha/yr"
       },
       {
         "label": "Kapruwana",
-        "value": "20,000-22,000"
+        "value": "20,000–22,000 nuts/ha/yr"
       },
       {
         "label": "Kapsetha",
-        "value": "20,000-22,000"
+        "value": "20,000–22,000 nuts/ha/yr"
       },
       {
         "label": "Kapsuwaya",
-        "value": "20,000-22,000"
+        "value": "20,000–22,000 nuts/ha/yr"
       }
     ],
     "fertilizer_young": [
@@ -1231,7 +1238,7 @@ var ZONE_DATA={
       "CRIC65",
       "CRISL98",
       "Moorock Tall",
-      "Plus Plam",
+      "Plus Palm",
       "Kapruwana",
       "Kapsetha",
       "Kapsuwaya"
@@ -1243,31 +1250,31 @@ var ZONE_DATA={
       },
       {
         "label": "CRIC65",
-        "value": "20,000-22,000 nuts/ha/yr"
+        "value": "20,000–22,000 nuts/ha/yr"
       },
       {
         "label": "CRISL98",
-        "value": "12,000-15,000 nuts/ha/yr"
+        "value": "12,000–15,000 nuts/ha/yr"
       },
       {
         "label": "Moorock Tall",
-        "value": "11,000"
+        "value": "11,000 nuts/ha/yr"
       },
       {
-        "label": "Plus Plam",
-        "value": "8,000-9,000"
+        "label": "Plus Palm",
+        "value": "8,000–9,000 nuts/ha/yr"
       },
       {
         "label": "Kapruwana",
-        "value": "20,000-22,000"
+        "value": "20,000–22,000 nuts/ha/yr"
       },
       {
         "label": "Kapsetha",
-        "value": "20,000-22,000"
+        "value": "20,000–22,000 nuts/ha/yr"
       },
       {
         "label": "Kapsuwaya",
-        "value": "20,000-22,000"
+        "value": "20,000–22,000 nuts/ha/yr"
       }
     ],
     "fertilizer_young": [
@@ -1377,7 +1384,7 @@ var ZONE_DATA={
       "CRIC65",
       "CRISL98",
       "Moorock Tall",
-      "Plus Plam",
+      "Plus Palm",
       "Kapruwana",
       "Kapsetha",
       "Kapsuwaya"
@@ -1389,31 +1396,31 @@ var ZONE_DATA={
       },
       {
         "label": "CRIC65",
-        "value": "20,000-22,000 nuts/ha/yr"
+        "value": "20,000–22,000 nuts/ha/yr"
       },
       {
         "label": "CRISL98",
-        "value": "12,000-15,000 nuts/ha/yr"
+        "value": "12,000–15,000 nuts/ha/yr"
       },
       {
         "label": "Moorock Tall",
-        "value": "11,000"
+        "value": "11,000 nuts/ha/yr"
       },
       {
-        "label": "Plus Plam",
-        "value": "8,000-9,000"
+        "label": "Plus Palm",
+        "value": "8,000–9,000 nuts/ha/yr"
       },
       {
         "label": "Kapruwana",
-        "value": "20,000-22,000"
+        "value": "20,000–22,000 nuts/ha/yr"
       },
       {
         "label": "Kapsetha",
-        "value": "20,000-22,000"
+        "value": "20,000–22,000 nuts/ha/yr"
       },
       {
         "label": "Kapsuwaya",
-        "value": "20,000-22,000"
+        "value": "20,000–22,000 nuts/ha/yr"
       }
     ],
     "fertilizer_young": [
@@ -1523,7 +1530,7 @@ var ZONE_DATA={
       "CRIC65",
       "CRISL98",
       "Moorock Tall",
-      "Plus Plam",
+      "Plus Palm",
       "Kapruwana",
       "Kapsetha",
       "Kapsuwaya"
@@ -1535,31 +1542,31 @@ var ZONE_DATA={
       },
       {
         "label": "CRIC65",
-        "value": "20,000-22,000 nuts/ha/yr"
+        "value": "20,000–22,000 nuts/ha/yr"
       },
       {
         "label": "CRISL98",
-        "value": "12,000-15,000 nuts/ha/yr"
+        "value": "12,000–15,000 nuts/ha/yr"
       },
       {
         "label": "Moorock Tall",
-        "value": "11,000"
+        "value": "11,000 nuts/ha/yr"
       },
       {
-        "label": "Plus Plam",
-        "value": "8,000-9,000"
+        "label": "Plus Palm",
+        "value": "8,000–9,000 nuts/ha/yr"
       },
       {
         "label": "Kapruwana",
-        "value": "20,000-22,000"
+        "value": "20,000–22,000 nuts/ha/yr"
       },
       {
         "label": "Kapsetha",
-        "value": "20,000-22,000"
+        "value": "20,000–22,000 nuts/ha/yr"
       },
       {
         "label": "Kapsuwaya",
-        "value": "20,000-22,000"
+        "value": "20,000–22,000 nuts/ha/yr"
       }
     ],
     "fertilizer_young": [
@@ -1669,7 +1676,7 @@ var ZONE_DATA={
       "CRIC65",
       "CRISL98",
       "Moorock Tall",
-      "Plus Plam",
+      "Plus Palm",
       "Kapruwana",
       "Kapsetha",
       "Kapsuwaya"
@@ -1681,31 +1688,31 @@ var ZONE_DATA={
       },
       {
         "label": "CRIC65",
-        "value": "20,000-22,000 nuts/ha/yr"
+        "value": "20,000–22,000 nuts/ha/yr"
       },
       {
         "label": "CRISL98",
-        "value": "12,000-15,000 nuts/ha/yr"
+        "value": "12,000–15,000 nuts/ha/yr"
       },
       {
         "label": "Moorock Tall",
-        "value": "11,000"
+        "value": "11,000 nuts/ha/yr"
       },
       {
-        "label": "Plus Plam",
-        "value": "8,000-9,000"
+        "label": "Plus Palm",
+        "value": "8,000–9,000 nuts/ha/yr"
       },
       {
         "label": "Kapruwana",
-        "value": "20,000-22,000"
+        "value": "20,000–22,000 nuts/ha/yr"
       },
       {
         "label": "Kapsetha",
-        "value": "20,000-22,000"
+        "value": "20,000–22,000 nuts/ha/yr"
       },
       {
         "label": "Kapsuwaya",
-        "value": "20,000-22,000"
+        "value": "20,000–22,000 nuts/ha/yr"
       }
     ],
     "fertilizer_young": [
@@ -1815,7 +1822,7 @@ var ZONE_DATA={
       "CRIC65",
       "CRISL98",
       "Moorock Tall",
-      "Plus Plam",
+      "Plus Palm",
       "Kapruwana",
       "Kapsetha",
       "Kapsuwaya"
@@ -1827,31 +1834,31 @@ var ZONE_DATA={
       },
       {
         "label": "CRIC65",
-        "value": "20,000-22,000 nuts/ha/yr"
+        "value": "20,000–22,000 nuts/ha/yr"
       },
       {
         "label": "CRISL98",
-        "value": "12,000-15,000 nuts/ha/yr"
+        "value": "12,000–15,000 nuts/ha/yr"
       },
       {
         "label": "Moorock Tall",
-        "value": "11,000"
+        "value": "11,000 nuts/ha/yr"
       },
       {
-        "label": "Plus Plam",
-        "value": "8,000-9,000"
+        "label": "Plus Palm",
+        "value": "8,000–9,000 nuts/ha/yr"
       },
       {
         "label": "Kapruwana",
-        "value": "20,000-22,000"
+        "value": "20,000–22,000 nuts/ha/yr"
       },
       {
         "label": "Kapsetha",
-        "value": "20,000-22,000"
+        "value": "20,000–22,000 nuts/ha/yr"
       },
       {
         "label": "Kapsuwaya",
-        "value": "20,000-22,000"
+        "value": "20,000–22,000 nuts/ha/yr"
       }
     ],
     "fertilizer_young": [
@@ -1961,7 +1968,7 @@ var ZONE_DATA={
       "CRIC65",
       "CRISL98",
       "Moorock Tall",
-      "Plus Plam",
+      "Plus Palm",
       "Kapruwana",
       "Kapsetha",
       "Kapsuwaya"
@@ -1973,31 +1980,31 @@ var ZONE_DATA={
       },
       {
         "label": "CRIC65",
-        "value": "20,000-22,000 nuts/ha/yr"
+        "value": "20,000–22,000 nuts/ha/yr"
       },
       {
         "label": "CRISL98",
-        "value": "12,000-15,000 nuts/ha/yr"
+        "value": "12,000–15,000 nuts/ha/yr"
       },
       {
         "label": "Moorock Tall",
-        "value": "11,000"
+        "value": "11,000 nuts/ha/yr"
       },
       {
-        "label": "Plus Plam",
-        "value": "8,000-9,000"
+        "label": "Plus Palm",
+        "value": "8,000–9,000 nuts/ha/yr"
       },
       {
         "label": "Kapruwana",
-        "value": "20,000-22,000"
+        "value": "20,000–22,000 nuts/ha/yr"
       },
       {
         "label": "Kapsetha",
-        "value": "20,000-22,000"
+        "value": "20,000–22,000 nuts/ha/yr"
       },
       {
         "label": "Kapsuwaya",
-        "value": "20,000-22,000"
+        "value": "20,000–22,000 nuts/ha/yr"
       }
     ],
     "fertilizer_young": [
@@ -2107,7 +2114,7 @@ var ZONE_DATA={
       "CRIC65",
       "CRISL98",
       "Moorock Tall",
-      "Plus Plam",
+      "Plus Palm",
       "Kapruwana",
       "Kapsetha",
       "Kapsuwaya"
@@ -2119,31 +2126,31 @@ var ZONE_DATA={
       },
       {
         "label": "CRIC65",
-        "value": "20,000-22,000 nuts/ha/yr"
+        "value": "20,000–22,000 nuts/ha/yr"
       },
       {
         "label": "CRISL98",
-        "value": "12,000-15,000 nuts/ha/yr"
+        "value": "12,000–15,000 nuts/ha/yr"
       },
       {
         "label": "Moorock Tall",
-        "value": "11,000"
+        "value": "11,000 nuts/ha/yr"
       },
       {
-        "label": "Plus Plam",
-        "value": "8,000-9,000"
+        "label": "Plus Palm",
+        "value": "8,000–9,000 nuts/ha/yr"
       },
       {
         "label": "Kapruwana",
-        "value": "20,000-22,000"
+        "value": "20,000–22,000 nuts/ha/yr"
       },
       {
         "label": "Kapsetha",
-        "value": "20,000-22,000"
+        "value": "20,000–22,000 nuts/ha/yr"
       },
       {
         "label": "Kapsuwaya",
-        "value": "20,000-22,000"
+        "value": "20,000–22,000 nuts/ha/yr"
       }
     ],
     "fertilizer_young": [
@@ -2253,7 +2260,7 @@ var ZONE_DATA={
       "CRIC65",
       "CRISL98",
       "Moorock Tall",
-      "Plus Plam",
+      "Plus Palm",
       "Kapruwana",
       "Kapsetha",
       "Kapsuwaya"
@@ -2265,31 +2272,31 @@ var ZONE_DATA={
       },
       {
         "label": "CRIC65",
-        "value": "20,000-22,000 nuts/ha/yr"
+        "value": "20,000–22,000 nuts/ha/yr"
       },
       {
         "label": "CRISL98",
-        "value": "12,000-15,000 nuts/ha/yr"
+        "value": "12,000–15,000 nuts/ha/yr"
       },
       {
         "label": "Moorock Tall",
-        "value": "11,000"
+        "value": "11,000 nuts/ha/yr"
       },
       {
-        "label": "Plus Plam",
-        "value": "8,000-9,000"
+        "label": "Plus Palm",
+        "value": "8,000–9,000 nuts/ha/yr"
       },
       {
         "label": "Kapruwana",
-        "value": "20,000-22,000"
+        "value": "20,000–22,000 nuts/ha/yr"
       },
       {
         "label": "Kapsetha",
-        "value": "20,000-22,000"
+        "value": "20,000–22,000 nuts/ha/yr"
       },
       {
         "label": "Kapsuwaya",
-        "value": "20,000-22,000"
+        "value": "20,000–22,000 nuts/ha/yr"
       }
     ],
     "fertilizer_young": [
@@ -2399,7 +2406,7 @@ var ZONE_DATA={
       "CRIC65",
       "CRISL98",
       "Moorock Tall",
-      "Plus Plam",
+      "Plus Palm",
       "Kapruwana",
       "Kapsetha",
       "Kapsuwaya"
@@ -2411,31 +2418,31 @@ var ZONE_DATA={
       },
       {
         "label": "CRIC65",
-        "value": "20,000-22,000 nuts/ha/yr"
+        "value": "20,000–22,000 nuts/ha/yr"
       },
       {
         "label": "CRISL98",
-        "value": "12,000-15,000 nuts/ha/yr"
+        "value": "12,000–15,000 nuts/ha/yr"
       },
       {
         "label": "Moorock Tall",
-        "value": "11,000"
+        "value": "11,000 nuts/ha/yr"
       },
       {
-        "label": "Plus Plam",
-        "value": "8,000-9,000"
+        "label": "Plus Palm",
+        "value": "8,000–9,000 nuts/ha/yr"
       },
       {
         "label": "Kapruwana",
-        "value": "20,000-22,000"
+        "value": "20,000–22,000 nuts/ha/yr"
       },
       {
         "label": "Kapsetha",
-        "value": "20,000-22,000"
+        "value": "20,000–22,000 nuts/ha/yr"
       },
       {
         "label": "Kapsuwaya",
-        "value": "20,000-22,000"
+        "value": "20,000–22,000 nuts/ha/yr"
       }
     ],
     "fertilizer_young": [
@@ -2545,7 +2552,7 @@ var ZONE_DATA={
       "CRIC65",
       "CRISL98",
       "Moorock Tall",
-      "Plus Plam",
+      "Plus Palm",
       "Kapruwana",
       "Kapsetha",
       "Kapsuwaya"
@@ -2557,31 +2564,31 @@ var ZONE_DATA={
       },
       {
         "label": "CRIC65",
-        "value": "20,000-22,000 nuts/ha/yr"
+        "value": "20,000–22,000 nuts/ha/yr"
       },
       {
         "label": "CRISL98",
-        "value": "12,000-15,000 nuts/ha/yr"
+        "value": "12,000–15,000 nuts/ha/yr"
       },
       {
         "label": "Moorock Tall",
-        "value": "11,000"
+        "value": "11,000 nuts/ha/yr"
       },
       {
-        "label": "Plus Plam",
-        "value": "8,000-9,000"
+        "label": "Plus Palm",
+        "value": "8,000–9,000 nuts/ha/yr"
       },
       {
         "label": "Kapruwana",
-        "value": "20,000-22,000"
+        "value": "20,000–22,000 nuts/ha/yr"
       },
       {
         "label": "Kapsetha",
-        "value": "20,000-22,000"
+        "value": "20,000–22,000 nuts/ha/yr"
       },
       {
         "label": "Kapsuwaya",
-        "value": "20,000-22,000"
+        "value": "20,000–22,000 nuts/ha/yr"
       }
     ],
     "fertilizer_young": [
@@ -2691,7 +2698,7 @@ var ZONE_DATA={
       "CRIC65",
       "CRISL98",
       "Moorock Tall",
-      "Plus Plam",
+      "Plus Palm",
       "Kapruwana",
       "Kapsetha",
       "Kapsuwaya"
@@ -2703,31 +2710,31 @@ var ZONE_DATA={
       },
       {
         "label": "CRIC65",
-        "value": "20,000-22,000 nuts/ha/yr"
+        "value": "20,000–22,000 nuts/ha/yr"
       },
       {
         "label": "CRISL98",
-        "value": "12,000-15,000 nuts/ha/yr"
+        "value": "12,000–15,000 nuts/ha/yr"
       },
       {
         "label": "Moorock Tall",
-        "value": "11,000"
+        "value": "11,000 nuts/ha/yr"
       },
       {
-        "label": "Plus Plam",
-        "value": "8,000-9,000"
+        "label": "Plus Palm",
+        "value": "8,000–9,000 nuts/ha/yr"
       },
       {
         "label": "Kapruwana",
-        "value": "20,000-22,000"
+        "value": "20,000–22,000 nuts/ha/yr"
       },
       {
         "label": "Kapsetha",
-        "value": "20,000-22,000"
+        "value": "20,000–22,000 nuts/ha/yr"
       },
       {
         "label": "Kapsuwaya",
-        "value": "20,000-22,000"
+        "value": "20,000–22,000 nuts/ha/yr"
       }
     ],
     "fertilizer_young": [
@@ -2837,7 +2844,7 @@ var ZONE_DATA={
       "CRIC65",
       "CRISL98",
       "Moorock Tall",
-      "Plus Plam",
+      "Plus Palm",
       "Kapruwana",
       "Kapsetha",
       "Kapsuwaya"
@@ -2849,31 +2856,31 @@ var ZONE_DATA={
       },
       {
         "label": "CRIC65",
-        "value": "20,000-22,000 nuts/ha/yr"
+        "value": "20,000–22,000 nuts/ha/yr"
       },
       {
         "label": "CRISL98",
-        "value": "12,000-15,000 nuts/ha/yr"
+        "value": "12,000–15,000 nuts/ha/yr"
       },
       {
         "label": "Moorock Tall",
-        "value": "11,000"
+        "value": "11,000 nuts/ha/yr"
       },
       {
-        "label": "Plus Plam",
-        "value": "8,000-9,000"
+        "label": "Plus Palm",
+        "value": "8,000–9,000 nuts/ha/yr"
       },
       {
         "label": "Kapruwana",
-        "value": "20,000-22,000"
+        "value": "20,000–22,000 nuts/ha/yr"
       },
       {
         "label": "Kapsetha",
-        "value": "20,000-22,000"
+        "value": "20,000–22,000 nuts/ha/yr"
       },
       {
         "label": "Kapsuwaya",
-        "value": "20,000-22,000"
+        "value": "20,000–22,000 nuts/ha/yr"
       }
     ],
     "fertilizer_young": [
@@ -2983,7 +2990,7 @@ var ZONE_DATA={
       "CRIC65",
       "CRISL98",
       "Moorock Tall",
-      "Plus Plam",
+      "Plus Palm",
       "Kapruwana",
       "Kapsetha",
       "Kapsuwaya"
@@ -2995,31 +3002,31 @@ var ZONE_DATA={
       },
       {
         "label": "CRIC65",
-        "value": "20,000-22,000 nuts/ha/yr"
+        "value": "20,000–22,000 nuts/ha/yr"
       },
       {
         "label": "CRISL98",
-        "value": "12,000-15,000 nuts/ha/yr"
+        "value": "12,000–15,000 nuts/ha/yr"
       },
       {
         "label": "Moorock Tall",
-        "value": "11,000"
+        "value": "11,000 nuts/ha/yr"
       },
       {
-        "label": "Plus Plam",
-        "value": "8,000-9,000"
+        "label": "Plus Palm",
+        "value": "8,000–9,000 nuts/ha/yr"
       },
       {
         "label": "Kapruwana",
-        "value": "20,000-22,000"
+        "value": "20,000–22,000 nuts/ha/yr"
       },
       {
         "label": "Kapsetha",
-        "value": "20,000-22,000"
+        "value": "20,000–22,000 nuts/ha/yr"
       },
       {
         "label": "Kapsuwaya",
-        "value": "20,000-22,000"
+        "value": "20,000–22,000 nuts/ha/yr"
       }
     ],
     "fertilizer_young": [
@@ -3129,7 +3136,7 @@ var ZONE_DATA={
       "CRIC65",
       "CRISL98",
       "Moorock Tall",
-      "Plus Plam",
+      "Plus Palm",
       "Kapruwana",
       "Kapsetha",
       "Kapsuwaya"
@@ -3141,31 +3148,31 @@ var ZONE_DATA={
       },
       {
         "label": "CRIC65",
-        "value": "20,000-22,000 nuts/ha/yr"
+        "value": "20,000–22,000 nuts/ha/yr"
       },
       {
         "label": "CRISL98",
-        "value": "12,000-15,000 nuts/ha/yr"
+        "value": "12,000–15,000 nuts/ha/yr"
       },
       {
         "label": "Moorock Tall",
-        "value": "11,000"
+        "value": "11,000 nuts/ha/yr"
       },
       {
-        "label": "Plus Plam",
-        "value": "8,000-9,000"
+        "label": "Plus Palm",
+        "value": "8,000–9,000 nuts/ha/yr"
       },
       {
         "label": "Kapruwana",
-        "value": "20,000-22,000"
+        "value": "20,000–22,000 nuts/ha/yr"
       },
       {
         "label": "Kapsetha",
-        "value": "20,000-22,000"
+        "value": "20,000–22,000 nuts/ha/yr"
       },
       {
         "label": "Kapsuwaya",
-        "value": "20,000-22,000"
+        "value": "20,000–22,000 nuts/ha/yr"
       }
     ],
     "fertilizer_young": [
@@ -3275,7 +3282,7 @@ var ZONE_DATA={
       "CRIC65",
       "CRISL98",
       "Moorock Tall",
-      "Plus Plam",
+      "Plus Palm",
       "Kapruwana",
       "Kapsetha",
       "Kapsuwaya"
@@ -3287,31 +3294,31 @@ var ZONE_DATA={
       },
       {
         "label": "CRIC65",
-        "value": "20,000-22,000 nuts/ha/yr"
+        "value": "20,000–22,000 nuts/ha/yr"
       },
       {
         "label": "CRISL98",
-        "value": "12,000-15,000 nuts/ha/yr"
+        "value": "12,000–15,000 nuts/ha/yr"
       },
       {
         "label": "Moorock Tall",
-        "value": "11,000"
+        "value": "11,000 nuts/ha/yr"
       },
       {
-        "label": "Plus Plam",
-        "value": "8,000-9,000"
+        "label": "Plus Palm",
+        "value": "8,000–9,000 nuts/ha/yr"
       },
       {
         "label": "Kapruwana",
-        "value": "20,000-22,000"
+        "value": "20,000–22,000 nuts/ha/yr"
       },
       {
         "label": "Kapsetha",
-        "value": "20,000-22,000"
+        "value": "20,000–22,000 nuts/ha/yr"
       },
       {
         "label": "Kapsuwaya",
-        "value": "20,000-22,000"
+        "value": "20,000–22,000 nuts/ha/yr"
       }
     ],
     "fertilizer_young": [
@@ -3421,7 +3428,7 @@ var ZONE_DATA={
       "CRIC65",
       "CRISL98",
       "Moorock Tall",
-      "Plus Plam",
+      "Plus Palm",
       "Kapruwana",
       "Kapsetha",
       "Kapsuwaya"
@@ -3433,31 +3440,31 @@ var ZONE_DATA={
       },
       {
         "label": "CRIC65",
-        "value": "20,000-22,000 nuts/ha/yr"
+        "value": "20,000–22,000 nuts/ha/yr"
       },
       {
         "label": "CRISL98",
-        "value": "12,000-15,000 nuts/ha/yr"
+        "value": "12,000–15,000 nuts/ha/yr"
       },
       {
         "label": "Moorock Tall",
-        "value": "11,000"
+        "value": "11,000 nuts/ha/yr"
       },
       {
-        "label": "Plus Plam",
-        "value": "8,000-9,000"
+        "label": "Plus Palm",
+        "value": "8,000–9,000 nuts/ha/yr"
       },
       {
         "label": "Kapruwana",
-        "value": "20,000-22,000"
+        "value": "20,000–22,000 nuts/ha/yr"
       },
       {
         "label": "Kapsetha",
-        "value": "20,000-22,000"
+        "value": "20,000–22,000 nuts/ha/yr"
       },
       {
         "label": "Kapsuwaya",
-        "value": "20,000-22,000"
+        "value": "20,000–22,000 nuts/ha/yr"
       }
     ],
     "fertilizer_young": [
@@ -3567,7 +3574,7 @@ var ZONE_DATA={
       "CRIC65",
       "CRISL98",
       "Moorock Tall",
-      "Plus Plam",
+      "Plus Palm",
       "Kapruwana",
       "Kapsetha",
       "Kapsuwaya"
@@ -3579,31 +3586,31 @@ var ZONE_DATA={
       },
       {
         "label": "CRIC65",
-        "value": "20,000-22,000 nuts/ha/yr"
+        "value": "20,000–22,000 nuts/ha/yr"
       },
       {
         "label": "CRISL98",
-        "value": "12,000-15,000 nuts/ha/yr"
+        "value": "12,000–15,000 nuts/ha/yr"
       },
       {
         "label": "Moorock Tall",
-        "value": "11,000"
+        "value": "11,000 nuts/ha/yr"
       },
       {
-        "label": "Plus Plam",
-        "value": "8,000-9,000"
+        "label": "Plus Palm",
+        "value": "8,000–9,000 nuts/ha/yr"
       },
       {
         "label": "Kapruwana",
-        "value": "20,000-22,000"
+        "value": "20,000–22,000 nuts/ha/yr"
       },
       {
         "label": "Kapsetha",
-        "value": "20,000-22,000"
+        "value": "20,000–22,000 nuts/ha/yr"
       },
       {
         "label": "Kapsuwaya",
-        "value": "20,000-22,000"
+        "value": "20,000–22,000 nuts/ha/yr"
       }
     ],
     "fertilizer_young": [
@@ -3713,7 +3720,7 @@ var ZONE_DATA={
       "CRIC65",
       "CRISL98",
       "Moorock Tall",
-      "Plus Plam",
+      "Plus Palm",
       "Kapruwana",
       "Kapsetha",
       "Kapsuwaya"
@@ -3725,31 +3732,31 @@ var ZONE_DATA={
       },
       {
         "label": "CRIC65",
-        "value": "20,000-22,000 nuts/ha/yr"
+        "value": "20,000–22,000 nuts/ha/yr"
       },
       {
         "label": "CRISL98",
-        "value": "12,000-15,000 nuts/ha/yr"
+        "value": "12,000–15,000 nuts/ha/yr"
       },
       {
         "label": "Moorock Tall",
-        "value": "11,000"
+        "value": "11,000 nuts/ha/yr"
       },
       {
-        "label": "Plus Plam",
-        "value": "8,000-9,000"
+        "label": "Plus Palm",
+        "value": "8,000–9,000 nuts/ha/yr"
       },
       {
         "label": "Kapruwana",
-        "value": "20,000-22,000"
+        "value": "20,000–22,000 nuts/ha/yr"
       },
       {
         "label": "Kapsetha",
-        "value": "20,000-22,000"
+        "value": "20,000–22,000 nuts/ha/yr"
       },
       {
         "label": "Kapsuwaya",
-        "value": "20,000-22,000"
+        "value": "20,000–22,000 nuts/ha/yr"
       }
     ],
     "fertilizer_young": [
@@ -3859,7 +3866,7 @@ var ZONE_DATA={
       "CRIC65",
       "CRISL98",
       "Moorock Tall",
-      "Plus Plam",
+      "Plus Palm",
       "Kapruwana",
       "Kapsetha",
       "Kapsuwaya"
@@ -3871,31 +3878,31 @@ var ZONE_DATA={
       },
       {
         "label": "CRIC65",
-        "value": "20,000-22,000 nuts/ha/yr"
+        "value": "20,000–22,000 nuts/ha/yr"
       },
       {
         "label": "CRISL98",
-        "value": "12,000-15,000 nuts/ha/yr"
+        "value": "12,000–15,000 nuts/ha/yr"
       },
       {
         "label": "Moorock Tall",
-        "value": "11,000"
+        "value": "11,000 nuts/ha/yr"
       },
       {
-        "label": "Plus Plam",
-        "value": "8,000-9,000"
+        "label": "Plus Palm",
+        "value": "8,000–9,000 nuts/ha/yr"
       },
       {
         "label": "Kapruwana",
-        "value": "20,000-22,000"
+        "value": "20,000–22,000 nuts/ha/yr"
       },
       {
         "label": "Kapsetha",
-        "value": "20,000-22,000"
+        "value": "20,000–22,000 nuts/ha/yr"
       },
       {
         "label": "Kapsuwaya",
-        "value": "20,000-22,000"
+        "value": "20,000–22,000 nuts/ha/yr"
       }
     ],
     "fertilizer_young": [
@@ -4005,7 +4012,7 @@ var ZONE_DATA={
       "CRIC65",
       "CRISL98",
       "Moorock Tall",
-      "Plus Plam",
+      "Plus Palm",
       "Kapruwana",
       "Kapsetha",
       "Kapsuwaya"
@@ -4017,31 +4024,31 @@ var ZONE_DATA={
       },
       {
         "label": "CRIC65",
-        "value": "20,000-22,000 nuts/ha/yr"
+        "value": "20,000–22,000 nuts/ha/yr"
       },
       {
         "label": "CRISL98",
-        "value": "12,000-15,000 nuts/ha/yr"
+        "value": "12,000–15,000 nuts/ha/yr"
       },
       {
         "label": "Moorock Tall",
-        "value": "11,000"
+        "value": "11,000 nuts/ha/yr"
       },
       {
-        "label": "Plus Plam",
-        "value": "8,000-9,000"
+        "label": "Plus Palm",
+        "value": "8,000–9,000 nuts/ha/yr"
       },
       {
         "label": "Kapruwana",
-        "value": "20,000-22,000"
+        "value": "20,000–22,000 nuts/ha/yr"
       },
       {
         "label": "Kapsetha",
-        "value": "20,000-22,000"
+        "value": "20,000–22,000 nuts/ha/yr"
       },
       {
         "label": "Kapsuwaya",
-        "value": "20,000-22,000"
+        "value": "20,000–22,000 nuts/ha/yr"
       }
     ],
     "fertilizer_young": [
@@ -4151,7 +4158,7 @@ var ZONE_DATA={
       "CRIC65",
       "CRISL98",
       "Moorock Tall",
-      "Plus Plam",
+      "Plus Palm",
       "Kapruwana",
       "Kapsetha",
       "Kapsuwaya"
@@ -4163,31 +4170,31 @@ var ZONE_DATA={
       },
       {
         "label": "CRIC65",
-        "value": "20,000-22,000 nuts/ha/yr"
+        "value": "20,000–22,000 nuts/ha/yr"
       },
       {
         "label": "CRISL98",
-        "value": "12,000-15,000 nuts/ha/yr"
+        "value": "12,000–15,000 nuts/ha/yr"
       },
       {
         "label": "Moorock Tall",
-        "value": "11,000"
+        "value": "11,000 nuts/ha/yr"
       },
       {
-        "label": "Plus Plam",
-        "value": "8,000-9,000"
+        "label": "Plus Palm",
+        "value": "8,000–9,000 nuts/ha/yr"
       },
       {
         "label": "Kapruwana",
-        "value": "20,000-22,000"
+        "value": "20,000–22,000 nuts/ha/yr"
       },
       {
         "label": "Kapsetha",
-        "value": "20,000-22,000"
+        "value": "20,000–22,000 nuts/ha/yr"
       },
       {
         "label": "Kapsuwaya",
-        "value": "20,000-22,000"
+        "value": "20,000–22,000 nuts/ha/yr"
       }
     ],
     "fertilizer_young": [
@@ -4297,7 +4304,7 @@ var ZONE_DATA={
       "CRIC65",
       "CRISL98",
       "Moorock Tall",
-      "Plus Plam",
+      "Plus Palm",
       "Kapruwana",
       "Kapsetha",
       "Kapsuwaya"
@@ -4309,31 +4316,31 @@ var ZONE_DATA={
       },
       {
         "label": "CRIC65",
-        "value": "20,000-22,000 nuts/ha/yr"
+        "value": "20,000–22,000 nuts/ha/yr"
       },
       {
         "label": "CRISL98",
-        "value": "12,000-15,000 nuts/ha/yr"
+        "value": "12,000–15,000 nuts/ha/yr"
       },
       {
         "label": "Moorock Tall",
-        "value": "11,000"
+        "value": "11,000 nuts/ha/yr"
       },
       {
-        "label": "Plus Plam",
-        "value": "8,000-9,000"
+        "label": "Plus Palm",
+        "value": "8,000–9,000 nuts/ha/yr"
       },
       {
         "label": "Kapruwana",
-        "value": "20,000-22,000"
+        "value": "20,000–22,000 nuts/ha/yr"
       },
       {
         "label": "Kapsetha",
-        "value": "20,000-22,000"
+        "value": "20,000–22,000 nuts/ha/yr"
       },
       {
         "label": "Kapsuwaya",
-        "value": "20,000-22,000"
+        "value": "20,000–22,000 nuts/ha/yr"
       }
     ],
     "fertilizer_young": [
@@ -4443,7 +4450,7 @@ var ZONE_DATA={
       "CRIC65",
       "CRISL98",
       "Moorock Tall",
-      "Plus Plam",
+      "Plus Palm",
       "Kapruwana",
       "Kapsetha",
       "Kapsuwaya"
@@ -4455,31 +4462,31 @@ var ZONE_DATA={
       },
       {
         "label": "CRIC65",
-        "value": "20,000-22,000 nuts/ha/yr"
+        "value": "20,000–22,000 nuts/ha/yr"
       },
       {
         "label": "CRISL98",
-        "value": "12,000-15,000 nuts/ha/yr"
+        "value": "12,000–15,000 nuts/ha/yr"
       },
       {
         "label": "Moorock Tall",
-        "value": "11,000"
+        "value": "11,000 nuts/ha/yr"
       },
       {
-        "label": "Plus Plam",
-        "value": "8,000-9,000"
+        "label": "Plus Palm",
+        "value": "8,000–9,000 nuts/ha/yr"
       },
       {
         "label": "Kapruwana",
-        "value": "20,000-22,000"
+        "value": "20,000–22,000 nuts/ha/yr"
       },
       {
         "label": "Kapsetha",
-        "value": "20,000-22,000"
+        "value": "20,000–22,000 nuts/ha/yr"
       },
       {
         "label": "Kapsuwaya",
-        "value": "20,000-22,000"
+        "value": "20,000–22,000 nuts/ha/yr"
       }
     ],
     "fertilizer_young": [
@@ -4589,7 +4596,7 @@ var ZONE_DATA={
       "CRIC65",
       "CRISL98",
       "Moorock Tall",
-      "Plus Plam",
+      "Plus Palm",
       "Kapruwana",
       "Kapsetha",
       "Kapsuwaya"
@@ -4601,31 +4608,31 @@ var ZONE_DATA={
       },
       {
         "label": "CRIC65",
-        "value": "20,000-22,000 nuts/ha/yr"
+        "value": "20,000–22,000 nuts/ha/yr"
       },
       {
         "label": "CRISL98",
-        "value": "12,000-15,000 nuts/ha/yr"
+        "value": "12,000–15,000 nuts/ha/yr"
       },
       {
         "label": "Moorock Tall",
-        "value": "11,000"
+        "value": "11,000 nuts/ha/yr"
       },
       {
-        "label": "Plus Plam",
-        "value": "8,000-9,000"
+        "label": "Plus Palm",
+        "value": "8,000–9,000 nuts/ha/yr"
       },
       {
         "label": "Kapruwana",
-        "value": "20,000-22,000"
+        "value": "20,000–22,000 nuts/ha/yr"
       },
       {
         "label": "Kapsetha",
-        "value": "20,000-22,000"
+        "value": "20,000–22,000 nuts/ha/yr"
       },
       {
         "label": "Kapsuwaya",
-        "value": "20,000-22,000"
+        "value": "20,000–22,000 nuts/ha/yr"
       }
     ],
     "fertilizer_young": [
@@ -4735,7 +4742,7 @@ var ZONE_DATA={
       "CRIC65",
       "CRISL98",
       "Moorock Tall",
-      "Plus Plam",
+      "Plus Palm",
       "Kapruwana",
       "Kapsetha",
       "Kapsuwaya"
@@ -4747,31 +4754,31 @@ var ZONE_DATA={
       },
       {
         "label": "CRIC65",
-        "value": "20,000-22,000 nuts/ha/yr"
+        "value": "20,000–22,000 nuts/ha/yr"
       },
       {
         "label": "CRISL98",
-        "value": "12,000-15,000 nuts/ha/yr"
+        "value": "12,000–15,000 nuts/ha/yr"
       },
       {
         "label": "Moorock Tall",
-        "value": "11,000"
+        "value": "11,000 nuts/ha/yr"
       },
       {
-        "label": "Plus Plam",
-        "value": "8,000-9,000"
+        "label": "Plus Palm",
+        "value": "8,000–9,000 nuts/ha/yr"
       },
       {
         "label": "Kapruwana",
-        "value": "20,000-22,000"
+        "value": "20,000–22,000 nuts/ha/yr"
       },
       {
         "label": "Kapsetha",
-        "value": "20,000-22,000"
+        "value": "20,000–22,000 nuts/ha/yr"
       },
       {
         "label": "Kapsuwaya",
-        "value": "20,000-22,000"
+        "value": "20,000–22,000 nuts/ha/yr"
       }
     ],
     "fertilizer_young": [
@@ -4881,7 +4888,7 @@ var ZONE_DATA={
       "CRIC65",
       "CRISL98",
       "Moorock Tall",
-      "Plus Plam",
+      "Plus Palm",
       "Kapruwana",
       "Kapsetha",
       "Kapsuwaya"
@@ -4893,31 +4900,31 @@ var ZONE_DATA={
       },
       {
         "label": "CRIC65",
-        "value": "20,000-22,000 nuts/ha/yr"
+        "value": "20,000–22,000 nuts/ha/yr"
       },
       {
         "label": "CRISL98",
-        "value": "12,000-15,000 nuts/ha/yr"
+        "value": "12,000–15,000 nuts/ha/yr"
       },
       {
         "label": "Moorock Tall",
-        "value": "11,000"
+        "value": "11,000 nuts/ha/yr"
       },
       {
-        "label": "Plus Plam",
-        "value": "8,000-9,000"
+        "label": "Plus Palm",
+        "value": "8,000–9,000 nuts/ha/yr"
       },
       {
         "label": "Kapruwana",
-        "value": "20,000-22,000"
+        "value": "20,000–22,000 nuts/ha/yr"
       },
       {
         "label": "Kapsetha",
-        "value": "20,000-22,000"
+        "value": "20,000–22,000 nuts/ha/yr"
       },
       {
         "label": "Kapsuwaya",
-        "value": "20,000-22,000"
+        "value": "20,000–22,000 nuts/ha/yr"
       }
     ],
     "fertilizer_young": [
@@ -5027,7 +5034,7 @@ var ZONE_DATA={
       "CRIC65",
       "CRISL98",
       "Moorock Tall",
-      "Plus Plam",
+      "Plus Palm",
       "Kapruwana",
       "Kapsetha",
       "Kapsuwaya"
@@ -5039,31 +5046,31 @@ var ZONE_DATA={
       },
       {
         "label": "CRIC65",
-        "value": "20,000-22,000 nuts/ha/yr"
+        "value": "20,000–22,000 nuts/ha/yr"
       },
       {
         "label": "CRISL98",
-        "value": "12,000-15,000 nuts/ha/yr"
+        "value": "12,000–15,000 nuts/ha/yr"
       },
       {
         "label": "Moorock Tall",
-        "value": "11,000"
+        "value": "11,000 nuts/ha/yr"
       },
       {
-        "label": "Plus Plam",
-        "value": "8,000-9,000"
+        "label": "Plus Palm",
+        "value": "8,000–9,000 nuts/ha/yr"
       },
       {
         "label": "Kapruwana",
-        "value": "20,000-22,000"
+        "value": "20,000–22,000 nuts/ha/yr"
       },
       {
         "label": "Kapsetha",
-        "value": "20,000-22,000"
+        "value": "20,000–22,000 nuts/ha/yr"
       },
       {
         "label": "Kapsuwaya",
-        "value": "20,000-22,000"
+        "value": "20,000–22,000 nuts/ha/yr"
       }
     ],
     "fertilizer_young": [
@@ -5173,7 +5180,7 @@ var ZONE_DATA={
       "CRIC65",
       "CRISL98",
       "Moorock Tall",
-      "Plus Plam",
+      "Plus Palm",
       "Kapruwana",
       "Kapsetha",
       "Kapsuwaya"
@@ -5185,31 +5192,31 @@ var ZONE_DATA={
       },
       {
         "label": "CRIC65",
-        "value": "20,000-22,000 nuts/ha/yr"
+        "value": "20,000–22,000 nuts/ha/yr"
       },
       {
         "label": "CRISL98",
-        "value": "12,000-15,000 nuts/ha/yr"
+        "value": "12,000–15,000 nuts/ha/yr"
       },
       {
         "label": "Moorock Tall",
-        "value": "11,000"
+        "value": "11,000 nuts/ha/yr"
       },
       {
-        "label": "Plus Plam",
-        "value": "8,000-9,000"
+        "label": "Plus Palm",
+        "value": "8,000–9,000 nuts/ha/yr"
       },
       {
         "label": "Kapruwana",
-        "value": "20,000-22,000"
+        "value": "20,000–22,000 nuts/ha/yr"
       },
       {
         "label": "Kapsetha",
-        "value": "20,000-22,000"
+        "value": "20,000–22,000 nuts/ha/yr"
       },
       {
         "label": "Kapsuwaya",
-        "value": "20,000-22,000"
+        "value": "20,000–22,000 nuts/ha/yr"
       }
     ],
     "fertilizer_young": [
@@ -5319,7 +5326,7 @@ var ZONE_DATA={
       "CRIC65",
       "CRISL98",
       "Moorock Tall",
-      "Plus Plam",
+      "Plus Palm",
       "Kapruwana",
       "Kapsetha",
       "Kapsuwaya"
@@ -5331,31 +5338,31 @@ var ZONE_DATA={
       },
       {
         "label": "CRIC65",
-        "value": "20,000-22,000 nuts/ha/yr"
+        "value": "20,000–22,000 nuts/ha/yr"
       },
       {
         "label": "CRISL98",
-        "value": "12,000-15,000 nuts/ha/yr"
+        "value": "12,000–15,000 nuts/ha/yr"
       },
       {
         "label": "Moorock Tall",
-        "value": "11,000"
+        "value": "11,000 nuts/ha/yr"
       },
       {
-        "label": "Plus Plam",
-        "value": "8,000-9,000"
+        "label": "Plus Palm",
+        "value": "8,000–9,000 nuts/ha/yr"
       },
       {
         "label": "Kapruwana",
-        "value": "20,000-22,000"
+        "value": "20,000–22,000 nuts/ha/yr"
       },
       {
         "label": "Kapsetha",
-        "value": "20,000-22,000"
+        "value": "20,000–22,000 nuts/ha/yr"
       },
       {
         "label": "Kapsuwaya",
-        "value": "20,000-22,000"
+        "value": "20,000–22,000 nuts/ha/yr"
       }
     ],
     "fertilizer_young": [
@@ -5465,7 +5472,7 @@ var ZONE_DATA={
       "CRIC65",
       "CRISL98",
       "Moorock Tall",
-      "Plus Plam",
+      "Plus Palm",
       "Kapruwana",
       "Kapsetha",
       "Kapsuwaya"
@@ -5477,31 +5484,31 @@ var ZONE_DATA={
       },
       {
         "label": "CRIC65",
-        "value": "20,000-22,000 nuts/ha/yr"
+        "value": "20,000–22,000 nuts/ha/yr"
       },
       {
         "label": "CRISL98",
-        "value": "12,000-15,000 nuts/ha/yr"
+        "value": "12,000–15,000 nuts/ha/yr"
       },
       {
         "label": "Moorock Tall",
-        "value": "11,000"
+        "value": "11,000 nuts/ha/yr"
       },
       {
-        "label": "Plus Plam",
-        "value": "8,000-9,000"
+        "label": "Plus Palm",
+        "value": "8,000–9,000 nuts/ha/yr"
       },
       {
         "label": "Kapruwana",
-        "value": "20,000-22,000"
+        "value": "20,000–22,000 nuts/ha/yr"
       },
       {
         "label": "Kapsetha",
-        "value": "20,000-22,000"
+        "value": "20,000–22,000 nuts/ha/yr"
       },
       {
         "label": "Kapsuwaya",
-        "value": "20,000-22,000"
+        "value": "20,000–22,000 nuts/ha/yr"
       }
     ],
     "fertilizer_young": [
@@ -5613,11 +5620,11 @@ var ZONE_DATA={
     "potential_yield": [
       {
         "label": "CRIC60",
-        "value": "?12,000 nuts/ha/yr, best drought tolerance"
+        "value": "12,000 nuts/ha/yr (Best drought tolerance)"
       },
       {
         "label": "Plus Palm",
-        "value": "80000 nuts/ha/yr,  selected superior palms with good productivity and adaptability"
+        "value": "8,000 nuts/ha/yr (Selected superior palms with good productivity and adaptability)"
       }
     ],
     "fertilizer_young": [
@@ -5729,11 +5736,11 @@ var ZONE_DATA={
     "potential_yield": [
       {
         "label": "CRIC60",
-        "value": "?12,000 nuts/ha/yr, best drought tolerance"
+        "value": "12,000 nuts/ha/yr (Best drought tolerance)"
       },
       {
         "label": "Plus Palm",
-        "value": "80000 nuts/ha/yr,  selected superior palms with good productivity and adaptability"
+        "value": "8,000 nuts/ha/yr (Selected superior palms with good productivity and adaptability)"
       }
     ],
     "fertilizer_young": [
@@ -5845,11 +5852,11 @@ var ZONE_DATA={
     "potential_yield": [
       {
         "label": "CRIC60",
-        "value": "?12,000 nuts/ha/yr, best drought tolerance"
+        "value": "12,000 nuts/ha/yr (Best drought tolerance)"
       },
       {
         "label": "Plus Palm",
-        "value": "80000 nuts/ha/yr,  selected superior palms with good productivity and adaptability"
+        "value": "8,000 nuts/ha/yr (Selected superior palms with good productivity and adaptability)"
       }
     ],
     "fertilizer_young": [
@@ -5961,11 +5968,11 @@ var ZONE_DATA={
     "potential_yield": [
       {
         "label": "CRIC60",
-        "value": "?12,000 nuts/ha/yr, best drought tolerance"
+        "value": "12,000 nuts/ha/yr (Best drought tolerance)"
       },
       {
         "label": "Plus Palm",
-        "value": "80000 nuts/ha/yr,  selected superior palms with good productivity and adaptability"
+        "value": "8,000 nuts/ha/yr (Selected superior palms with good productivity and adaptability)"
       }
     ],
     "fertilizer_young": [
@@ -6077,11 +6084,11 @@ var ZONE_DATA={
     "potential_yield": [
       {
         "label": "CRIC60",
-        "value": "?12,000 nuts/ha/yr, best drought tolerance"
+        "value": "12,000 nuts/ha/yr (Best drought tolerance)"
       },
       {
         "label": "Plus Palm",
-        "value": "80000 nuts/ha/yr,  selected superior palms with good productivity and adaptability"
+        "value": "8,000 nuts/ha/yr (Selected superior palms with good productivity and adaptability)"
       }
     ],
     "fertilizer_young": [
@@ -6193,11 +6200,11 @@ var ZONE_DATA={
     "potential_yield": [
       {
         "label": "CRIC60",
-        "value": "?12,000 nuts/ha/yr, best drought tolerance"
+        "value": "12,000 nuts/ha/yr (Best drought tolerance)"
       },
       {
         "label": "Plus Palm",
-        "value": "80000 nuts/ha/yr,  selected superior palms with good productivity and adaptability"
+        "value": "8,000 nuts/ha/yr (Selected superior palms with good productivity and adaptability)"
       }
     ],
     "fertilizer_young": [
@@ -6309,11 +6316,11 @@ var ZONE_DATA={
     "potential_yield": [
       {
         "label": "CRIC60",
-        "value": "?12,000 nuts/ha/yr, best drought tolerance"
+        "value": "12,000 nuts/ha/yr (Best drought tolerance)"
       },
       {
         "label": "Plus Palm",
-        "value": "80000 nuts/ha/yr,  selected superior palms with good productivity and adaptability"
+        "value": "8,000 nuts/ha/yr (Selected superior palms with good productivity and adaptability)"
       }
     ],
     "fertilizer_young": [
@@ -6425,11 +6432,11 @@ var ZONE_DATA={
     "potential_yield": [
       {
         "label": "CRIC60",
-        "value": "?12,000 nuts/ha/yr, best drought tolerance"
+        "value": "12,000 nuts/ha/yr (Best drought tolerance)"
       },
       {
         "label": "Plus Palm",
-        "value": "80000 nuts/ha/yr,  selected superior palms with good productivity and adaptability"
+        "value": "8,000 nuts/ha/yr (Selected superior palms with good productivity and adaptability)"
       }
     ],
     "fertilizer_young": [
@@ -6541,11 +6548,11 @@ var ZONE_DATA={
     "potential_yield": [
       {
         "label": "CRIC60",
-        "value": "?12,000 nuts/ha/yr, best drought tolerance"
+        "value": "12,000 nuts/ha/yr (Best drought tolerance)"
       },
       {
         "label": "Plus Palm",
-        "value": "80000 nuts/ha/yr,  selected superior palms with good productivity and adaptability"
+        "value": "8,000 nuts/ha/yr (Selected superior palms with good productivity and adaptability)"
       }
     ],
     "fertilizer_young": [
@@ -6657,11 +6664,11 @@ var ZONE_DATA={
     "potential_yield": [
       {
         "label": "CRIC60",
-        "value": "?12,000 nuts/ha/yr, best drought tolerance"
+        "value": "12,000 nuts/ha/yr (Best drought tolerance)"
       },
       {
         "label": "Plus Palm",
-        "value": "80000 nuts/ha/yr,  selected superior palms with good productivity and adaptability"
+        "value": "8,000 nuts/ha/yr (Selected superior palms with good productivity and adaptability)"
       }
     ],
     "fertilizer_young": [
@@ -6773,11 +6780,11 @@ var ZONE_DATA={
     "potential_yield": [
       {
         "label": "CRIC60",
-        "value": "?12,000 nuts/ha/yr, best drought tolerance"
+        "value": "12,000 nuts/ha/yr (Best drought tolerance)"
       },
       {
         "label": "Plus Palm",
-        "value": "80000 nuts/ha/yr,  selected superior palms with good productivity and adaptability"
+        "value": "8,000 nuts/ha/yr (Selected superior palms with good productivity and adaptability)"
       }
     ],
     "fertilizer_young": [
@@ -6889,11 +6896,11 @@ var ZONE_DATA={
     "potential_yield": [
       {
         "label": "CRIC60",
-        "value": "?12,000 nuts/ha/yr, best drought tolerance"
+        "value": "12,000 nuts/ha/yr (Best drought tolerance)"
       },
       {
         "label": "Plus Palm",
-        "value": "80000 nuts/ha/yr,  selected superior palms with good productivity and adaptability"
+        "value": "8,000 nuts/ha/yr (Selected superior palms with good productivity and adaptability)"
       }
     ],
     "fertilizer_young": [
@@ -7005,11 +7012,11 @@ var ZONE_DATA={
     "potential_yield": [
       {
         "label": "CRIC60",
-        "value": "?12,000 nuts/ha/yr, best drought tolerance"
+        "value": "12,000 nuts/ha/yr (Best drought tolerance)"
       },
       {
         "label": "Plus Palm",
-        "value": "80000 nuts/ha/yr,  selected superior palms with good productivity and adaptability"
+        "value": "8,000 nuts/ha/yr (Selected superior palms with good productivity and adaptability)"
       }
     ],
     "fertilizer_young": [
@@ -7168,7 +7175,7 @@ var T={
     calSep:"Harvest peak begins",calOct:"Peak harvest season",
     calNov:"Land prep, drainage work",calDec:"Drainage maintenance, off-season planning",
     searchPlaceholder:"Search zones, topics...",noResults:"No results found",
-    tabOffices:"Offices",officesTitle:"Nearest Offices",locateMe:"📍 Find My Location",filterAll:"All",filterCRI:"CRI",filterCCB:"CCB",filterGovijana:"Govijana Sewa",
+    tabOffices:"Offices",officesTitle:"Nearest Offices",locateMe:"📍 Find My Location",filterAll:"All",filterCRI:"CRI Research",filterCCB:"CCB Regional",filterNursery:"Nurseries",filterTraining:"Training Centres",filterGarden:"Model Gardens",filterCDA:"CDA",ofcServes:"Serves",
     ofcDirections:"Directions",ofcCall:"Call",ofcLocating:"Locating...",ofcNoGPS:"Location not available. Showing all offices.",ofcKmAway:"km away",
     pestPhotoTitle:"Photo Pest Identifier",pestCapture:"📷 Take Photo",pestGallery:"🖼️ Choose Photo",pestCompareHint:"Take a photo of the affected palm, then compare with known pests below:",pestNoMatch:"No close match found. Contact your nearest CRI or Govijana Sewa office.",
     offlineMsg:"You are offline. Showing cached content.",cacheOk:"Cached",cacheStale:"Not cached",
@@ -7177,6 +7184,7 @@ var T={
     pestSymptoms:"Symptoms",pestTreatment:"Treatment",pestInsects:"Pests",pestDiseases:"Diseases",
     rainfallDist:"Rainfall Distribution",zoneComparison:"Zone Comparison",noOffices:"No offices found",
     agroClimZone:"Agro-Climatic Zone of Sri Lanka",
+    suitableVarieties:"Suitable Coconut Varieties",
     mapOffline:"Maps need a connection the first time. Reconnect once and they will work offline after that."
   },
   si:{
@@ -7233,7 +7241,7 @@ var T={
     calMay:"මෝසම් සූදානම",calJun:"පළිබෝධ නිරීක්ෂණය",calJul:"පොහොර (යල)",calAug:"යල පොහොර",
     calSep:"අස්වනු උපරිමය",calOct:"අස්වනු කන්නය",calNov:"ඉඩම් සැකසීම",calDec:"ජලවහන නඩත්තු",
     searchPlaceholder:"සොයන්න...",noResults:"ප්‍රතිඵල නැත",
-    tabOffices:"කාර්යාල",officesTitle:"ළඟම කාර්යාල",locateMe:"📍 මගේ ස්ථානය",filterAll:"සියල්ල",filterCRI:"CRI",filterCCB:"CCB",filterGovijana:"ගොවිජන සේවා",
+    tabOffices:"කාර්යාල",officesTitle:"ළඟම කාර්යාල",locateMe:"📍 මගේ ස්ථානය",filterAll:"සියල්ල",filterCRI:"CRI පර්යේෂණ",filterCCB:"CCB කලාපීය",filterNursery:"තවාන්",filterTraining:"පුහුණු මධ්‍යස්ථාන",filterGarden:"ආදර්ශ උයන්",filterCDA:"CDA",ofcServes:"සේවා සපයයි",
     ofcDirections:"දිශා",ofcCall:"අමතන්න",ofcLocating:"සොයමින්...",ofcNoGPS:"ස්ථානය ලබාගත නොහැක. සියලු කාර්යාල පෙන්වයි.",ofcKmAway:"කි.මී. දුර",
     pestPhotoTitle:"ඡායාරූපයෙන් පළිබෝධ හඳුනාගන්න",pestCapture:"📷 ඡායාරූපයක් ගන්න",pestGallery:"🖼️ ඡායාරූපයක් තෝරන්න",pestCompareHint:"බලපෑමට ලක් වූ පොල් ගසෙහි ඡායාරූපයක් ගෙන පහත දන්නා පළිබෝධ සමඟ සසඳන්න:",pestNoMatch:"ආසන්න ගැළපීමක් හමු නොවීය. ළඟම CRI හෝ ගොවිජන සේවා කාර්යාලය අමතන්න.",
     offlineMsg:"ඔබ නොබැඳි ය. හැඹිලිගත අන්තර්ගතය පෙන්වයි.",cacheOk:"හැඹිලිගතයි",cacheStale:"හැඹිලිගත නැත",
@@ -7242,6 +7250,7 @@ var T={
     pestSymptoms:"රෝග ලක්ෂණ",pestTreatment:"ප්‍රතිකාර",pestInsects:"පළිබෝධ",pestDiseases:"රෝග",
     rainfallDist:"වර්ෂාපතන ව්‍යාප්තිය",zoneComparison:"කලාප සංසන්දනය",noOffices:"කාර්යාල හමු නොවීය",
     agroClimZone:"ශ්‍රී ලංකාවේ කෘෂි-දේශගුණික කලාපය",
+    suitableVarieties:"සුදුසු පොල් ප්‍රභේද",
     mapOffline:"සිතියම් සඳහා පළමු වතාවේ සම්බන්ධතාවයක් අවශ්‍යයි. වරක් සම්බන්ධ වූ පසු ඒවා නොබැඳිව ක්‍රියා කරයි."
   },
   ta:{
@@ -7298,7 +7307,7 @@ var T={
     calMay:"பருவமழை தயாரிப்பு",calJun:"பூச்சி கண்காணிப்பு",calJul:"உரம் (யாலா)",calAug:"யாலா உரம்",
     calSep:"அறுவடை உச்சம்",calOct:"அறுவடை காலம்",calNov:"நிலம் தயாரிப்பு",calDec:"வடிகால் பராமரிப்பு",
     searchPlaceholder:"தேடு...",noResults:"முடிவுகள் இல்லை",
-    tabOffices:"அலுவலகங்கள்",officesTitle:"அருகிலுள்ள அலுவலகங்கள்",locateMe:"📍 எனது இருப்பிடம்",filterAll:"அனைத்தும்",filterCRI:"CRI",filterCCB:"CCB",filterGovijana:"கோவிஜன சேவை",
+    tabOffices:"அலுவலகங்கள்",officesTitle:"அருகிலுள்ள அலுவலகங்கள்",locateMe:"📍 எனது இருப்பிடம்",filterAll:"அனைத்தும்",filterCRI:"CRI ஆராய்ச்சி",filterCCB:"CCB பிராந்திய",filterNursery:"நாற்றங்கால்கள்",filterTraining:"பயிற்சி மையங்கள்",filterGarden:"மாதிரி தோட்டங்கள்",filterCDA:"CDA",ofcServes:"சேவை வழங்கும் பகுதி",
     ofcDirections:"திசைகள்",ofcCall:"அழைக்க",ofcLocating:"கண்டறிகிறது...",ofcNoGPS:"இருப்பிடம் கிடைக்கவில்லை. அனைத்து அலுவலகங்களையும் காட்டுகிறது.",ofcKmAway:"கி.மீ. தொலைவு",
     pestPhotoTitle:"புகைப்படம் மூலம் பூச்சி அடையாளம்",pestCapture:"📷 புகைப்படம் எடு",pestGallery:"🖼️ புகைப்படம் தேர்வு",pestCompareHint:"பாதிக்கப்பட்ட தென்னை மரத்தின் புகைப்படம் எடுத்து கீழே உள்ள அறியப்பட்ட பூச்சிகளுடன் ஒப்பிடுங்கள்:",pestNoMatch:"நெருக்கமான பொருத்தம் கிடைக்கவில்லை. அருகிலுள்ள CRI அல்லது கோவிஜன சேவை அலுவலகத்தை தொடர்பு கொள்ளுங்கள்.",
     offlineMsg:"நீங்கள் ஆஃப்லைனில் உள்ளீர்கள். தற்காலிக சேமிப்பு உள்ளடக்கத்தைக் காட்டுகிறது.",cacheOk:"தற்சேமிப்பு",cacheStale:"சேமிக்கப்படவில்லை",
@@ -7307,6 +7316,7 @@ var T={
     pestSymptoms:"அறிகுறிகள்",pestTreatment:"சிகிச்சை",pestInsects:"பூச்சிகள்",pestDiseases:"நோய்கள்",
     rainfallDist:"மழைப்பொழிவு விநியோகம்",zoneComparison:"மண்டல ஒப்பீடு",noOffices:"அலுவலகங்கள் காணப்படவில்லை",
     agroClimZone:"இலங்கையின் வேளாண்-காலநிலை மண்டலம்",
+    suitableVarieties:"பொருத்தமான தென்னை ரகங்கள்",
     mapOffline:"வரைபடங்களுக்கு முதல் முறை இணைப்பு தேவை. ஒரு முறை இணைந்தால் பின்னர் அவை ஆஃப்லைனில் வேலை செய்யும்."
   }
 };
@@ -7481,6 +7491,25 @@ function cropBlock(name,c){
 }
 
 var currentFid=null;
+// Per-climate-zone varieties and yields (CRI recommendations). The Dry Zone list is
+// deliberately shorter: only these two are recommended for dry conditions.
+var CLIM_VARIETIES={
+  'Wet Zone':[
+    {name:'CRIC60',yield:'12,000–15,000 nuts/ha/yr'},
+    {name:'CRIC65',yield:'20,000–22,000 nuts/ha/yr'},
+    {name:'CRISL98',yield:'12,000–15,000 nuts/ha/yr'},
+    {name:'Moorock Tall',yield:'11,000 nuts/ha/yr'},
+    {name:'Plus Palm',yield:'8,000–9,000 nuts/ha/yr'},
+    {name:'Kapruwana',yield:'20,000–22,000 nuts/ha/yr'},
+    {name:'Kapsetha',yield:'20,000–22,000 nuts/ha/yr'},
+    {name:'Kapsuwaya',yield:'20,000–22,000 nuts/ha/yr'}
+  ],
+  'Dry Zone':[
+    {name:'CRIC60',yield:'12,000 nuts/ha/yr',note:'Best drought tolerance'},
+    {name:'Plus Palm',yield:'8,000 nuts/ha/yr',note:'Selected superior palms with good productivity and adaptability'}
+  ]
+};
+CLIM_VARIETIES['Intermediate Zone']=CLIM_VARIETIES['Wet Zone'];
 var currentClimName=null;
 function openDossier(fid){
   currentFid=fid;
@@ -7555,6 +7584,19 @@ function openClimDossier(name){
   document.querySelector('.shead').style.background=col;
   var desc={'Wet Zone':t('descWet'),'Intermediate Zone':t('descInt'),'Dry Zone':t('descDry')}[kind]||'';
   var html='<div class="card"><h3>🌦️ '+t('aboutClimate')+'</h3><p>'+esc(desc)+'</p><p class="muted">'+t('climDossierHint')+'</p></div>';
+  // Varieties and yields for the climate zone. Each variety is its own line: these
+  // are figures a grower compares against one another, so they must not run together.
+  var cz=CLIM_VARIETIES[kind];
+  if(cz){
+    html+='<div class="card"><h3>🥥 '+t('suitableVarieties')+'</h3><ul class="zlist">';
+    cz.forEach(function(v){html+='<li>'+esc(v.name)+'</li>';});
+    html+='</ul></div>';
+    html+='<div class="card"><h3>📈 '+t('potYield')+'</h3><ul class="zlist">';
+    cz.forEach(function(v){
+      html+='<li><b>'+esc(v.name)+':</b> '+esc(v.yield)+(v.note?' <span class="ynote">('+esc(v.note)+')</span>':'')+'</li>';
+    });
+    html+='</ul></div>';
+  }
   var ic=intercropFor(kind);var icHtml='';for(var nm in ic){icHtml+=cropBlock(nm,ic[nm]);}
   if(icHtml)html+='<div class="card"><h3>🌾 '+t('intercropOptions')+' — '+esc(kind)+'</h3>'+icHtml+'</div>';
   html+='<div style="display:flex;gap:8px;flex-wrap:wrap"><button class="sharebtn" onclick="shareZone()">📤 '+t('shareBtn')+'</button><button class="printbtn" style="flex:1" onclick="printReport()">'+t('printBtn')+'</button></div>';
@@ -8205,63 +8247,94 @@ if('serviceWorker' in navigator){
 
 // === Office Finder Data ===
 var OFFICES=[
-// === CRI - Coconut Research Institute ===
-{name:'CRI Head Office',type:'CRI',lat:7.3436,lng:79.8617,addr:'Bandirippuwa Estate, Lunuwila 61150',phone:'031-2255001',email:'director@cri.gov.lk',icon:'🔬'},
-{name:'CRI Ratmalagara Research Centre',type:'CRI',lat:7.9830,lng:80.4050,addr:'Ratmalagara, Panirendawa, Madampe',phone:'032-2263280',icon:'🔬'},
-{name:'CRI Ambakelle Seed Garden',type:'CRI',lat:7.7550,lng:80.2050,addr:'Bogaswewa, Kashyapapura, Ambakelle, Anuradhapura',phone:'025-2279408',icon:'🔬'},
-{name:'CRI Pothukulama Research Station',type:'CRI',lat:7.5700,lng:79.9200,addr:'Magarankadawala, Pallama',phone:'032-2250780',icon:'🔬'},
-{name:'CRI Makandura Research Centre',type:'CRI',lat:7.3200,lng:79.9700,addr:'Makandura, Gampaha',phone:'033-2272870',icon:'🔬'},
-{name:'CRI Walpita Station',type:'CRI',lat:7.2800,lng:79.9600,addr:'Walpita, Gampaha',phone:'031-3319993',icon:'🔬'},
-{name:'CRI Hirimbura Station',type:'CRI',lat:6.0700,lng:80.4500,addr:'Hirimbura, Galle',phone:'091-3624646',icon:'🔬'},
-{name:'CRI Margret Estate Gene Bank',type:'CRI',lat:7.3500,lng:79.8700,addr:'Margret Estate, Lunuwila',phone:'031-2255001',icon:'🔬'},
-// === CCB - Coconut Cultivation Board ===
-{name:'CCB Head Office',type:'CCB',lat:6.9010,lng:79.9180,addr:'9/428 Denzil Kobbakaduwa Mw, Battaramulla',phone:'011-2861331',email:'ccb@sltnet.lk',icon:'🏛️'},
-{name:'CCB Kurunegala',type:'CCB',lat:7.4867,lng:80.3647,addr:'Wehera, Kurunegala',phone:'037-2222534',email:'ccbrm-kurune@sltnet.lk',icon:'🏛️'},
-{name:'CCB Gampaha',type:'CCB',lat:7.0873,lng:80.0144,addr:'Bandiyamulla, Gampaha',phone:'033-2222037',email:'ccbrm-gampaha@sltnet.lk',icon:'🏛️'},
-{name:'CCB Marawila',type:'CCB',lat:7.3500,lng:79.8500,addr:'Marawila Regional Office',phone:'032-2254237',icon:'🏛️'},
-{name:'CCB Matale',type:'CCB',lat:7.4698,lng:80.6234,addr:'Kachcheri Complex, Matale',phone:'066-2222047',email:'ccbrm-matale@sltnet.lk',icon:'🏛️'},
-{name:'CCB Kegalle',type:'CCB',lat:7.2514,lng:80.3469,addr:'Karandupana, Kandy Rd, Kegalle',phone:'035-2222120',email:'ccbrm-kegalla@sltnet.lk',icon:'🏛️'},
-{name:'CCB Ratnapura',type:'CCB',lat:6.6828,lng:80.3994,addr:'New Town, Main St, Ratnapura',phone:'045-2228561',email:'ccbrm-rapura@sltnet.lk',icon:'🏛️'},
-{name:'CCB Kalutara',type:'CCB',lat:6.5854,lng:79.9607,addr:'Nagoda, Kalutara',phone:'034-2222732',email:'ccbrm-kalutara@sltnet.lk',icon:'🏛️'},
-{name:'CCB Galle',type:'CCB',lat:6.0535,lng:80.2210,addr:'Labuduwa, Akmeemana, Galle',phone:'091-2234501',email:'ccbrm-galle@sltnet.lk',icon:'🏛️'},
-{name:'CCB Anuradhapura',type:'CCB',lat:8.3114,lng:80.4037,addr:'3rd Step, Dahaiyagama Junction, Anuradhapura',phone:'025-2222543',email:'ccbrm-apura@sltnet.lk',icon:'🏛️'},
-{name:'CCB Polonnaruwa',type:'CCB',lat:7.9400,lng:81.0010,addr:'New Town, Polonnaruwa',phone:'027-2222377',icon:'🏛️'},
-{name:'CCB Hambantota',type:'CCB',lat:6.1429,lng:81.1212,addr:'No. 27, Tangalla Rd, Hambantota',phone:'047-2220144',email:'ccbrm-hamban@sltnet.lk',icon:'🏛️'},
-{name:'CCB Moneragala',type:'CCB',lat:6.8736,lng:81.3487,addr:'Moneragala Regional Office',phone:'055-2276358',icon:'🏛️'},
-{name:'CCB Batticaloa',type:'CCB',lat:7.7310,lng:81.6926,addr:'Mylambaweli, Thannamune, Batticaloa',phone:'065-2240103',email:'ccbrm-battico@sltnet.lk',icon:'🏛️'},
-{name:'CCB Ampara',type:'CCB',lat:7.2970,lng:81.6720,addr:'Darmapala Mawatha, Opp. Kachcheri, Ampara',phone:'063-2222358',icon:'🏛️'},
-{name:'CCB Jaffna',type:'CCB',lat:9.6615,lng:80.0255,addr:'No. 595/10, Nawalar Rd, Nallur, Jaffna',phone:'021-2226014',icon:'🏛️'},
-{name:'CCB Matara',type:'CCB',lat:5.9485,lng:80.5353,addr:'Matara Regional Office',phone:'041-2222358',icon:'🏛️'},
-{name:'CCB Nursery - Bandirippuwa',type:'CCB',lat:7.3530,lng:79.8900,addr:'Bandirippuwa, Lunuwila',phone:'031-2255300',icon:'🌱'},
-{name:'CCB Nursery - Ambakelle',type:'CCB',lat:7.7560,lng:80.2060,addr:'Ambakelle, Anuradhapura',phone:'025-2279408',icon:'🌱'},
-// === Dept. of Agrarian Development - Govijana Seva ===
-{name:'Agrarian HQ (Colombo)',type:'Govijana',lat:6.9147,lng:79.8654,addr:'No. 42, Sri Marcus Fernando Mw, Colombo 07',phone:'011-2691060',email:'info@agrariandept.gov.lk',icon:'🌾'},
-{name:'Govijana Sewa - Kurunegala',type:'Govijana',lat:7.4867,lng:80.3647,addr:'District Office, Kurunegala',phone:'037-2222382',icon:'🌾'},
-{name:'Govijana Sewa - Gampaha',type:'Govijana',lat:7.0873,lng:80.0144,addr:'District Office, Gampaha',phone:'033-2222351',icon:'🌾'},
-{name:'Govijana Sewa - Puttalam',type:'Govijana',lat:8.0362,lng:79.8283,addr:'District Office, Puttalam',phone:'032-2265260',icon:'🌾'},
-{name:'Govijana Sewa - Matale',type:'Govijana',lat:7.4698,lng:80.6234,addr:'District Office, Matale',phone:'066-2222342',icon:'🌾'},
-{name:'Govijana Sewa - Kandy',type:'Govijana',lat:7.2906,lng:80.6337,addr:'District Office, Kandy',phone:'081-2224342',icon:'🌾'},
-{name:'Govijana Sewa - Nuwara Eliya',type:'Govijana',lat:6.9497,lng:80.7891,addr:'District Office, Nuwara Eliya',phone:'052-2222267',icon:'🌾'},
-{name:'Govijana Sewa - Kalutara',type:'Govijana',lat:6.5854,lng:79.9607,addr:'District Office, Kalutara',phone:'034-2222678',icon:'🌾'},
-{name:'Govijana Sewa - Colombo',type:'Govijana',lat:6.9271,lng:79.8612,addr:'District Office, Colombo',phone:'011-2694231',icon:'🌾'},
-{name:'Govijana Sewa - Galle',type:'Govijana',lat:6.0535,lng:80.2210,addr:'District Office, Galle',phone:'091-2234267',icon:'🌾'},
-{name:'Govijana Sewa - Matara',type:'Govijana',lat:5.9485,lng:80.5353,addr:'District Office, Matara',phone:'041-2222267',icon:'🌾'},
-{name:'Govijana Sewa - Hambantota',type:'Govijana',lat:6.1429,lng:81.1212,addr:'District Office, Hambantota',phone:'047-2256267',icon:'🌾'},
-{name:'Govijana Sewa - Ratnapura',type:'Govijana',lat:6.6828,lng:80.3994,addr:'District Office, Ratnapura',phone:'045-2222267',icon:'🌾'},
-{name:'Govijana Sewa - Kegalle',type:'Govijana',lat:7.2514,lng:80.3469,addr:'District Office, Kegalle',phone:'035-2222267',icon:'🌾'},
-{name:'Govijana Sewa - Anuradhapura',type:'Govijana',lat:8.3114,lng:80.4037,addr:'District Office, Anuradhapura',phone:'025-2222267',icon:'🌾'},
-{name:'Govijana Sewa - Polonnaruwa',type:'Govijana',lat:7.9400,lng:81.0010,addr:'District Office, Polonnaruwa',phone:'027-2222267',icon:'🌾'},
-{name:'Govijana Sewa - Batticaloa',type:'Govijana',lat:7.7310,lng:81.6926,addr:'District Office, Batticaloa',phone:'065-2222267',icon:'🌾'},
-{name:'Govijana Sewa - Ampara',type:'Govijana',lat:7.2970,lng:81.6720,addr:'District Office, Ampara',phone:'063-2222267',icon:'🌾'},
-{name:'Govijana Sewa - Trincomalee',type:'Govijana',lat:8.5874,lng:81.2152,addr:'District Office, Trincomalee',phone:'026-2222267',icon:'🌾'},
-{name:'Govijana Sewa - Jaffna',type:'Govijana',lat:9.6615,lng:80.0255,addr:'District Office, Jaffna',phone:'021-2222267',icon:'🌾'},
-{name:'Govijana Sewa - Kilinochchi',type:'Govijana',lat:9.3803,lng:80.3770,addr:'District Office, Kilinochchi',phone:'021-2285267',icon:'🌾'},
-{name:'Govijana Sewa - Mullaitivu',type:'Govijana',lat:9.2671,lng:80.8142,addr:'District Office, Mullaitivu',phone:'021-2290267',icon:'🌾'},
-{name:'Govijana Sewa - Vavuniya',type:'Govijana',lat:8.7514,lng:80.4971,addr:'District Office, Vavuniya',phone:'024-2222267',icon:'🌾'},
-{name:'Govijana Sewa - Mannar',type:'Govijana',lat:8.9810,lng:79.9044,addr:'District Office, Mannar',phone:'023-2222267',icon:'🌾'},
-{name:'Govijana Sewa - Badulla',type:'Govijana',lat:6.9934,lng:81.0550,addr:'District Office, Badulla',phone:'055-2222267',icon:'🌾'},
-{name:'Govijana Sewa - Moneragala',type:'Govijana',lat:6.8736,lng:81.3487,addr:'District Office, Moneragala',phone:'055-2276267',icon:'🌾'}
+{name:"Bandirippuwa Estate (Headquarters)",type:"CRI",lat:7.33139,lng:79.88028,addr:"Coconut Research Institute, Bandirippuwa Estate, Lunuwila, Sri Lanka",phone:"0312255300",icon:"🔬", district:"Puttalam"},
+{name:"Ratmalagara Research Centre",type:"CRI",lat:7.4954,lng:79.8414,addr:"Ratmalagara Research Substation, Madampe, Sri Lanka",phone:"0322240084",icon:"🔬", district:"Puttalam"},
+{name:"Ambakelle Isolated Seed Garden / GRC",type:"CRI",lat:7.69083,lng:79.89667,addr:"Ambakelle Isolated Seed Garden, Plantation Road, Ambakelle, Sri Lanka",phone:"0323329408",icon:"🔬", district:"Puttalam"},
+{name:"Pottukulama Research Centre",type:"CRI",lat:7.7009,lng:79.9149,addr:"Pottukulama Research Station, Pottukulama, Pallama, Sri Lanka",phone:"0325670125",icon:"🔬", district:"Puttalam"},
+{name:"Pallama Genetic Resource Centre",type:"CRI",lat:7.684,lng:79.918,addr:"Pallama Genetic Resource Centre, Magarankadawala, Pallama, Sri Lanka",phone:"0323329720",icon:"🔬", district:"Puttalam"},
+{name:"Makandura Research Center / Seed Garden",type:"CRI",lat:7.31617,lng:79.97756,addr:"Makandura Research Center, Makandura - Badalgama Rd, Makandura, Sri Lanka",phone:"0312299139",icon:"🔬", district:"Kurunegala"},
+{name:"Middeniya Research Centre",type:"CRI",lat:6.2514,lng:80.7642,addr:"Middeniya Research Centre, Thorakolayaya, Embilipitiya - Middeniya Rd, Middeniya, Sri Lanka",phone:"0475675049",icon:"🔬", district:"Hambantota"},
+{name:"Maduru-Oya Genetic Resource Centre",type:"CRI",lat:7.648,lng:81.213,addr:"Maduru Oya Genetic Resource Centre, Maduru Oya, Sri Lanka",phone:"0312255300",icon:"🔬", district:"Polonnaruwa"},
+{name:"Weligama Genetic Resource Centre",type:"CRI",lat:5.975,lng:80.4297,addr:"Weligama Genetic Resource Centre, Weligama, Sri Lanka",phone:"0312255300",icon:"🔬", district:"Matara"},
+{name:"Kinigama Seed Garden",type:"CRI",lat:7.6645,lng:80.012,addr:"Kinigama Seed Garden, Kinigama, Sri Lanka",phone:"0312255300",icon:"🔬", district:"Kurunegala"},
+{name:"CCB Ampara",type:"CCB",lat:7.30007,lng:81.67679,addr:"Regional Manager Coconut Cultivation Board,Dharmapala Mawatha,Ampara",phone:"0632222477",icon:"🏛️", district:"Ampara"},
+{name:"CCB Anuradhapura",type:"CCB",lat:8.31762,lng:80.39724,addr:"Regional Manager Coconut Cultivation Board,3rd Stage,Dahayyagama Junction,Anuradapura",phone:"0252222543",icon:"🏛️", district:"Anuradhapura"},
+{name:"CCB Monaragala",type:"CCB",lat:6.85271,lng:81.34173,addr:"Regional Manager Coconut Cultivation Board,Hulandawa South Road,Monaragala",phone:"0552276058",icon:"🏛️", district:"Badulla, Monaragala"},
+{name:"CCB Batticaloa",type:"CCB",lat:7.76219,lng:81.62364,addr:"Regional Manager Coconut Cultivation Board,Mylambavelly,Thannamunai,Batticaloa",phone:"0652240103",icon:"🏛️", district:"Batticaloa"},
+{name:"CCB Kalutara",type:"CCB",lat:6.55993,lng:79.97246,addr:"Regional Manager Coconut Cultivation Board,Nogoda,Kalutara",phone:"0342222732",icon:"🏛️", district:"Colombo, Kalutara"},
+{name:"CCB Galle",type:"CCB",lat:6.07061,lng:80.23622,addr:"Regional Manager Coconut Cultivation Board, Labuduwa,Akmeemana,Galle",phone:"0912234501",icon:"🏛️", district:"Galle"},
+{name:"CCB Gampaha",type:"CCB",lat:7.08197,lng:80.01029,addr:"Regional Manager Coconut Cultivation Board,Bendiyamulla,Gampaha",phone:"0332222037",icon:"🏛️", district:"Gampaha"},
+{name:"CCB Hambanthota",type:"CCB",lat:6.12421,lng:81.11903,addr:"Regional Manager Coconut Cultivation Board,No.27, Tangalle Rd,Hambantota",phone:"0472220144",icon:"🏛️", district:"Hambantoá¹­a"},
+{name:"CCB Jaffna",type:"CCB",lat:9.58715,lng:80.35802,addr:"Regional Manager Coconut Cultivation Board,Tharmakerny,A9 Road Palai,Kilinochchi",phone:"0212284501",icon:"🏛️", district:"Jaffna, Kilinochchi, Mullaitivu"},
+{name:"CCB Kandy",type:"CCB",lat:7.27694,lng:80.6175,addr:"74/2, Bodhiyangana Mawatha, Bowala, Kandy",phone:"0812222447",icon:"🏛️", district:"Kandy, Nuwara Eliya"},
+{name:"CCB Kegalle",type:"CCB",lat:7.25121,lng:80.37088,addr:"Regional Manager Coconut Cultivation Board,Warakaulla Walawwa,Karadupana, Kandy Rd,Kegalle",phone:"0352222120",icon:"🏛️", district:"Kegalle"},
+{name:"CCB Kurunegala",type:"CCB",lat:7.47159,lng:80.35285,addr:"Regional Manager Coconut Cultivation Board,Wehera,Kurunegala",phone:"0372222534",icon:"🏛️", district:"Kurunegala"},
+{name:"CCB Kuliyapitiya",type:"CCB",lat:7.46961,lng:80.02612,addr:"Regional Manager Coconut Cultivation Board,No.20,Meegahakatuwa Junction,Kuliyapitiya",phone:"0372281169",icon:"🏛️", district:"Kurunegala"},
+{name:"CCB Vavuniya",type:"CCB",lat:8.78105,lng:80.48375,addr:"Regional Manager Coconut Cultivation Board,Pathniyar Mahilam Kulame,Thendikulam,Vavuniya",phone:"0242050344",icon:"🏛️", district:"Mannar, Vavuniya"},
+{name:"CCB Matale",type:"CCB",lat:7.45408,lng:80.62971,addr:"Regional Manager Coconut Cultivation Board,Kandy Rd,Kohombiliwala Matale",phone:"0662222047",icon:"🏛️", district:"Matale"},
+{name:"CCB Matara",type:"CCB",lat:5.9492,lng:80.54092,addr:"Regional Manager Coconut Cultivation Board,No.332/9,Dharmapala Mawatha, Nupe,Matara",phone:"0412222060",icon:"🏛️", district:"Matara"},
+{name:"CCB Polonnaruwa",type:"CCB",lat:7.91517,lng:81.00203,addr:"Regional Manager Coconut Cultivation Board,New Town,Polonnaruwa",phone:"0272222377",icon:"🏛️", district:"Polonnaruwa"},
+{name:"CCB Marawila",type:"CCB",lat:7.39031,lng:79.83221,addr:"Regional Manager Coconut Cultivation Board, Mudukotuwa,Marawila",phone:"0322254237",icon:"🏛️", district:"Puttalam"},
+{name:"CCB Rathnapura",type:"CCB",lat:6.71246,lng:80.37901,addr:"Regional Manager Coconut Cultivation Board,New Town,Rathnapura",phone:"0452228561",icon:"🏛️", district:"Ratnapura"},
+{name:"CCB Trincomalee",type:"CCB",lat:8.74763,lng:81.15575,addr:"Regional Manager Coconut Cultivation Board,Kumburuppidi,Trincomalee",phone:"0262054018",icon:"🏛️", district:"Trincomalee"},
+{name:"Kalawewa Nursery",type:"Nursery",lat:8.0226,lng:80.53204,addr:"Kalawewa, Vijithapura",phone:"0252264194",icon:"🌱"},
+{name:"Uhana Nursery",type:"Nursery",lat:7.35951,lng:81.64813,addr:"Palamkandawura, Uhana",phone:"0632250119",icon:"🌱"},
+{name:"Korosduwa Nursery",type:"Nursery",lat:6.65305,lng:79.9536,addr:"Korosduwa, Wadduwa",phone:"0382295126",icon:"🌱"},
+{name:"Mattamagoda Nursery",type:"Nursery",lat:7.10134,lng:80.27616,addr:"Mattamagoda, Kannantota",phone:"0352289105",icon:"🌱"},
+{name:"Eraminigolla Nursery",type:"Nursery",lat:7.30704,lng:80.37791,addr:"Eraminigolla, Hiriwadunna",phone:"0352263006",icon:"🌱"},
+{name:"Ibbagamuwa Nursery",type:"Nursery",lat:7.51022,lng:80.42601,addr:"Ibbagamuwa",phone:"0372235776",icon:"🌱"},
+{name:"Wariyapola Nursery",type:"Nursery",lat:7.63577,lng:80.2405,addr:"Wariyapola",phone:"0372267691",icon:"🌱"},
+{name:"Nikaweratiya Nursery",type:"Nursery",lat:7.73736,lng:80.13002,addr:"Nikaweratiya",phone:"0372260619",icon:"🌱"},
+{name:"Wennoruwa Nursery",type:"Nursery",lat:7.37951,lng:80.21804,addr:"Muthugalawatta, Wennoruwa",phone:"0372249836",icon:"🌱"},
+{name:"Dodangaslanda Nursery",type:"Nursery",lat:7.5729,lng:80.51882,addr:"Balawattala Estate, Dodangaslanda",phone:"0372252625",icon:"🌱"},
+{name:"Polgahawela Nursery",type:"Nursery",lat:7.32743,lng:80.3183,addr:"Serapiiswatta, Panaliya, Polgahawela",phone:"0372244367",icon:"🌱"},
+{name:"Bingiriya Nursery",type:"Nursery",lat:7.61148,lng:79.96746,addr:"Prasannagama, Bingiriya",phone:"0322246425",icon:"🌱"},
+{name:"Kandetiya Nusery",type:"Nursery",lat:7.32411,lng:80.00077,addr:"Kandetiya,Makandura,Gonawila",phone:"0312299386",icon:"🌱"},
+{name:"Hettipola Nursery",type:"Nursery",lat:7.57839,lng:80.0688,addr:"Malagane,Hettipola",phone:"0372291332",icon:"🌱"},
+{name:"Diyadora Nursery",type:"Nursery",lat:7.44275,lng:80.0584,addr:"Pahala Diyadora",phone:"0372282537",icon:"🌱"},
+{name:"Mahayaya Nursery",type:"Nursery",lat:7.3198,lng:79.99763,addr:"Mahayaya",phone:"0312299938",icon:"🌱"},
+{name:"Walpita Nursery",type:"Nursery",lat:7.26313,lng:80.03591,addr:"Walpita",phone:"0332272559",icon:"🌱"},
+{name:"Kirindiwela Nursery",type:"Nursery",lat:7.047,lng:80.13346,addr:"Kirindiwela",phone:"0332267704",icon:"🌱"},
+{name:"Baddegama Nursery",type:"Nursery",lat:6.16815,lng:80.15895,addr:"Pedasroowatta, Halpathota, Baddegama, Galle",phone:"0912292745",icon:"🌱"},
+{name:"Labuduwa Nursery",type:"Nursery",lat:6.06994,lng:80.23484,addr:"Labuduwa, Akmeemana, Galle",phone:"0912234501",icon:"🌱"},
+{name:"Kumburuppidi Nursery",type:"Nursery",lat:8.74763,lng:81.15575,addr:"Kumburuppidi, Trincomelee",phone:"0263207044",icon:"🌱"},
+{name:"Parakrama Samudraya Nursery",type:"Nursery",lat:7.88658,lng:80.9838,addr:"Richard Aluvihare Garden, Parakrama Samudraya",phone:"0272224304",icon:"🌱"},
+{name:"Ulhitiya Nursery",type:"Nursery",lat:7.35951,lng:81.05314,addr:"Ulhitiya Estate, Girandurukotte",phone:"0273279230",icon:"🌱"},
+{name:"Mailambaweli Nursery",type:"Nursery",lat:7.7646,lng:81.62227,addr:"Mailambaweli, Thannamunei, Batticaloa",phone:"0652240924",icon:"🌱"},
+{name:"Pallekele Nursery",type:"Nursery",lat:7.27445,lng:80.71874,addr:"Pallekele, Balagolla, Kengalla",phone:"0815040595",icon:"🌱"},
+{name:"Kirimatiyana Nursery",type:"Nursery",lat:7.36166,lng:79.86522,addr:"Kirimatiyana, Lunuwila",phone:"0312257504",icon:"🌱"},
+{name:"Wilpotha Nursery",type:"Nursery",lat:7.75162,lng:79.84526,addr:"Wilpotha, Baththuluoya",phone:"0325671077",icon:"🌱"},
+{name:"Attawilluwa Nursery",type:"Nursery",lat:8.00956,lng:79.87626,addr:"Attawilluwa, Kurunegala Road, Puttalam",phone:"0312257504",icon:"🌱"},
+{name:"Handapanagala Nursery",type:"Nursery",lat:6.6567,lng:81.11817,addr:"Handapanagala, Veherayaya",phone:"0552274665",icon:"🌱"},
+{name:"Welipitiya Nursery",type:"Nursery",lat:7.10004,lng:81.26014,addr:"Welipitiya Estate, Nanpurawa, Bibila",phone:"0552265720",icon:"🌱"},
+{name:"Kilinochchi Nursery",type:"Nursery",lat:9.40611,lng:80.44275,addr:"D3, Pannankinni, Kilinochchi",phone:"0766904602",icon:"🌱"},
+{name:"Devipuram Nursery",type:"Nursery",lat:9.35305,lng:80.66038,addr:"No 29/ASlot, Devipuram, Pudukudirippu, Mulativ",phone:"0212226014",icon:"🌱"},
+{name:"Achchuveli Nursery",type:"Nursery",lat:9.78157,lng:80.1008,addr:"Wasawilan Road, Achchuveli, Jaffna",phone:"0771110709",icon:"🌱"},
+{name:"Alampil Nursery",type:"Nursery",lat:9.17613,lng:80.84848,addr:"Alampil, Mulativ",phone:"0766904603",icon:"🌱"},
+{name:"Embilipitiya Nursery",type:"Nursery",lat:6.29557,lng:80.87274,addr:"Thunkama, Embilipitiya",phone:"0472230569",icon:"🌱"},
+{name:"Medamulana Nursery",type:"Nursery",lat:6.18332,lng:80.76676,addr:"Medamulana, Weeraketiya",phone:"0472246359",icon:"🌱"},
+{name:"Mayurapura Nursery",type:"Nursery",lat:6.23339,lng:81.02159,addr:"Mayurapura, Hambanotota",phone:"0766904558",icon:"🌱"},
+{name:"Madhu nursery",type:"Nursery",lat:8.82195,lng:80.20678,addr:"157/2, Kudiyiruppu Road, Poonthottam, Vavuniya.",phone:"0242050344",icon:"🌱"},
+{name:"Lunuwila Training Centre",type:"Training",lat:7.355,lng:79.835,addr:"Coconut Development Training Center, Coconut Cultivation Board, Bandirippu Estate, Lunuwila.",phone:"0312255048",icon:"🎓"},
+{name:"Medamulana South Sri Lanka Coconut Development Training Center",type:"Training",lat:6.1835,lng:80.7679,addr:"Medamulana,Weeraketiya",phone:"0472257534",icon:"🎓"},
+{name:"Achuveli Coconut Development Training Center",type:"Training",lat:9.816,lng:80.05,addr:"Wasavilan Road, Achchuveli,Jaffna",phone:"0212226014",icon:"🎓"},
+{name:"Nagansola Model Garden",type:"Garden",lat:8.1648,lng:80.2882,addr:"Wanni, Rasnayakapura",phone:"0374944198",icon:"🌴"},
+{name:"Daisy wally Model Garden",type:"Garden",lat:7.7248,lng:80.2517,addr:"Ilukwela,Weuda",phone:"0372299800",icon:"🌴"},
+{name:"Randeniya Model Garden",type:"Garden",lat:7.628,lng:80.2458,addr:"Wariyapola",phone:"0375555217",icon:"🌴"},
+{name:"Lenawa Model Garden",type:"Garden",lat:7.5238,lng:80.3229,addr:"Hiriyala,Lenawa",phone:"0374944425",icon:"🌴"},
+{name:"Bopitiya Model Garden",type:"Garden",lat:7.4152,lng:80.3048,addr:"Bopitiya",phone:"0372288601",icon:"🌴"},
+{name:"Mahayaya Model Garden",type:"Garden",lat:7.319,lng:79.998,addr:"Makandura,Gonawila",phone:"0312299781",icon:"🌴"},
+{name:"Girtland Model Garden",type:"Garden",lat:7.7605,lng:80.1318,addr:"Nabiriththankadawara,Welipennagahamula",phone:"0374930928",icon:"🌴"},
+{name:"Mundel Model Garden",type:"Garden",lat:7.7988,lng:79.8195,addr:"Mundel",phone:"0322052355",icon:"🌴"},
+{name:"Kohombana Model Garden",type:"Garden",lat:7.3827,lng:80.6236,addr:"Kohombana Estate,Gonagolla",phone:"0633632186",icon:"🌴"},
+{name:"Korrei Model Garden",type:"Garden",lat:7.1232,lng:81.8167,addr:"Thirukkowil",phone:"0673694530",icon:"🌴"},
+{name:"Passikudha Model Garden",type:"Garden",lat:7.9297,lng:81.5635,addr:"Kalkuda, Pasikuda",phone:"0652050224",icon:"🌴"},
+{name:"Pallei Model Garden",type:"Garden",lat:9.6632,lng:80.3039,addr:"Kandy road, Pallei",phone:"0212050013",icon:"🌴"},
+{name:"Coconut Development Authority (Head Office)",type:"CDA",lat:6.8909,lng:79.8766,addr:"54, Nawala Road, Narahenpita, Colombo 05",phone:"0112502502",icon:"🏢", district:"Colombo"},
+{name:"CDA Fort Office",type:"CDA",lat:6.9365,lng:79.8448,addr:"11, Duke Street, Colombo 01",phone:"0112421028",icon:"🏢", district:"Colombo"},
+{name:"CDA Regional Office Kurunegala",type:"CDA",lat:7.4863,lng:80.3647,addr:"Kurunegala",phone:"0372222534",icon:"🏢", district:"Kurunegala"}
 ];
+var OFC_TYPES=['All','CRI','CCB','Nursery','Training','Garden','CDA'];
 var ofcUserLat=null,ofcUserLng=null,ofcFilter='All';
 function haversine(lat1,lng1,lat2,lng2){
   var R=6371,dLat=(lat2-lat1)*Math.PI/180,dLng=(lng2-lng1)*Math.PI/180;
@@ -8278,23 +8351,23 @@ function renderOffices(){
   var html='<div style="padding:4px"><h2 style="margin:0 0 8px;font-size:16px;color:var(--green)">'+t('officesTitle')+'</h2>';
   html+='<div class="ofc-locate-bar"><button id="ofcLocateBtn" onclick="locateForOffices()">'+t('locateMe')+'</button>';
   html+='<select id="ofcFilterSel" onchange="ofcFilter=this.value;renderOffices()">';
-  ['All','CRI','CCB','Govijana'].forEach(function(f){
+  OFC_TYPES.forEach(function(f){
     html+='<option value="'+f+'"'+(ofcFilter===f?' selected':'')+'>'+t('filter'+f)+'</option>';
   });
   html+='</select></div>';
   html+='<div class="ofc-grid">';
   filtered.forEach(function(o){
     html+='<div class="ofc-card"><div class="ofc-icon">'+o.icon+'</div><div class="ofc-info">';
-    html+='<div class="ofc-name">'+o.name+'</div>';
-    html+='<div class="ofc-type">'+o.type+'</div>';
-    html+='<div class="ofc-addr">'+o.addr+'</div>';
-    html+='<div class="ofc-phone">📞 '+o.phone+'</div>';
-    if(o.email)html+='<div class="ofc-email" style="font-size:11px;color:#2196F3;margin-top:2px">✉️ '+o.email+'</div>';
+    html+='<div class="ofc-name">'+esc(o.name)+'</div>';
+    html+='<div class="ofc-type">'+t('filter'+o.type)+'</div>';
+    html+='<div class="ofc-addr">'+esc(o.addr)+'</div>';
+    // Several districts share one regional office, so name who it serves.
+    if(o.district)html+='<div class="ofc-serves">'+t('ofcServes')+': '+esc(o.district)+'</div>';
+    if(o.phone)html+='<div class="ofc-phone">📞 '+esc(o.phone)+'</div>';
     if(o._dist!==undefined)html+='<div class="ofc-dist">📍 '+o._dist.toFixed(1)+' '+t('ofcKmAway')+'</div>';
     html+='<div class="ofc-actions">';
     html+='<a href="https://www.google.com/maps/dir/?api=1&destination='+o.lat+','+o.lng+'" target="_blank" rel="noopener">'+t('ofcDirections')+'</a>';
-    html+='<a href="tel:'+o.phone.replace(/[^+\d]/g,'')+'">'+t('ofcCall')+'</a>';
-    if(o.email)html+='<a href="mailto:'+o.email+'">✉️ Email</a>';
+    if(o.phone)html+='<a href="tel:'+o.phone.replace(/[^+\d]/g,'')+'">'+t('ofcCall')+'</a>';
     html+='</div></div></div>';
   });
   html+='</div>';
