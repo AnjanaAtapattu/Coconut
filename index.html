@@ -159,8 +159,7 @@ table.dt tr:last-child td{border-bottom:none;}
 .cinput button:disabled{opacity:.5;cursor:not-allowed;}
 .cpowered{text-align:center;font-size:9px;color:#aaa;padding:2px 10px 6px;background:#fff;}
 /* === Dark Mode === */
-body.dark{--green:#4caf50;--green800:#4caf50;--sand:#1a1a2e;--ink:#e0e0e0;--line:#3a3a50;--wet:#4caf50;--int:#e0a030;--dry:#e07040;}
-body.dark{background:#1a1a2e;color:#e0e0e0;}
+body.dark{--green:#4caf50;--green800:#4caf50;--sand:#1a1a2e;--ink:#e0e0e0;--line:#3a3a50;--wet:#4caf50;--int:#e0a030;--dry:#e07040;background:#1a1a2e;color:#e0e0e0;}
 body.dark .card,.dark table.dt th,.dark .crop summary,.dark .crop .body{background:#2d2d44;border-color:#3a3a50;}
 body.dark .chip{background:#3a3a50;border-color:#4a4a60;color:#aadfa0;}
 body.dark #chatPanel{background:#1a1a2e;}
@@ -194,7 +193,7 @@ body.font-xl{font-size:20px;}
 body.font-xl .cbubble{font-size:18px;}
 body.font-xl nav.tabs button{font-size:13.5px;}
 /* === Focus Styles === */
-.hdr-btn:focus-visible,.langsw button:focus-visible,nav.tabs button:focus-visible,.fb-face:focus-visible,.pest-card summary:focus-visible,.ofc-actions a:focus-visible{outline:2px solid #ff9800;outline-offset:2px;border-radius:4px;}
+.hdr-btn:focus-visible,.langsw button:focus-visible,nav.tabs button:focus-visible,.fb-face:focus-visible,.pest-card summary:focus-visible,.ofc-actions a:focus-visible,.pest-card-new summary:focus-visible,.pest-capture button:focus-visible,.sharebtn:focus-visible,.printbtn:focus-visible,.ofc-locate-bar button:focus-visible{outline:2px solid #ff9800;outline-offset:2px;border-radius:4px;}
 /* === Header Controls === */
 .hdr-controls{display:flex;align-items:center;gap:4px;margin-left:6px;}
 .hdr-btn{background:rgba(255,255,255,.16);border:none;color:#fff;width:30px;height:30px;border-radius:50%;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s;padding:0;line-height:1;}
@@ -203,6 +202,8 @@ body.font-xl nav.tabs button{font-size:13.5px;}
 nav.tabs{overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
 nav.tabs::-webkit-scrollbar{display:none;}
 nav.tabs button{flex:0 0 auto;min-width:60px;min-height:44px;padding:9px 10px 7px;}
+/* === View Loading Placeholder === */
+.view-loading{display:flex;align-items:center;justify-content:center;height:100%;font-size:14px;color:#888;font-weight:600;gap:8px;}
 /* === Weather View === */
 #view-weather,#view-pests{overflow-y:auto;-webkit-overflow-scrolling:touch;padding:12px;background:var(--sand);}
 .weather-zone{margin-bottom:16px;}
@@ -365,9 +366,9 @@ body.dark .fb-textarea{background:#1a1a2e;color:#e0e0e0;border-color:#3a3a50;}
     <span class="logo" role="img" aria-label="Coconut">🥥</span>
     <div><h1>Pol Sathkara<small data-t="subtitle">Coconut Zone Guide · Sri Lanka</small></h1></div>
     <div class="hdr-controls">
-      <button class="hdr-btn" id="darkToggle" title="Dark mode" aria-label="Toggle dark mode">🌙</button>
-      <button class="hdr-btn" id="fontToggle" title="Font size" aria-label="Change font size">A</button>
-      <button class="hdr-btn" id="searchToggle" title="Search" aria-label="Search">🔍</button>
+      <button class="hdr-btn" id="darkToggle" title="Dark mode" aria-label="Toggle dark mode"><span aria-hidden="true">🌙</span></button>
+      <button class="hdr-btn" id="fontToggle" title="Font size" aria-label="Change font size"><span aria-hidden="true">A</span></button>
+      <button class="hdr-btn" id="searchToggle" title="Search" aria-label="Search"><span aria-hidden="true">🔍</span></button>
     </div>
     <div class="langsw" id="langsw">
       <button data-lang="en">EN</button>
@@ -394,20 +395,20 @@ body.dark .fb-textarea{background:#1a1a2e;color:#e0e0e0;border-color:#3a3a50;}
       <div class="map" id="map-clim"></div>
       <div class="hint" data-t="hintClim">Tap a climatic zone</div>
     </section>
-    <section class="view" id="view-weather" style="position:absolute;inset:0;"></section>
-    <section class="view" id="view-pests" style="position:absolute;inset:0;"></section>
-    <section class="view" id="view-offices" style="position:absolute;inset:0;"></section>
+    <section class="view" id="view-weather" style="position:absolute;inset:0;" aria-label="Weather"><div class="view-loading">🌤️ Loading weather…</div></section>
+    <section class="view" id="view-pests" style="position:absolute;inset:0;" aria-label="Pests &amp; Diseases"><div class="view-loading">🐛 Loading pest guide…</div></section>
+    <section class="view" id="view-offices" style="position:absolute;inset:0;" aria-label="Offices"><div class="view-loading">🏢 Loading offices…</div></section>
   </div>
   <div class="price-ticker" id="priceTicker">
     <div class="scroll" id="priceScroll"></div>
   </div>
   <nav class="tabs">
-    <button class="active" data-tab="google"><span class="ic">🛰️</span><span data-t="tabGoogle">Google Map</span></button>
-    <button data-tab="agro"><span class="ic">🗺️</span><span data-t="tabAgro">Agro Ecological</span></button>
-    <button data-tab="clim"><span class="ic">🌦️</span><span data-t="tabClim">Climatic Zones</span></button>
-    <button data-tab="weather"><span class="ic">🌤️</span><span data-t="tabWeather">Weather</span></button>
-    <button data-tab="pests"><span class="ic">🐛</span><span data-t="tabPests">Pests</span></button>
-    <button data-tab="offices"><span class="ic">🏢</span><span data-t="tabOffices">Offices</span></button>
+    <button class="active" data-tab="google" aria-label="Google Map"><span class="ic" aria-hidden="true">🛰️</span><span data-t="tabGoogle">Google Map</span></button>
+    <button data-tab="agro" aria-label="Agro Ecological Zones"><span class="ic" aria-hidden="true">🗺️</span><span data-t="tabAgro">Agro Ecological</span></button>
+    <button data-tab="clim" aria-label="Climatic Zones"><span class="ic" aria-hidden="true">🌦️</span><span data-t="tabClim">Climatic Zones</span></button>
+    <button data-tab="weather" aria-label="Weather Guide"><span class="ic" aria-hidden="true">🌤️</span><span data-t="tabWeather">Weather</span></button>
+    <button data-tab="pests" aria-label="Pests and Diseases"><span class="ic" aria-hidden="true">🐛</span><span data-t="tabPests">Pests</span></button>
+    <button data-tab="offices" aria-label="Find Offices"><span class="ic" aria-hidden="true">🏢</span><span data-t="tabOffices">Offices</span></button>
   </nav>
 </div>
 
@@ -7997,7 +7998,7 @@ function renderWeather(){
   // Bar charts per zone
   html+='<div class="rain-legend" style="margin-bottom:12px"><span><span class="dot" style="background:var(--wet)"></span>'+t('wetZone')+'</span><span><span class="dot" style="background:var(--int)"></span>'+t('intZone')+'</span><span><span class="dot" style="background:var(--dry)"></span>'+t('dryZone')+'</span><span>▣ '+t('currentMonth')+'</span></div>';
   zones.forEach(function(z){
-    var max=Math.max.apply(null,z.data);
+    var max=Math.max(...z.data);
     html+='<div class="weather-bar-chart"><h3>'+z.name+' — '+t('rainfallMm')+'</h3><div class="rain-chart">';
     for(var i=0;i<12;i++){
       var h=Math.round((z.data[i]/max)*80);
@@ -8017,7 +8018,7 @@ function renderWeather(){
   html+='<table><thead><tr><th>Zone</th><th>Annual (mm)</th><th>Avg/Month</th><th>Peak Month</th><th>Min Month</th></tr></thead><tbody>';
   zones.forEach(function(z,idx){
     var avg=Math.round(totals[idx]/12);
-    var peakIdx=z.data.indexOf(Math.max.apply(null,z.data));
+    var peakIdx=z.data.indexOf(Math.max(...z.data));
     var minIdx=z.data.indexOf(Math.min.apply(null,z.data));
     html+='<tr><td><span class="dot" style="display:inline-block;width:10px;height:10px;border-radius:2px;background:'+z.color+';vertical-align:middle;margin-right:4px"></span>'+z.name+'</td><td>'+totals[idx]+'</td><td>'+avg+'</td><td>'+months[peakIdx]+' ('+z.data[peakIdx]+')</td><td>'+months[minIdx]+' ('+z.data[minIdx]+')</td></tr>';
   });
