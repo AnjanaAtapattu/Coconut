@@ -5,7 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 <meta name="theme-color" content="#2D4A22" />
 <meta name="apple-mobile-web-app-capable" content="yes">
-<link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoiUG9sIFNhdGhrYXJhIiwic2hvcnRfbmFtZSI6IlBvbCBTYXRoa2FyYSIsInN0YXJ0X3VybCI6Ii4iLCJkaXNwbGF5Ijoic3RhbmRhbG9uZSIsImJhY2tncm91bmRfY29sb3IiOiIjRjVGMEUzIiwidGhlbWVfY29sb3IiOiIjMkQ0QTIyIiwiaWNvbnMiOlt7InNyYyI6ImRhdGE6aW1hZ2Uvc3ZnK3htbCw8c3ZnIHhtbG5zPSdodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2Zycgdmlld0JveD0nMCAwIDEwMCAxMDAnPjx0ZXh0IHk9Jy45ZW0nIGZvbnQtc2l6ZT0nOTAnPvCfpaU8L3RleHQ+PC9zdmc+Iiwic2l6ZXMiOiJhbnkiLCJ0eXBlIjoiaW1hZ2Uvc3ZnK3htbCJ9XX0=">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon-192.png">
 <meta name="description" content="Site-specific coconut growing guidance for Sri Lanka." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -202,6 +204,10 @@ body.font-xl nav.tabs button{font-size:13.5px;}
 nav.tabs{overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
 nav.tabs::-webkit-scrollbar{display:none;}
 nav.tabs button{flex:0 0 auto;min-width:60px;min-height:44px;padding:9px 10px 7px;}
+/* === Map Unavailable Fallback === */
+.map-unavailable{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;height:100%;padding:24px;text-align:center;font-size:13px;line-height:1.5;color:#777;background:var(--sand);font-weight:600;}
+.map-unavailable::first-line{font-size:34px;}
+body.dark .map-unavailable{color:#999;}
 /* === View Loading Placeholder === */
 .view-loading{display:flex;align-items:center;justify-content:center;height:100%;font-size:14px;color:#888;font-weight:600;gap:8px;}
 /* === Weather View === */
@@ -323,16 +329,19 @@ body.dark .pest-photo-section{background:#2d2d44;border-color:#3a3a50;}
 .pest-capture{display:flex;gap:8px;margin-bottom:10px;justify-content:center;}
 .pest-capture button{background:var(--green);color:#fff;border:none;border-radius:12px;padding:10px 16px;font-family:'Space Grotesk';font-weight:700;font-size:13px;cursor:pointer;display:flex;align-items:center;gap:6px;}
 .pest-preview{width:100%;max-width:300px;border-radius:10px;margin:8px auto;display:none;}
-.pest-compare{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px;}
-.pest-compare-card{border:2px solid var(--line);border-radius:10px;padding:10px;text-align:center;cursor:pointer;transition:all .2s;}
+/* auto-fill keeps these thumbnails small: a fixed 2-column grid made them huge on
+   wide screens and pushed the actual pest and disease lists below the fold. */
+.pest-compare{display:grid;grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:8px;margin-top:8px;}
+.pest-compare-card{border:2px solid var(--line);border-radius:10px;padding:7px 5px;text-align:center;cursor:pointer;transition:all .2s;}
 .pest-compare-card:hover,.pest-compare-card.selected{border-color:var(--green);background:rgba(45,74,34,.08);}
-.pest-compare-card .pc-icon{font-size:36px;}
-.pest-compare-card .pc-name{font-size:11px;font-weight:700;color:var(--green);margin-top:4px;}
+.pest-compare-card .pc-icon{font-size:26px;line-height:1.1;}
+.pest-compare-card .pc-name{font-size:10px;font-weight:700;color:var(--green);margin-top:3px;line-height:1.25;}
 .pest-compare-card .pc-match{font-size:10px;color:#ff9800;font-weight:600;}
 /* === Offline Indicator === */
 .offline-bar{position:fixed;top:0;left:0;right:0;z-index:2000;background:#ff5722;color:#fff;text-align:center;padding:4px;font-size:11px;font-weight:700;transform:translateY(-100%);transition:transform .3s;}
 .offline-bar.show{transform:translateY(0);}
-.cache-indicator{position:fixed;bottom:70px;left:16px;z-index:900;background:rgba(0,0,0,.7);color:#fff;padding:6px 12px;border-radius:20px;font-size:10px;display:none;align-items:center;gap:4px;}
+/* Sits clear of the ticker (26px) + tab bar (52px), which it used to overlap. */
+.cache-indicator{position:fixed;bottom:calc(88px + env(safe-area-inset-bottom));left:16px;z-index:900;background:rgba(0,0,0,.7);color:#fff;padding:6px 12px;border-radius:20px;font-size:10px;display:none;align-items:center;gap:4px;}
 .cache-indicator.show{display:flex;}
 .cache-dot{width:6px;height:6px;border-radius:50%;background:#4caf50;}
 .cache-dot.stale{background:#ff9800;}
@@ -7167,7 +7176,8 @@ var T={
     ttsSpeak:"Read aloud",ttsStop:"Stop reading",
     pestSymptoms:"Symptoms",pestTreatment:"Treatment",pestInsects:"Pests",pestDiseases:"Diseases",
     rainfallDist:"Rainfall Distribution",zoneComparison:"Zone Comparison",noOffices:"No offices found",
-    agroClimZone:"Agro-Climatic Zone of Sri Lanka"
+    agroClimZone:"Agro-Climatic Zone of Sri Lanka",
+    mapOffline:"Maps need a connection the first time. Reconnect once and they will work offline after that."
   },
   si:{
     chatTitle:"පොල් උපදේශක", chatSubtitle:"පොල් වගාව ගැන අසන්න",
@@ -7231,7 +7241,8 @@ var T={
     ttsSpeak:"කියවන්න",ttsStop:"නවත්වන්න",
     pestSymptoms:"රෝග ලක්ෂණ",pestTreatment:"ප්‍රතිකාර",pestInsects:"පළිබෝධ",pestDiseases:"රෝග",
     rainfallDist:"වර්ෂාපතන ව්‍යාප්තිය",zoneComparison:"කලාප සංසන්දනය",noOffices:"කාර්යාල හමු නොවීය",
-    agroClimZone:"ශ්‍රී ලංකාවේ කෘෂි-දේශගුණික කලාපය"
+    agroClimZone:"ශ්‍රී ලංකාවේ කෘෂි-දේශගුණික කලාපය",
+    mapOffline:"සිතියම් සඳහා පළමු වතාවේ සම්බන්ධතාවයක් අවශ්‍යයි. වරක් සම්බන්ධ වූ පසු ඒවා නොබැඳිව ක්‍රියා කරයි."
   },
   ta:{
     chatTitle:"தென்னை ஆலோசகர்", chatSubtitle:"தென்னை சாகுபடி பற்றி கேளுங்கள்",
@@ -7295,7 +7306,8 @@ var T={
     ttsSpeak:"படிக்க",ttsStop:"நிறுத்து",
     pestSymptoms:"அறிகுறிகள்",pestTreatment:"சிகிச்சை",pestInsects:"பூச்சிகள்",pestDiseases:"நோய்கள்",
     rainfallDist:"மழைப்பொழிவு விநியோகம்",zoneComparison:"மண்டல ஒப்பீடு",noOffices:"அலுவலகங்கள் காணப்படவில்லை",
-    agroClimZone:"இலங்கையின் வேளாண்-காலநிலை மண்டலம்"
+    agroClimZone:"இலங்கையின் வேளாண்-காலநிலை மண்டலம்",
+    mapOffline:"வரைபடங்களுக்கு முதல் முறை இணைப்பு தேவை. ஒரு முறை இணைந்தால் பின்னர் அவை ஆஃப்லைனில் வேலை செய்யும்."
   }
 };
 var lang=(function(){try{return localStorage.getItem('polLang')||'en';}catch(e){return 'en';}})();
@@ -8062,14 +8074,51 @@ function renderWeather(){
   var ticker=document.getElementById('priceTicker');
   var scrollEl=document.getElementById('priceScroll');
   scrollEl.innerHTML=html+html;
-  ticker.style.overflow='scroll';
+  ticker.style.overflow='auto';
   ticker.style.scrollbarWidth='none';
   ticker.style.msOverflowStyle='none';
-  setInterval(function(){
-    ticker.scrollLeft+=1;
-    var half=scrollEl.scrollWidth/2;
-    if(ticker.scrollLeft>=half) ticker.scrollLeft=0;
-  },50);
+
+  var SPEED=15;           // px per second
+  var pos=0,paused=false,last=null;
+
+  // Time-based rather than a fixed per-tick step: a timer-based ticker speeds up or
+  // stalls when the browser throttles timers, which is what makes it feel erratic.
+  function frame(ts){
+    if(last===null)last=ts;
+    var dt=(ts-last)/1000;
+    last=ts;
+    if(!paused){
+      var half=scrollEl.scrollWidth/2;
+      if(half>0){
+        pos+=SPEED*dt;
+        if(pos>=half)pos-=half;   // content is duplicated, so this loops seamlessly
+        ticker.scrollLeft=pos;
+      }
+    }
+    requestAnimationFrame(frame);
+  }
+
+  // Prices are the one thing here people need to read a digit at a time, so the
+  // ticker holds still while it is being looked at or touched.
+  function pause(){paused=true;}
+  function resume(){pos=ticker.scrollLeft;paused=false;}
+  ticker.addEventListener('pointerenter',pause);
+  ticker.addEventListener('pointerleave',resume);
+  ticker.addEventListener('pointerdown',pause);
+  ticker.addEventListener('touchstart',pause,{passive:true});
+  ticker.addEventListener('touchend',resume);
+  ticker.addEventListener('focusin',pause);
+  ticker.addEventListener('focusout',resume);
+  document.addEventListener('visibilitychange',function(){
+    if(document.hidden)paused=true;else{last=null;resume();}
+  });
+
+  ticker.setAttribute('tabindex','0');
+  ticker.setAttribute('role','marquee');
+  ticker.setAttribute('aria-label','Local market prices');
+
+  var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(!reduce)requestAnimationFrame(frame);
 })();
 // ====== FEATURE: Pest Gallery ======
 var PESTS=[
@@ -8136,10 +8185,13 @@ function shareZone(){
   recog.onerror=function(){listening=false;mic.classList.remove('listening');};
 })();
 // ====== FEATURE: PWA / Service Worker ======
+// Registered from a real same-origin file. A blob: URL cannot be used here —
+// browsers reject it as a worker script, which silently disables offline support.
+// The relative path keeps the scope correct when served from a subpath.
 if('serviceWorker' in navigator){
-  var swCode='self.addEventListener("install",function(e){e.waitUntil(caches.open("pol-v1").then(function(c){return c.addAll(["./"])}))});self.addEventListener("fetch",function(e){e.respondWith(caches.match(e.request).then(function(r){return r||fetch(e.request)}))})';
-  var blob=new Blob([swCode],{type:'application/javascript'});
-  navigator.serviceWorker.register(URL.createObjectURL(blob)).catch(function(){});
+  window.addEventListener('load',function(){
+    navigator.serviceWorker.register('sw.js').catch(function(){});
+  });
 }
 (function initChat(){
   var fab=document.getElementById('chatFab'),panel=document.getElementById('chatPanel');
@@ -8300,12 +8352,16 @@ function selectPestMatch(el,key){
   document.querySelectorAll('.pest-compare-card').forEach(function(c){c.classList.remove('selected');});
   el.classList.add('selected');
   var target=t('pest'+key);
-  var details=document.querySelectorAll('.pest-card');
+  var details=document.querySelectorAll('.pest-card-new,.pest-card');
+  var hit=null;
   details.forEach(function(d){
-    var text=d.querySelector('summary').textContent.replace(/▾/,'').trim();
-    if(text.indexOf(target)>=0){d.open=true;d.scrollIntoView({behavior:'smooth',block:'center'});}
+    var s=d.querySelector('summary');
+    if(!s)return;
+    var text=s.textContent.replace(/▾/g,'').trim();
+    if(text.indexOf(target)>=0){d.open=true;hit=d;}
     else{d.open=false;}
   });
+  if(hit)hit.scrollIntoView({behavior:'smooth',block:'center'});
 }
 
 // === TTS (Text-to-Speech) ===
@@ -8330,25 +8386,39 @@ function ttsStop(){
   var indicator=document.getElementById('cacheIndicator');
   var dot=document.getElementById('cacheDot');
   var txt=document.getElementById('cacheText');
+  function show(cached,date){
+    indicator.classList.add('show');
+    dot.className='cache-dot'+(cached?'':' stale');
+    txt.textContent=cached
+      ? t('cacheOk')+(date?' · '+new Date(date).toLocaleDateString():'')
+      : t('cacheStale');
+  }
   function updateStatus(){
-    var offline=!navigator.onLine;
-    bar.classList.toggle('show',offline);
-    if('caches' in window){
-      caches.open('pol-v1').then(function(cache){
-        cache.match('./').then(function(resp){
-          if(resp){
-            indicator.classList.add('show');
-            dot.className='cache-dot';
-            var cached=resp.headers.get('date');
-            txt.textContent=t('cacheOk')+(cached?' · '+new Date(cached).toLocaleDateString():'');
-          }else{
-            indicator.classList.add('show');
-            dot.className='cache-dot stale';
-            txt.textContent=t('cacheStale');
-          }
-        });
-      }).catch(function(){});
+    bar.classList.toggle('show',!navigator.onLine);
+    if(!('caches' in window))return;
+    // Ask the service worker, which owns the cache names. Never use caches.open()
+    // for a read: it creates the cache, so the check would always report "not cached".
+    var sw=navigator.serviceWorker;
+    if(sw&&sw.controller){
+      sw.controller.postMessage({type:'cache-status'});
+      return;
     }
+    caches.keys().then(function(keys){
+      var shell=keys.filter(function(k){return k.indexOf('pol-shell')===0;});
+      if(!shell.length){show(false);return;}
+      caches.open(shell[0]).then(function(c){
+        return c.match('./index.html');
+      }).then(function(r){show(!!r,r&&r.headers.get('date'));});
+    }).catch(function(){});
+  }
+  if(navigator.serviceWorker){
+    navigator.serviceWorker.addEventListener('message',function(e){
+      if(e.data&&e.data.type==='cache-status')show(e.data.cached,e.data.date);
+    });
+    // Re-check once the worker takes control, so the badge reflects the real state
+    // instead of whatever it was during the first paint.
+    navigator.serviceWorker.ready.then(function(){setTimeout(updateStatus,600);});
+    navigator.serviceWorker.addEventListener('controllerchange',updateStatus);
   }
   window.addEventListener('online',updateStatus);
   window.addEventListener('offline',updateStatus);
@@ -8422,11 +8492,27 @@ renderPests=function(){
 };
 
 // init
-initAgro(); initClim(); initGoogle();
-setTimeout(function(){
-  for(var k in maps) if(maps[k]) maps[k].invalidateSize();
-},500);
+// Language first: it must never depend on the maps. Leaflet comes from a CDN, and
+// when that request fails the map init below throws — previously taking switchLang
+// with it and leaving Sinhala/Tamil users stuck on English.
 switchLang(lang);
+
+if(typeof L==='undefined'){
+  // No mapping library available (offline first load, or CDN blocked). Keep every
+  // non-map feature usable and say plainly what is missing.
+  ['map-agro','map-clim','map-google'].forEach(function(id){
+    var el=document.getElementById(id);
+    if(el)el.innerHTML='<div class="map-unavailable">🗺️<span data-t="mapOffline">'+t('mapOffline')+'</span></div>';
+  });
+}else{
+  // Guarded individually so one failing map cannot abort the other two.
+  [initAgro,initClim,initGoogle].forEach(function(fn){
+    try{fn();}catch(err){}
+  });
+  setTimeout(function(){
+    for(var k in maps) if(maps[k]) maps[k].invalidateSize();
+  },500);
+}
 window.openDossier=openDossier;
 window.shareZone=shareZone;
 window.locateForOffices=locateForOffices;

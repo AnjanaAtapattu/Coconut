@@ -1,1 +1,151 @@
-if(!self.define){let e,s={};const n=(n,i)=>(n=new URL(n+".js",i).href,s[n]||new Promise(s=>{if("document"in self){const e=document.createElement("script");e.src=n,e.onload=s,document.head.appendChild(e)}else e=n,importScripts(n),s()}).then(()=>{let e=s[n];if(!e)throw new Error(`Module ${n} didn’t register its module`);return e}));self.define=(i,o)=>{const c=e||("document"in self?document.currentScript.src:"")||location.href;if(s[c])return;let r={};const t=e=>n(e,c),l={module:{uri:c},exports:r,require:t};s[c]=Promise.all(i.map(e=>l[e]||t(e))).then(e=>(o(...e),r))}}define(["./workbox-15d4b42e"],function(e){"use strict";self.skipWaiting(),e.clientsClaim(),e.precacheAndRoute([{url:"registerSW.js",revision:"1872c500de691dce40960bb85481de07"},{url:"index.html",revision:"303137ca98ab7275dbcc6cb116f7ffad"},{url:"icon.svg",revision:"31cca204739b85a68279514eac363534"},{url:"icon-maskable-512.png",revision:"22922d286c475d7cbd5fdb669eb39f59"},{url:"icon-512.png",revision:"22922d286c475d7cbd5fdb669eb39f59"},{url:"icon-192.png",revision:"a950f801ff9ae271e9df6e65cb322a8d"},{url:"assets/index-P2l7a35Y.js",revision:null},{url:"assets/index-B5E3AR1Q.css",revision:null},{url:"assets/climatic_zones.geo-C8RosjPU.js",revision:null},{url:"assets/agro_zones.geo-BHng2Yvj.js",revision:null},{url:"assets/ReportFlow-D9OnRRmp.js",revision:null},{url:"assets/ReportFlow-BFjyIaq-.css",revision:null},{url:"icon-192.png",revision:"a950f801ff9ae271e9df6e65cb322a8d"},{url:"icon-512.png",revision:"22922d286c475d7cbd5fdb669eb39f59"},{url:"icon-maskable-512.png",revision:"22922d286c475d7cbd5fdb669eb39f59"},{url:"icon.svg",revision:"31cca204739b85a68279514eac363534"},{url:"manifest.webmanifest",revision:"e4b5f9e509e06504a0d06fca992eed96"}],{}),e.cleanupOutdatedCaches(),e.registerRoute(new e.NavigationRoute(e.createHandlerBoundToURL("index.html"))),e.registerRoute(/^https:\/\/fonts\.(googleapis|gstatic)\.com\/.*/i,new e.CacheFirst({cacheName:"google-fonts-cache",plugins:[new e.ExpirationPlugin({maxEntries:20,maxAgeSeconds:31536e3})]}),"GET"),e.registerRoute(/^https:\/\/server\.arcgisonline\.com\/.*/i,new e.CacheFirst({cacheName:"basemap-tiles-cache",plugins:[new e.ExpirationPlugin({maxEntries:3e3,maxAgeSeconds:5184e3}),new e.CacheableResponsePlugin({statuses:[0,200]})]}),"GET"),e.registerRoute(/\/intercrop-pdfs\/.*\.pdf$/i,new e.CacheFirst({cacheName:"intercrop-pdf-cache",plugins:[new e.ExpirationPlugin({maxEntries:60,maxAgeSeconds:31536e3}),new e.CacheableResponsePlugin({statuses:[0,200]})]}),"GET")});
+/* Pol Sathkara — Coconut Zone Guide
+   Offline-first service worker with a safe update path.
+
+   Strategy
+   - Navigations (HTML): network-first, falling back to the cached shell. A new
+     deploy is always picked up when online, and the app still opens offline.
+   - Same-origin assets: cache-first.
+   - Cross-origin libraries/fonts: stale-while-revalidate.
+   - Map tiles: cache-first into a separate, size-capped cache, so tiles a farmer
+     has already viewed stay available in the field without unbounded growth.
+
+   All URLs are resolved relative to this file, so the app works when served from
+   a subpath (GitHub Pages project sites are served at /<repo>/).
+*/
+
+var VERSION = 'v3';
+var SHELL_CACHE = 'pol-shell-' + VERSION;
+var ASSET_CACHE = 'pol-assets-' + VERSION;
+var TILE_CACHE = 'pol-tiles-' + VERSION;
+var TILE_LIMIT = 400;
+
+var SHELL_URLS = [
+  './',
+  './index.html',
+  './manifest.webmanifest',
+  './icon.svg',
+  './icon-192.png',
+  './icon-512.png'
+];
+
+self.addEventListener('install', function (e) {
+  e.waitUntil(
+    caches.open(SHELL_CACHE).then(function (c) {
+      // Added individually rather than with addAll: addAll is atomic, so a single
+      // missing asset would discard the entire precache and block installation.
+      return Promise.all(SHELL_URLS.map(function (u) {
+        return c.add(new Request(u, { cache: 'reload' })).catch(function () {});
+      }));
+    }).then(function () { return self.skipWaiting(); })
+  );
+});
+
+self.addEventListener('activate', function (e) {
+  e.waitUntil(
+    caches.keys().then(function (keys) {
+      return Promise.all(keys.map(function (k) {
+        if (k !== SHELL_CACHE && k !== ASSET_CACHE && k !== TILE_CACHE) return caches.delete(k);
+      }));
+    }).then(function () { return self.clients.claim(); })
+  );
+});
+
+function isTile(url) {
+  return /arcgisonline\.com|basemaps\.cartocdn\.com|tile\.openstreetmap\.org/.test(url.host);
+}
+
+// Keep the tile cache bounded (oldest first) so offline map browsing cannot fill the disk.
+function trimCache(name, limit) {
+  return caches.open(name).then(function (c) {
+    return c.keys().then(function (keys) {
+      if (keys.length <= limit) return;
+      return Promise.all(keys.slice(0, keys.length - limit).map(function (k) {
+        return c.delete(k);
+      }));
+    });
+  });
+}
+
+self.addEventListener('fetch', function (e) {
+  var req = e.request;
+  if (req.method !== 'GET') return;
+
+  var url;
+  try { url = new URL(req.url); } catch (err) { return; }
+  if (url.protocol !== 'http:' && url.protocol !== 'https:') return;
+
+  // 1. Navigations: network first, cached shell as fallback.
+  if (req.mode === 'navigate') {
+    e.respondWith(
+      fetch(req).then(function (res) {
+        var copy = res.clone();
+        caches.open(SHELL_CACHE).then(function (c) { c.put('./index.html', copy); });
+        return res;
+      }).catch(function () {
+        return caches.match('./index.html').then(function (r) {
+          return r || caches.match('./').then(function (r2) { return r2 || Response.error(); });
+        });
+      })
+    );
+    return;
+  }
+
+  // 2. Map tiles: cache first, capped.
+  if (isTile(url)) {
+    e.respondWith(
+      caches.match(req).then(function (hit) {
+        if (hit) return hit;
+        return fetch(req).then(function (res) {
+          var copy = res.clone();
+          caches.open(TILE_CACHE).then(function (c) {
+            c.put(req, copy).then(function () { trimCache(TILE_CACHE, TILE_LIMIT); });
+          });
+          return res;
+        });
+      })
+    );
+    return;
+  }
+
+  // 3. Same-origin assets: cache first.
+  if (url.origin === self.location.origin) {
+    e.respondWith(
+      caches.match(req).then(function (hit) {
+        if (hit) return hit;
+        return fetch(req).then(function (res) {
+          if (res && res.status === 200) {
+            var copy = res.clone();
+            caches.open(ASSET_CACHE).then(function (c) { c.put(req, copy); });
+          }
+          return res;
+        });
+      })
+    );
+    return;
+  }
+
+  // 4. Cross-origin libraries/fonts: stale-while-revalidate.
+  e.respondWith(
+    caches.match(req).then(function (hit) {
+      var net = fetch(req).then(function (res) {
+        if (res && (res.status === 200 || res.type === 'opaque')) {
+          var copy = res.clone();
+          caches.open(ASSET_CACHE).then(function (c) { c.put(req, copy); });
+        }
+        return res;
+      }).catch(function () { return hit; });
+      return hit || net;
+    })
+  );
+});
+
+// Lets the page ask whether the shell is cached, instead of guessing cache names.
+self.addEventListener('message', function (e) {
+  if (!e.data || e.data.type !== 'cache-status') return;
+  caches.open(SHELL_CACHE).then(function (c) {
+    return c.match('./index.html').then(function (r) {
+      var reply = { type: 'cache-status', cached: !!r, date: r ? r.headers.get('date') : null };
+      if (e.source && e.source.postMessage) e.source.postMessage(reply);
+    });
+  });
+});
