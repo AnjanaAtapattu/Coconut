@@ -42,6 +42,10 @@ body.lang-ta h1,body.lang-ta h2,body.lang-ta h3,body.lang-ta h4,body.lang-ta .he
 .legend .sw{width:14px;height:14px;border-radius:3px;}
 .hint{position:absolute;top:10px;left:50%;transform:translateX(-50%);background:rgba(45,74,34,.92);color:#fff;padding:7px 14px;border-radius:20px;font-size:12.5px;z-index:500;box-shadow:0 2px 8px rgba(0,0,0,.25);font-weight:600;}
 .gbtn{position:absolute;top:54px;left:50%;transform:translateX(-50%);z-index:1000;background:#fff;border:none;border-radius:22px;padding:9px 18px;font-weight:700;font-family:'Space Grotesk';color:var(--green);box-shadow:0 3px 10px rgba(0,0,0,.25);font-size:13px;cursor:pointer;}
+.gbtn2{top:92px;}
+.gbtn2.on{background:var(--green);color:#fff;}
+.ofc-pin{background:rgba(255,255,255,.92);border:2px solid var(--green);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;line-height:1;box-shadow:0 1px 4px rgba(0,0,0,.4);}
+body.dark .ofc-pin{background:rgba(40,40,60,.92);border-color:#4caf50;}
 nav.tabs{flex:0 0 auto;display:flex;background:#fff;border-top:1px solid var(--line);box-shadow:0 -2px 8px rgba(0,0,0,.06);z-index:30;padding-bottom:env(safe-area-inset-bottom);}
 nav.tabs button{flex:1;background:none;border:none;padding:9px 4px 7px;display:flex;flex-direction:column;align-items:center;gap:3px;color:#7a7a6a;font-family:'Manrope';font-weight:600;font-size:10.5px;cursor:pointer;}
 nav.tabs button .ic{font-size:21px;line-height:1;}
@@ -204,6 +208,14 @@ body.font-xl nav.tabs button{font-size:13.5px;}
 nav.tabs{overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
 nav.tabs::-webkit-scrollbar{display:none;}
 nav.tabs button{flex:0 0 auto;min-width:60px;min-height:44px;padding:9px 10px 7px;}
+.mite-box{margin-top:10px;padding:10px;border-radius:10px;background:rgba(255,152,0,.09);border:1px solid rgba(255,152,0,.35);}
+body.dark .mite-box{background:rgba(255,152,0,.12);}
+.mite-sel{display:block;width:100%;margin-top:6px;padding:7px 8px;border-radius:8px;border:1px solid var(--line);font-family:inherit;font-size:12px;background:#fff;color:var(--ink);}
+body.dark .mite-sel{background:#1a1a2e;color:#e0e0e0;border-color:#3a3a50;}
+.mite-row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:7px;font-size:12px;}
+.mite-row span{font-weight:700;flex:1 1 100%;}
+.mite-row a{color:var(--green);font-weight:600;text-decoration:none;}
+.mite-row a:hover{text-decoration:underline;}
 /* === Zone variety / yield lists === */
 .zlist{margin:6px 0 0;padding-left:20px;}
 .zlist li{margin:5px 0;line-height:1.5;font-size:13.5px;}
@@ -298,7 +310,8 @@ body.dark .search-box input{background:#1a1a2e;color:#e0e0e0;border-color:#3a3a5
 .search-results{max-height:50vh;overflow-y:auto;}
 .search-results .sr-item{padding:10px 12px;border-bottom:1px solid var(--line);cursor:pointer;font-size:13px;border-radius:8px;margin-bottom:2px;}
 .search-results .sr-item:hover{background:rgba(45,74,34,.08);}
-.search-results .sr-item b{color:var(--green);}
+.search-results .sr-item b{color:var(--green);display:block;}
+.search-results .sr-item .sr-sub{display:block;font-size:11px;color:#888;margin-top:2px;line-height:1.35;}
 .search-results .sr-empty{padding:16px;text-align:center;color:#999;font-size:13px;}
 /* === Seasonal Calendar === */
 .cal-timeline{display:grid;grid-template-columns:1fr;gap:4px;margin-top:8px;}
@@ -320,6 +333,10 @@ body.dark .ofc-card{background:#2d2d44;border-color:#3a3a50;}
 .ofc-card .ofc-addr{font-size:12px;margin:4px 0;color:var(--ink);opacity:.8;}
 .ofc-card .ofc-phone{font-size:12px;color:var(--green);font-weight:600;}
 .ofc-card .ofc-serves{font-size:11px;color:#888;margin:2px 0 4px;line-height:1.4;}
+.ofc-card.highlight{border-color:#ff9800;box-shadow:0 0 0 3px rgba(255,152,0,.25);}
+@keyframes ofcPulse{0%{box-shadow:0 0 0 3px rgba(255,152,0,.45);}100%{box-shadow:0 0 0 3px rgba(255,152,0,.15);}}
+.ofc-card.highlight{animation:ofcPulse 1s ease-out 3 alternate;}
+@media (prefers-reduced-motion:reduce){.ofc-card.highlight{animation:none;}}
 body.dark .ofc-card .ofc-serves{color:#9a9a9a;}
 .ofc-card .ofc-dist{font-size:11px;color:#ff5722;font-weight:700;margin-top:4px;}
 .ofc-actions{display:flex;gap:6px;margin-top:6px;}
@@ -396,6 +413,7 @@ body.dark .fb-textarea{background:#1a1a2e;color:#e0e0e0;border-color:#3a3a50;}
     <section class="view active" id="view-google">
       <div class="map" id="map-google"></div>
       <button class="gbtn" id="pinBtn" data-t="pinBtn">📍 Drop pin on my location</button>
+      <button class="gbtn gbtn2" id="ofcMapToggle" data-t="showOffices" aria-pressed="false" style="display:none">🏢 Show offices</button>
       <div class="hint" id="ghint" data-t="hintGoogle">Tap the map to drop a pin & find your zone</div>
     </section>
     <section class="view" id="view-agro">
@@ -7185,6 +7203,8 @@ var T={
     rainfallDist:"Rainfall Distribution",zoneComparison:"Zone Comparison",noOffices:"No offices found",
     agroClimZone:"Agro-Climatic Zone of Sri Lanka",
     suitableVarieties:"Suitable Coconut Varieties",
+    showOffices:"🏢 Show offices",
+    mitePacketTitle:"Where to collect mite packets",mitePickDistrict:"Select your district…",
     mapOffline:"Maps need a connection the first time. Reconnect once and they will work offline after that."
   },
   si:{
@@ -7251,6 +7271,8 @@ var T={
     rainfallDist:"වර්ෂාපතන ව්‍යාප්තිය",zoneComparison:"කලාප සංසන්දනය",noOffices:"කාර්යාල හමු නොවීය",
     agroClimZone:"ශ්‍රී ලංකාවේ කෘෂි-දේශගුණික කලාපය",
     suitableVarieties:"සුදුසු පොල් ප්‍රභේද",
+    showOffices:"🏢 කාර්යාල පෙන්වන්න",
+    mitePacketTitle:"මයිටා පැකට් ලබාගත හැකි ස්ථාන",mitePickDistrict:"ඔබේ දිස්ත්‍රික්කය තෝරන්න…",
     mapOffline:"සිතියම් සඳහා පළමු වතාවේ සම්බන්ධතාවයක් අවශ්‍යයි. වරක් සම්බන්ධ වූ පසු ඒවා නොබැඳිව ක්‍රියා කරයි."
   },
   ta:{
@@ -7317,6 +7339,8 @@ var T={
     rainfallDist:"மழைப்பொழிவு விநியோகம்",zoneComparison:"மண்டல ஒப்பீடு",noOffices:"அலுவலகங்கள் காணப்படவில்லை",
     agroClimZone:"இலங்கையின் வேளாண்-காலநிலை மண்டலம்",
     suitableVarieties:"பொருத்தமான தென்னை ரகங்கள்",
+    showOffices:"🏢 அலுவலகங்களைக் காட்டு",
+    mitePacketTitle:"மைட் பொதிகள் பெறும் இடங்கள்",mitePickDistrict:"உங்கள் மாவட்டத்தைத் தேர்வுசெய்க…",
     mapOffline:"வரைபடங்களுக்கு முதல் முறை இணைப்பு தேவை. ஒரு முறை இணைந்தால் பின்னர் அவை ஆஃப்லைனில் வேலை செய்யும்."
   }
 };
@@ -7414,6 +7438,34 @@ function initGoogle(){
       m.setView([pos.coords.latitude,pos.coords.longitude],11);
       dropPin(pos.coords.latitude,pos.coords.longitude);
     },function(){document.getElementById('ghint').textContent=t('locFail');});
+  };
+  buildOfficeLayer(m);
+}
+
+// The office list carries real coordinates, so it is far more useful shown on the
+// map than only as a list: a grower can see which nursery is actually closest.
+var officeLayer=null;
+function buildOfficeLayer(m){
+  if(typeof OFFICES==='undefined'||!L.divIcon)return;
+  officeLayer=L.layerGroup();
+  OFFICES.forEach(function(o){
+    var mk=L.marker([o.lat,o.lng],{
+      icon:L.divIcon({className:'ofc-pin',html:'<span>'+o.icon+'</span>',iconSize:[26,26],iconAnchor:[13,13]}),
+      title:o.name
+    });
+    var dir='https://www.google.com/maps/dir/?api=1&destination='+o.lat+','+o.lng;
+    mk.bindPopup('<b>'+esc(o.name)+'</b><br>'+esc(o.addr)+
+      (o.phone?'<br>📞 <a href="tel:'+o.phone.replace(/[^+\d]/g,'')+'">'+esc(o.phone)+'</a>':'')+
+      '<br><a href="'+dir+'" target="_blank" rel="noopener">'+t('ofcDirections')+'</a>');
+    officeLayer.addLayer(mk);
+  });
+  var btn=document.getElementById('ofcMapToggle');
+  if(!btn)return;
+  btn.style.display='block';
+  btn.onclick=function(){
+    if(m.hasLayer(officeLayer)){m.removeLayer(officeLayer);btn.classList.remove('on');}
+    else{officeLayer.addTo(m);btn.classList.add('on');}
+    btn.setAttribute('aria-pressed',m.hasLayer(officeLayer)?'true':'false');
   };
 }
 function dropPin(lat,lng){
@@ -8000,7 +8052,22 @@ function chatApplyLang(){
         if(nm.toLowerCase().indexOf(q.toLowerCase())>=0)zoneHits.push({name:p.ZONE||p.AGRO_ECO_Z,fid:p.FINAL_ID});
       }
     }
+    // Offices are the most concrete thing a grower searches for — a nursery name,
+    // a town, a district — so they lead the results.
+    var ofcHits=[];
+    if(typeof OFFICES!=='undefined'){
+      var lq=q.toLowerCase();
+      for(var oi=0;oi<OFFICES.length;oi++){
+        var o=OFFICES[oi];
+        var hay=(o.name+' '+o.addr+' '+(o.district||'')+' '+o.type).toLowerCase();
+        if(hay.indexOf(lq)>=0)ofcHits.push(o);
+      }
+    }
     var html='';
+    ofcHits.slice(0,4).forEach(function(o){
+      html+='<div class="sr-item" data-ofc="'+esc(o.name)+'"><b>'+o.icon+' '+esc(o.name)+'</b>'+
+            '<span class="sr-sub">'+esc(o.addr)+'</span></div>';
+    });
     zoneHits.slice(0,3).forEach(function(z){
       html+='<div class="sr-item" data-fid="'+z.fid+'"><b>🗺️ '+esc(z.name)+'</b></div>';
     });
@@ -8013,7 +8080,12 @@ function chatApplyLang(){
     results.querySelectorAll('.sr-item').forEach(function(el){
       el.onclick=function(){
         overlay.classList.remove('open');
-        if(el.dataset.fid){openDossier(parseInt(el.dataset.fid));}
+        if(el.dataset.ofc){
+          ofcHighlight=el.dataset.ofc;
+          ofcFilter='All';
+          document.querySelector('nav.tabs button[data-tab="offices"]').click();
+        }
+        else if(el.dataset.fid){openDossier(parseInt(el.dataset.fid));}
         else if(el.dataset.kw){
           document.getElementById('chatFab').click();
           setTimeout(function(){chatHandle(el.dataset.kw);},300);
@@ -8162,6 +8234,9 @@ function renderWeather(){
   var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if(!reduce)requestAnimationFrame(frame);
 })();
+// Where mite control packets are collected, by district (CCB regional offices and
+// nurseries). Surfaced on the Coconut Mite card, which is where growers look.
+var MITE_PACKETS={"Ampara":[{"n":"CCB Ampara","p":"0632222477","lat":7.30007,"lng":81.67679}],"Anuradhapura":[{"n":"CCB Anuradhapura","p":"0252222543","lat":8.31762,"lng":80.39724}],"Badulla":[{"n":"Handapanagala Nursery","p":"0552274665","lat":6.6567,"lng":81.11817},{"n":"Welipitiya Nursery","p":"0552265720","lat":7.10004,"lng":81.26014},{"n":"CCB Monaragala","p":"0552276058","lat":6.85271,"lng":81.34173}],"Batticaloa":[{"n":"CCB Batticaloa","p":"0652240103","lat":7.76219,"lng":81.62364}],"Colombo":[{"n":"CCB Kalutara","p":"0342222732","lat":6.55993,"lng":79.97246}],"Galle":[{"n":"CCB Galle","p":"0912234501","lat":6.07061,"lng":80.23622}],"Gampaha":[{"n":"CCB Gampaha","p":"0332222037","lat":7.08197,"lng":80.01029}],"Hambantota":[{"n":"CCB Hambanthota","p":"0472220144","lat":6.12421,"lng":81.11903}],"Jaffna":[{"n":"Alampil Nursery","p":"0766904603","lat":9.17613,"lng":80.84848},{"n":"CCB Jaffna","p":"0212284501","lat":9.58715,"lng":80.35802}],"Kalutara":[{"n":"CCB Kalutara","p":"0342222732","lat":6.55993,"lng":79.97246}],"Kandy":[{"n":"CCB Matale","p":"0662222047","lat":7.45408,"lng":80.62971}],"Kegalle":[{"n":"CCB Kegalle","p":"0352222120","lat":7.25121,"lng":80.37088}],"Kilinochchi":[{"n":"Alampil Nursery","p":"0766904603","lat":9.17613,"lng":80.84848},{"n":"CCB Jaffna","p":"0212284501","lat":9.58715,"lng":80.35802}],"Kurunegala":[{"n":"CCB Kuliyapitiya","p":"0372281169","lat":7.46961,"lng":80.02612},{"n":"CCB Kurunegala","p":"0372222534","lat":7.47159,"lng":80.35285}],"Mannar":[{"n":"CCB Vavuniya","p":"0242050344","lat":8.78105,"lng":80.48375}],"Matale":[{"n":"CCB Matale","p":"0662222047","lat":7.45408,"lng":80.62971}],"Matara":[{"n":"CCB Matara","p":"0412222060","lat":5.94811,"lng":80.53275}],"Monaragala":[{"n":"Handapanagala Nursery","p":"0552274665","lat":6.6567,"lng":81.11817},{"n":"Welipitiya Nursery","p":"0552265720","lat":7.10004,"lng":81.26014},{"n":"CCB Monaragala","p":"0552276058","lat":6.85271,"lng":81.34173}],"Mullaitivu":[{"n":"Alampil Nursery","p":"0766904603","lat":9.17613,"lng":80.84848},{"n":"CCB Jaffna","p":"0212284501","lat":9.58715,"lng":80.35802}],"Nuwara Eliya":[{"n":"CCB Matale","p":"0662222047","lat":7.45408,"lng":80.62971}],"Polonnaruwa":[{"n":"CCB Polonnaruwa","p":"0272222377","lat":7.91517,"lng":81.00203}],"Puttalam":[{"n":"CCB Marawila","p":"0322254237","lat":7.39031,"lng":79.83221}],"Ratnapura":[{"n":"CCB Rathnapura","p":"0452228561","lat":6.71246,"lng":80.37901}],"Trincomalee":[{"n":"CCB Trincomalee","p":"0262054018","lat":8.74763,"lng":81.15575}],"Vavuniya":[{"n":"CCB Vavuniya","p":"0242050344","lat":8.78105,"lng":80.48375}]};
 // ====== FEATURE: Pest Gallery ======
 var PESTS=[
   {icon:'🪲',nameKey:'pestRPW',symKey:'pestRPWsym',txKey:'pestRPWtx'},
@@ -8173,6 +8248,34 @@ var PESTS=[
   {icon:'🍄',nameKey:'pestSB',symKey:'pestSBsym',txKey:'pestSBtx'},
   {icon:'🍄',nameKey:'pestGLS',symKey:'pestGLSsym',txKey:'pestGLStx'}
 ];
+var mitePacketDistrict=localStorage.getItem('polDistrict')||'';
+function mitePacketHtml(){
+  var h='<div class="mite-box"><b>📦 '+t('mitePacketTitle')+'</b>'+
+        '<select class="mite-sel" onchange="setMiteDistrict(this.value)">'+
+        '<option value="">'+t('mitePickDistrict')+'</option>';
+  Object.keys(MITE_PACKETS).forEach(function(d){
+    h+='<option value="'+esc(d)+'"'+(d===mitePacketDistrict?' selected':'')+'>'+esc(d)+'</option>';
+  });
+  h+='</select><div class="mite-out">'+mitePacketList()+'</div></div>';
+  return h;
+}
+function mitePacketList(){
+  var list=MITE_PACKETS[mitePacketDistrict];
+  if(!list)return '';
+  var h='';
+  list.forEach(function(o){
+    h+='<div class="mite-row"><span>'+esc(o.n)+'</span>'+
+       (o.p?'<a href="tel:'+o.p+'">📞 '+esc(o.p)+'</a>':'')+
+       '<a href="https://www.google.com/maps/dir/?api=1&destination='+o.lat+','+o.lng+'" target="_blank" rel="noopener">'+t('ofcDirections')+'</a></div>';
+  });
+  return h;
+}
+function setMiteDistrict(d){
+  mitePacketDistrict=d;
+  try{localStorage.setItem('polDistrict',d);}catch(e){}
+  var out=document.querySelector('.mite-out');
+  if(out)out.innerHTML=mitePacketList();
+}
 function renderPests(){
   var el=document.getElementById('view-pests');
   var pests=PESTS.filter(function(p){return p.icon==='🪲';});
@@ -8182,7 +8285,11 @@ function renderPests(){
   html+='<div class="pest-column"><h3>🪲 '+t('pestInsects')+'</h3>';
   pests.forEach(function(p){
     html+='<details class="pest-card-new pest-type"><summary><span class="pest-icon">'+p.icon+'</span>'+t(p.nameKey)+'</summary>';
-    html+='<div class="pest-body"><b>'+t('pestSymptoms')+':</b> '+esc(t(p.symKey))+'<br><b>'+t('pestTreatment')+':</b> '+esc(t(p.txKey))+'</div></details>';
+    html+='<div class="pest-body"><b>'+t('pestSymptoms')+':</b> '+esc(t(p.symKey))+'<br><b>'+t('pestTreatment')+':</b> '+esc(t(p.txKey));
+    // Mite treatment depends on packets issued per district, so the collection
+    // point belongs on the card rather than buried in the office list.
+    if(p.nameKey==='pestMite')html+=mitePacketHtml();
+    html+='</div></details>';
   });
   html+='</div>';
   html+='<div class="pest-column"><h3>🍄 '+t('pestDiseases')+'</h3>';
@@ -8335,7 +8442,7 @@ var OFFICES=[
 {name:"CDA Regional Office Kurunegala",type:"CDA",lat:7.4863,lng:80.3647,addr:"Kurunegala",phone:"0372222534",icon:"🏢", district:"Kurunegala"}
 ];
 var OFC_TYPES=['All','CRI','CCB','Nursery','Training','Garden','CDA'];
-var ofcUserLat=null,ofcUserLng=null,ofcFilter='All';
+var ofcUserLat=null,ofcUserLng=null,ofcFilter='All',ofcHighlight=null;
 function haversine(lat1,lng1,lat2,lng2){
   var R=6371,dLat=(lat2-lat1)*Math.PI/180,dLng=(lng2-lng1)*Math.PI/180;
   var a=Math.sin(dLat/2)*Math.sin(dLat/2)+Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dLng/2)*Math.sin(dLng/2);
@@ -8357,7 +8464,8 @@ function renderOffices(){
   html+='</select></div>';
   html+='<div class="ofc-grid">';
   filtered.forEach(function(o){
-    html+='<div class="ofc-card"><div class="ofc-icon">'+o.icon+'</div><div class="ofc-info">';
+    var hl=(ofcHighlight&&o.name===ofcHighlight)?' highlight':'';
+    html+='<div class="ofc-card'+hl+'" data-name="'+esc(o.name)+'"><div class="ofc-icon">'+o.icon+'</div><div class="ofc-info">';
     html+='<div class="ofc-name">'+esc(o.name)+'</div>';
     html+='<div class="ofc-type">'+t('filter'+o.type)+'</div>';
     html+='<div class="ofc-addr">'+esc(o.addr)+'</div>';
@@ -8374,6 +8482,11 @@ function renderOffices(){
   if(filtered.length===0)html+='<div style="text-align:center;padding:20px;color:#888">'+t('noOffices')+'</div>';
   html+='</div>';
   el.innerHTML=html;
+  if(ofcHighlight){
+    var card=el.querySelector('.ofc-card.highlight');
+    if(card)card.scrollIntoView({behavior:'smooth',block:'center'});
+    ofcHighlight=null;   // one-shot: don't re-highlight on later renders
+  }
 }
 function locateForOffices(){
   var btn=document.getElementById('ofcLocateBtn');
@@ -8590,6 +8703,7 @@ window.openDossier=openDossier;
 window.shareZone=shareZone;
 window.locateForOffices=locateForOffices;
 window.selectPestMatch=selectPestMatch;
+window.setMiteDistrict=setMiteDistrict;
 window.ttsSpeak=ttsSpeak;
 window.ttsStop=ttsStop;
 
