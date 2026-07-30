@@ -13,19 +13,28 @@
    a subpath (GitHub Pages project sites are served at /<repo>/).
 */
 
-var VERSION = 'v4';
+var VERSION = 'v5';
 var SHELL_CACHE = 'pol-shell-' + VERSION;
 var ASSET_CACHE = 'pol-assets-' + VERSION;
 var TILE_CACHE = 'pol-tiles-' + VERSION;
 var TILE_LIMIT = 400;
 
+// Leaflet and its marker images are part of the shell, not optional extras: without
+// them the map tabs cannot render at all, so they are precached alongside the HTML.
 var SHELL_URLS = [
   './',
   './index.html',
   './manifest.webmanifest',
   './icon.svg',
   './icon-192.png',
-  './icon-512.png'
+  './icon-512.png',
+  './vendor/leaflet/leaflet.css',
+  './vendor/leaflet/leaflet.js',
+  './vendor/leaflet/images/marker-icon.png',
+  './vendor/leaflet/images/marker-icon-2x.png',
+  './vendor/leaflet/images/marker-shadow.png',
+  './vendor/leaflet/images/layers.png',
+  './vendor/leaflet/images/layers-2x.png'
 ];
 
 self.addEventListener('install', function (e) {

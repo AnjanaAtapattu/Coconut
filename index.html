@@ -13,8 +13,11 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&family=Noto+Sans+Sinhala:wght@400;600;700&family=Noto+Sans+Tamil:wght@400;600;700&display=swap" rel="stylesheet">
 <title>Pol Sathkara — Coconut Zone Guide</title>
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<!-- Leaflet is vendored (vendor/leaflet, BSD-2-Clause) rather than loaded from a CDN:
+     the maps are the core of the app, and a first visit on a weak rural connection
+     should not depend on a third-party host being reachable. -->
+<link rel="stylesheet" href="vendor/leaflet/leaflet.css" />
+<script src="vendor/leaflet/leaflet.js"></script>
 <style>
 :root{--green:#2D4A22;--green800:#2D4A22;--sand:#F5F0E3;--wet:#2D6A30;--int:#B8862E;--dry:#B5541F;--ink:#1c2418;--line:#e2dcc8;}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
