@@ -264,6 +264,44 @@ body.dark .map-unavailable{color:#999;}
 .rain-legend{display:flex;gap:12px;margin-top:20px;font-size:11px;flex-wrap:wrap;}
 .rain-legend span{display:flex;align-items:center;gap:4px;}
 .rain-legend .dot{width:10px;height:10px;border-radius:2px;}
+/* === Point climate (NASA POWER) === */
+.pt-clim{margin-top:8px;font-size:12px;}
+.pt-clim-load,.pt-clim-none{color:#888;font-style:italic;}
+.pt-verdict{display:inline-block;padding:3px 10px;border-radius:12px;font-weight:800;font-size:11px;color:#fff;margin-bottom:6px;}
+.pt-verdict.good{background:#2e7d32;}
+.pt-verdict.fair{background:#ef6c00;}
+.pt-verdict.marginal{background:#c62828;}
+.pt-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin-bottom:6px;}
+.pt-stats div{text-align:center;line-height:1.2;}
+.pt-stats b{display:block;font-size:14px;color:var(--green);font-variant-numeric:tabular-nums;}
+.pt-stats span{font-size:9px;color:#777;}
+.pt-bars{display:flex;align-items:flex-end;gap:2px;height:46px;}
+.pt-bars .ptb{flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%;}
+.pt-bars .ptb-fill{width:100%;background:var(--wet);border-radius:2px 2px 0 0;}
+.pt-bars .ptb-fill.dry{background:var(--dry);}
+.pt-bars .ptb span{font-size:8px;color:#888;}
+.pt-note{margin-top:6px;font-size:11px;color:#c62828;}
+.pt-src{margin-top:4px;font-size:9px;color:#999;}
+body.dark .pt-stats span,body.dark .pt-src{color:#999;}
+/* In the full-width dashboard card the popup-sized chart looks stretched, so it gets
+   room to breathe; inside a map popup the compact defaults above still apply. */
+.clim-mine .pt-stats{max-width:520px;gap:10px;}
+.clim-mine .pt-stats b{font-size:20px;}
+.clim-mine .pt-stats span{font-size:11px;}
+.clim-mine .pt-bars{height:96px;gap:4px;margin-top:10px;}
+.clim-mine .pt-bars .ptb span{font-size:10px;padding-top:2px;}
+.clim-mine .pt-verdict{font-size:13px;padding:5px 14px;}
+.clim-mine .pt-note{font-size:12px;}
+/* === Climate cards === */
+.clim-card{background:#fff;border-radius:14px;padding:14px;box-shadow:0 2px 8px rgba(0,0,0,.08);margin-bottom:14px;}
+body.dark .clim-card{background:#2d2d44;}
+.clim-card h3{margin:0 0 8px;font-size:15px;color:var(--green);}
+.clim-card p{margin:0 0 10px;font-size:12.5px;line-height:1.5;}
+.clim-coord{font-family:'Space Grotesk';font-weight:700;font-variant-numeric:tabular-nums;}
+.climbtn{display:inline-block;background:var(--green);color:#fff;border:none;border-radius:10px;padding:9px 14px;font-family:'Space Grotesk';font-weight:700;font-size:13px;cursor:pointer;text-decoration:none;}
+.climbtn.sm{padding:5px 10px;font-size:11px;margin-left:6px;}
+.climbtn:hover{opacity:.9;}
+.clim-advisory{border-left:4px solid #1565c0;}
 /* === Weather Dashboard === */
 .weather-dashboard{padding:4px;}
 .weather-summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:16px;}
@@ -7236,6 +7274,17 @@ var T={
     pestSymptoms:"Symptoms",pestTreatment:"Treatment",pestInsects:"Pests",pestDiseases:"Diseases",
     rainfallDist:"Rainfall Distribution",zoneComparison:"Zone Comparison",noOffices:"No offices found",
     agroClimZone:"Agro-Climatic Zone of Sri Lanka",
+    climMyLocation:"Climate at your location",
+    climPointHint:"Get climate figures for your own land — rainfall, temperature and dry months — from NASA POWER.",
+    climUseMyLocation:"📍 Use my location",climLoading:"Loading climate data…",
+    climNoData:"Climate data unavailable offline. Reconnect once and it will be saved for later.",
+    climAnnualRain:"mm/year",climMeanTemp:"avg temp",climHumidity:"humidity",climDryMonths:"dry months",
+    climDryNote:"Moisture stress likely in:",climSource:"Source: NASA POWER 30-year climatology",
+    climVerdictGood:"Well suited to coconut",climVerdictFair:"Suitable with irrigation",
+    climVerdictMarginal:"Marginal — irrigation essential",
+    climAdvisoryTitle:"Agro-meteorological advisory",
+    climAdvisoryBody:"The Department of Agriculture publishes a weekly advisory with rainfall outlook and crop guidance by district.",
+    climAdvisoryLink:"Open the DOA advisory",
     chatNearest:"Nearest to you",chatOfficesFound:"Here are some you can contact",
     chatUseLocate:"Open the Offices tab and tap Find My Location for the ones nearest you.",
     chatPriceTitle:"Latest market prices",chatWhichDistrict:"Which district are you in?",
@@ -7309,6 +7358,17 @@ var T={
     pestSymptoms:"රෝග ලක්ෂණ",pestTreatment:"ප්‍රතිකාර",pestInsects:"පළිබෝධ",pestDiseases:"රෝග",
     rainfallDist:"වර්ෂාපතන ව්‍යාප්තිය",zoneComparison:"කලාප සංසන්දනය",noOffices:"කාර්යාල හමු නොවීය",
     agroClimZone:"ශ්‍රී ලංකාවේ කෘෂි-දේශගුණික කලාපය",
+    climMyLocation:"ඔබේ ස්ථානයේ දේශගුණය",
+    climPointHint:"ඔබේ ඉඩමේ වර්ෂාපතනය, උෂ්ණත්වය සහ වියළි මාස NASA POWER වෙතින් ලබාගන්න.",
+    climUseMyLocation:"📍 මගේ ස්ථානය",climLoading:"දේශගුණ දත්ත ලබාගනිමින්…",
+    climNoData:"නොබැඳිව දේශගුණ දත්ත නොමැත. වරක් සම්බන්ධ වූ පසු එය සුරැකේ.",
+    climAnnualRain:"මි.මී./වසර",climMeanTemp:"සාමා. උෂ්ණත්වය",climHumidity:"ආර්ද්‍රතාවය",climDryMonths:"වියළි මාස",
+    climDryNote:"තෙතමනය අඩුවිය හැකි මාස:",climSource:"මූලාශ්‍රය: NASA POWER වසර 30 දේශගුණ සාමාන්‍යය",
+    climVerdictGood:"පොල් වගාවට ඉතා සුදුසුයි",climVerdictFair:"වාරිමාර්ග සමඟ සුදුසුයි",
+    climVerdictMarginal:"අඩු සුදුසුයි — වාරිමාර්ග අත්‍යවශ්‍යයි",
+    climAdvisoryTitle:"කෘෂි-කාලගුණ උපදේශනය",
+    climAdvisoryBody:"කෘෂිකර්ම දෙපාර්තමේන්තුව සතිපතා වර්ෂාපතන අනාවැකි සහ දිස්ත්‍රික් අනුව බෝග උපදෙස් ප්‍රකාශයට පත් කරයි.",
+    climAdvisoryLink:"DOA උපදේශනය විවෘත කරන්න",
     chatNearest:"ඔබට ළඟම",chatOfficesFound:"ඔබට සම්බන්ධ විය හැකි ස්ථාන",
     chatUseLocate:"ඔබට ළඟම ඒවා සොයාගැනීමට කාර්යාල ටැබය තුළ 'මගේ ස්ථානය' තට්ටු කරන්න.",
     chatPriceTitle:"නවතම වෙළඳපොළ මිල",chatWhichDistrict:"ඔබ සිටින්නේ කුමන දිස්ත්‍රික්කයේද?",
@@ -7382,6 +7442,17 @@ var T={
     pestSymptoms:"அறிகுறிகள்",pestTreatment:"சிகிச்சை",pestInsects:"பூச்சிகள்",pestDiseases:"நோய்கள்",
     rainfallDist:"மழைப்பொழிவு விநியோகம்",zoneComparison:"மண்டல ஒப்பீடு",noOffices:"அலுவலகங்கள் காணப்படவில்லை",
     agroClimZone:"இலங்கையின் வேளாண்-காலநிலை மண்டலம்",
+    climMyLocation:"உங்கள் இருப்பிடத்தின் காலநிலை",
+    climPointHint:"உங்கள் நிலத்தின் மழைப்பொழிவு, வெப்பநிலை மற்றும் வறண்ட மாதங்களை NASA POWER மூலம் பெறுங்கள்.",
+    climUseMyLocation:"📍 எனது இருப்பிடம்",climLoading:"காலநிலைத் தரவு ஏற்றப்படுகிறது…",
+    climNoData:"ஆஃப்லைனில் காலநிலைத் தரவு இல்லை. ஒரு முறை இணைந்தால் சேமிக்கப்படும்.",
+    climAnnualRain:"மி.மீ./ஆண்டு",climMeanTemp:"சராசரி வெப்பம்",climHumidity:"ஈரப்பதம்",climDryMonths:"வறண்ட மாதங்கள்",
+    climDryNote:"ஈரப்பதப் பற்றாக்குறை ஏற்படக்கூடிய மாதங்கள்:",climSource:"ஆதாரம்: NASA POWER 30 ஆண்டு காலநிலை சராசரி",
+    climVerdictGood:"தென்னைக்கு மிகவும் ஏற்றது",climVerdictFair:"நீர்ப்பாசனத்துடன் ஏற்றது",
+    climVerdictMarginal:"குறைவாக ஏற்றது — நீர்ப்பாசனம் அவசியம்",
+    climAdvisoryTitle:"வேளாண்-வானிலை ஆலோசனை",
+    climAdvisoryBody:"விவசாயத் திணைக்களம் வாராந்திர மழை முன்னறிவிப்பு மற்றும் மாவட்ட வாரியான பயிர் ஆலோசனையை வெளியிடுகிறது.",
+    climAdvisoryLink:"DOA ஆலோசனையைத் திறக்க",
     chatNearest:"உங்களுக்கு அருகில்",chatOfficesFound:"நீங்கள் தொடர்பு கொள்ளக்கூடியவை",
     chatUseLocate:"உங்களுக்கு அருகில் உள்ளவற்றைக் காண, அலுவலகங்கள் தாவலில் 'எனது இருப்பிடம்' என்பதைத் தட்டவும்.",
     chatPriceTitle:"சமீபத்திய சந்தை விலைகள்",chatWhichDistrict:"நீங்கள் எந்த மாவட்டத்தில் இருக்கிறீர்கள்?",
@@ -7630,17 +7701,24 @@ function buildOfficeLayer(m){
     btn.setAttribute('aria-pressed',m.hasLayer(officeLayer)?'true':'false');
   };
 }
+var pinSeq=0;
 function dropPin(lat,lng){
   var m=maps.google;
+  var pid='ptClim'+(++pinSeq);   // unique per pin: an old popup must not be written into
   if(marker)marker.setLatLng([lat,lng]); else marker=L.marker([lat,lng]).addTo(m);
   var feat=findZoneAt(lng,lat);
   if(feat){
     var p=feat.properties;
     document.getElementById('ghint').textContent=t('youAreIn')+' '+p.ZONE+' — '+zoneTerm(climKind(p.CLIMATIC_Z));
-    marker.bindPopup('<b>'+p.ZONE+'</b><br>'+esc(zoneTerm(p.AGRO_ECO_Z))+'<br><a href="#" onclick="openDossier('+p.FINAL_ID+');return false;">'+t('viewGuide')+'</a>').openPopup();
+    marker.bindPopup('<b>'+p.ZONE+'</b><br>'+esc(zoneTerm(p.AGRO_ECO_Z))+
+      '<br><a href="#" onclick="openDossier('+p.FINAL_ID+');return false;">'+t('viewGuide')+'</a>'+
+      '<div id="'+pid+'"></div>',{maxWidth:300}).openPopup();
+    powerLoadInto(lat,lng,pid);
   }else{
     document.getElementById('ghint').textContent=t('pinOutside');
-    marker.bindPopup(t('noZone')).openPopup();
+    // Outside the mapped zones there is no guide, but the climate still applies.
+    marker.bindPopup(t('noZone')+'<div id="'+pid+'"></div>',{maxWidth:300}).openPopup();
+    powerLoadInto(lat,lng,pid);
   }
 }
 // point in polygon ray casting
@@ -8502,12 +8580,200 @@ function chatApplyLang(){
     });
   });
 })();
+// ====== NASA POWER climate data ======
+// POWER gives 30-year monthly climatology for any coordinate, which lets the app
+// answer "what is the climate where I actually farm" rather than only "which of three
+// zones are you in". No key is required and the endpoint is CORS-enabled.
+//
+// Everything here is written to fail soft. Responses are cached in localStorage keyed
+// by a rounded coordinate, because a grower on a rural connection should pay for this
+// once, not on every visit; and if the request fails, is slow, or comes back in an
+// unexpected shape, the caller falls back to the built-in zone climatology and the app
+// carries on. The parameter block is read defensively for the same reason: this could
+// not be verified against the live service from the build environment.
+var POWER_BASE='https://power.larc.nasa.gov/api/temporal/climatology/point';
+var POWER_PARAMS='T2M,T2M_MAX,T2M_MIN,PRECTOTCORR,RH2M,ALLSKY_SFC_SW_DWN,WS2M';
+var POWER_TTL=1000*60*60*24*180;   // climatology is a 30-year mean; half a year is ample
+var POWER_MONTHS=['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+
+function powerKey(lat,lng){return 'polPower:'+lat.toFixed(2)+','+lng.toFixed(2);}
+
+function powerCached(lat,lng){
+  try{
+    var raw=localStorage.getItem(powerKey(lat,lng));
+    if(!raw)return null;
+    var o=JSON.parse(raw);
+    if(!o||!o.t||Date.now()-o.t>POWER_TTL)return null;
+    return o.d;
+  }catch(e){return null;}
+}
+
+// POWER nests the monthly values under properties.parameter.<NAME>.<MON>, but tolerate
+// a flatter shape rather than throwing if the service ever changes.
+function powerParse(json){
+  var src=(json&&json.properties&&json.properties.parameter)||(json&&json.parameter)||json;
+  if(!src||typeof src!=='object')return null;
+  var out={},got=false;
+  for(var name in src){
+    var v=src[name];
+    if(!v||typeof v!=='object')continue;
+    var arr=POWER_MONTHS.map(function(m){
+      var n=v[m];
+      if(n===undefined)n=v[String(POWER_MONTHS.indexOf(m)+1)];
+      n=parseFloat(n);
+      // POWER uses -999 for "no data"; treat it as missing, not as a reading.
+      return (isNaN(n)||n<=-900)?null:n;
+    });
+    if(arr.some(function(x){return x!==null;})){out[name]=arr;got=true;}
+  }
+  return got?out:null;
+}
+
+function powerFetch(lat,lng){
+  var cached=powerCached(lat,lng);
+  if(cached)return Promise.resolve(cached);
+  if(!navigator.onLine)return Promise.resolve(null);
+  var url=POWER_BASE+'?parameters='+POWER_PARAMS+'&community=AG'+
+          '&latitude='+lat.toFixed(3)+'&longitude='+lng.toFixed(3)+'&format=JSON';
+  var ctrl=('AbortController' in window)?new AbortController():null;
+  // A grower on a weak connection should not be left staring at a spinner.
+  var timer=ctrl?setTimeout(function(){ctrl.abort();},12000):null;
+  return fetch(url,ctrl?{signal:ctrl.signal}:undefined)
+    .then(function(r){if(!r.ok)throw new Error('HTTP '+r.status);return r.json();})
+    .then(function(j){
+      if(timer)clearTimeout(timer);
+      var d=powerParse(j);
+      if(!d)return null;
+      try{localStorage.setItem(powerKey(lat,lng),JSON.stringify({t:Date.now(),d:d}));}catch(e){}
+      return d;
+    })
+    .catch(function(){if(timer)clearTimeout(timer);return null;});
+}
+
+// ---- Coconut-specific reading of the numbers ----
+// Thresholds from CRI guidance: coconut wants ~1500mm+ well distributed, and a month
+// under 50mm is a moisture-stress month for a palm.
+function powerInsights(d){
+  if(!d||!d.PRECTOTCORR)return null;
+  var rain=d.PRECTOTCORR.map(function(v){return v===null?0:v;});
+  // POWER reports precipitation as a daily mean per month; convert to a monthly total.
+  var days=[31,28,31,30,31,30,31,31,30,31,30,31];
+  var monthly=rain.map(function(v,i){return v*days[i];});
+  var annual=monthly.reduce(function(a,b){return a+b;},0);
+  var dry=[],i;
+  for(i=0;i<12;i++)if(monthly[i]<50)dry.push(i);
+  var t=d.T2M||[],tmax=d.T2M_MAX||[];
+  var avg=function(a){var s=0,n=0;for(var k=0;k<a.length;k++)if(a[k]!==null){s+=a[k];n++;}return n?s/n:null;};
+  return {
+    monthlyRain:monthly,
+    annualRain:annual,
+    dryMonths:dry,
+    meanTemp:avg(t),
+    maxTemp:tmax.length?Math.max.apply(null,tmax.filter(function(x){return x!==null;})):null,
+    meanHumidity:avg(d.RH2M||[]),
+    meanSolar:avg(d.ALLSKY_SFC_SW_DWN||[]),
+    meanWind:avg(d.WS2M||[]),
+    // A single verdict a grower can act on, rather than four numbers to interpret.
+    verdict:(annual>=1500&&dry.length<=3)?'good':(annual>=1000&&dry.length<=5)?'fair':'marginal'
+  };
+}
+// Climate for the exact point tapped on the map. The zone polygons answer "which of
+// three broad zones is this"; a grower deciding whether to plant on one particular
+// block needs the numbers for that block.
+function powerPointHtml(ins,lat,lng){
+  if(!ins)return '<div class="pt-clim pt-clim-none">'+t('climNoData')+'</div>';
+  var months=t('monthNames').split(',');
+  var max=Math.max.apply(null,ins.monthlyRain);
+  var bars='';
+  for(var i=0;i<12;i++){
+    var pct=max>0?Math.round(ins.monthlyRain[i]/max*100):0;
+    var dry=ins.monthlyRain[i]<50;
+    bars+='<div class="ptb"><div class="ptb-fill'+(dry?' dry':'')+'" style="height:'+Math.max(pct,3)+'%"></div>'+
+          '<span>'+months[i].charAt(0)+'</span></div>';
+  }
+  var v=ins.verdict;
+  var vTxt=t('climVerdict'+v.charAt(0).toUpperCase()+v.slice(1));
+  var h='<div class="pt-clim">';
+  h+='<div class="pt-verdict '+v+'">'+vTxt+'</div>';
+  h+='<div class="pt-stats">';
+  h+='<div><b>'+Math.round(ins.annualRain)+'</b><span>'+t('climAnnualRain')+'</span></div>';
+  if(ins.meanTemp!==null)h+='<div><b>'+ins.meanTemp.toFixed(1)+'°</b><span>'+t('climMeanTemp')+'</span></div>';
+  if(ins.meanHumidity!==null)h+='<div><b>'+Math.round(ins.meanHumidity)+'%</b><span>'+t('climHumidity')+'</span></div>';
+  h+='<div><b>'+ins.dryMonths.length+'</b><span>'+t('climDryMonths')+'</span></div>';
+  h+='</div>';
+  h+='<div class="pt-bars">'+bars+'</div>';
+  if(ins.dryMonths.length)
+    h+='<div class="pt-note">'+t('climDryNote')+' '+ins.dryMonths.map(function(i){return months[i];}).join(', ')+'</div>';
+  h+='<div class="pt-src">'+t('climSource')+'</div>';
+  h+='</div>';
+  return h;
+}
+
+// Rendered into whichever container is showing the point: the map popup or the panel.
+function powerLoadInto(lat,lng,elId){
+  var el=document.getElementById(elId);
+  if(el)el.innerHTML='<div class="pt-clim pt-clim-load">'+t('climLoading')+'</div>';
+  powerFetch(lat,lng).then(function(d){
+    var target=document.getElementById(elId);
+    if(!target)return;                       // popup closed while the request was in flight
+    target.innerHTML=powerPointHtml(powerInsights(d),lat,lng);
+  });
+}
 // ====== FEATURE: Weather View ======
 var RAINFALL_DATA={
   wet:[350,280,260,310,380,300,250,240,290,370,400,380],
   int:[180,140,150,220,250,160,120,110,150,250,300,250],
   dry:[80,50,40,60,50,30,20,20,50,150,250,180]
 };
+// Location-specific panel at the head of the Weather tab. The three-zone charts below
+// it are national averages; this is the grower's own block of land.
+var climPoint=null;   // {lat,lng,label}
+function climSetPoint(lat,lng,label){
+  climPoint={lat:lat,lng:lng,label:label||null};
+  try{localStorage.setItem('polClimPoint',JSON.stringify(climPoint));}catch(e){}
+  renderWeather();
+}
+(function restoreClimPoint(){
+  try{var s=localStorage.getItem('polClimPoint');if(s)climPoint=JSON.parse(s);}catch(e){}
+})();
+
+function climLocate(){
+  var btn=document.getElementById('climLocateBtn');
+  if(btn)btn.textContent=t('ofcLocating');
+  if(!navigator.geolocation){alert(t('ofcNoGPS'));return;}
+  navigator.geolocation.getCurrentPosition(function(pos){
+    climSetPoint(pos.coords.latitude,pos.coords.longitude,null);
+  },function(){
+    alert(t('ofcNoGPS'));
+    if(btn)btn.textContent=t('climUseMyLocation');
+  },{timeout:12000,maximumAge:600000});
+}
+
+function climMyPanelHtml(){
+  var h='<div class="clim-card clim-mine">';
+  h+='<h3>📍 '+t('climMyLocation')+'</h3>';
+  if(!climPoint){
+    h+='<p class="muted">'+t('climPointHint')+'</p>';
+    h+='<button class="climbtn" id="climLocateBtn" onclick="climLocate()">'+t('climUseMyLocation')+'</button>';
+  }else{
+    h+='<p class="clim-coord">'+climPoint.lat.toFixed(3)+', '+climPoint.lng.toFixed(3)+
+       ' <button class="climbtn sm" onclick="climLocate()">'+t('climUseMyLocation')+'</button></p>';
+    h+='<div id="climMyData"></div>';
+  }
+  h+='</div>';
+  return h;
+}
+
+// The advisory is a weekly bulletin on the Department of Agriculture's site. It is a
+// web page rather than an API and does not send CORS headers, so a static app cannot
+// read it in the browser; linking out is the honest option until a feed exists.
+function climAdvisoryHtml(){
+  return '<div class="clim-card clim-advisory">'+
+    '<h3>📰 '+t('climAdvisoryTitle')+'</h3>'+
+    '<p>'+t('climAdvisoryBody')+'</p>'+
+    '<a class="climbtn" href="https://doa.gov.lk/agro-met-advisory/" target="_blank" rel="noopener">'+
+    t('climAdvisoryLink')+' ↗</a></div>';
+}
 function renderWeather(){
   var el=document.getElementById('view-weather');
   var months=t('monthNames').split(',');
@@ -8521,6 +8787,8 @@ function renderWeather(){
   var totals=zones.map(function(z){return z.data.reduce(function(a,b){return a+b;},0);});
   var grandTotal=totals.reduce(function(a,b){return a+b;},0);
   var html='<div class="weather-dashboard">';
+  html+=climMyPanelHtml();
+  html+=climAdvisoryHtml();
   html+='<h2 style="margin:0 0 14px;font-size:18px;color:var(--green)">🌤️ '+t('weatherTitle')+'</h2>';
   // Summary cards
   html+='<div class="weather-summary">';
@@ -8569,6 +8837,8 @@ function renderWeather(){
   html+='<p class="muted" style="margin-top:12px;text-align:center">'+t('priceNote')+'</p>';
   html+='</div>';
   el.innerHTML=html;
+  // Fetched after paint so the tab opens immediately even on a slow connection.
+  if(climPoint)powerLoadInto(climPoint.lat,climPoint.lng,'climMyData');
 }
 // Published so the assistant can quote live figures rather than describing the
 // auction process when asked what coconuts are selling for.
@@ -9129,6 +9399,8 @@ window.shareZone=shareZone;
 window.locateForOffices=locateForOffices;
 window.selectPestMatch=selectPestMatch;
 window.setMiteDistrict=setMiteDistrict;
+window.climLocate=climLocate;
+window.climSetPoint=climSetPoint;
 window.ttsSpeak=ttsSpeak;
 window.ttsStop=ttsStop;
 

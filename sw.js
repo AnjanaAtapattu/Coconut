@@ -123,7 +123,26 @@ self.addEventListener('fetch', function (e) {
     return;
   }
 
-  // 3. Crop guide PDFs: cached on first open, never precached. Together they are
+  // 3. NASA POWER climatology: cache-first and long-lived. It is a 30-year mean, so
+  // it does not change between visits, and a grower offline in the field should still
+  // see the figures for a point they have already looked at.
+  if (/power\.larc\.nasa\.gov/.test(url.host)) {
+    e.respondWith(
+      caches.match(req).then(function (hit) {
+        if (hit) return hit;
+        return fetch(req).then(function (res) {
+          if (res && res.status === 200) {
+            var copy = res.clone();
+            caches.open(ASSET_CACHE).then(function (c) { c.put(req, copy); });
+          }
+          return res;
+        }).catch(function () { return hit; });
+      })
+    );
+    return;
+  }
+
+  // 4. Crop guide PDFs: cached on first open, never precached. Together they are
   // several megabytes, and a grower needs only the crops they actually grow — but
   // once opened, the guide must still be there in the field with no signal.
   if(/\/intercrop-pdfs\/.+\.pdf$/i.test(url.pathname)){
@@ -142,7 +161,7 @@ self.addEventListener('fetch', function (e) {
     return;
   }
 
-  // 4. Same-origin assets: cache first.
+  // 5. Same-origin assets: cache first.
   if (url.origin === self.location.origin) {
     e.respondWith(
       caches.match(req).then(function (hit) {
@@ -159,7 +178,7 @@ self.addEventListener('fetch', function (e) {
     return;
   }
 
-  // 5. Cross-origin libraries/fonts: stale-while-revalidate.
+  // 6. Cross-origin libraries/fonts: stale-while-revalidate.
   e.respondWith(
     caches.match(req).then(function (hit) {
       var net = fetch(req).then(function (res) {
