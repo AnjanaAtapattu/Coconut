@@ -307,6 +307,18 @@ body.dark .loc-picker select{background:#1a1a2e;color:#e0e0e0;border-color:#3a3a
 .pt-note.info{color:#1565c0;}
 .clim-mine .pt-soil .pt-stats{max-width:760px;}
 .pt-soil .pt-stats{grid-template-columns:repeat(auto-fit,minmax(58px,1fr));}
+.irrig .irrig-ok{color:#2e7d32;font-weight:700;}
+.irrig .irrig-rate{font-size:15px;}
+.irrig-chart{display:flex;align-items:flex-end;gap:3px;height:70px;margin:10px 0 4px;}
+.irrig-chart .irb{flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%;}
+.irrig-chart .irb-col{position:relative;width:100%;flex:1;display:flex;align-items:flex-end;}
+.irrig-chart .irb-rain{width:100%;background:var(--wet);border-radius:2px 2px 0 0;}
+.irrig-chart .irb-rain.short{background:var(--dry);}
+.irrig-chart .irb-line{position:absolute;left:0;right:0;border-top:2px dashed rgba(0,0,0,.45);}
+body.dark .irrig-chart .irb-line{border-top-color:rgba(255,255,255,.5);}
+.irrig-chart .irb span{font-size:9px;color:#888;padding-top:2px;}
+.irrig-note{font-size:10px;color:#888;line-height:1.4;}
+.land-approx{font-size:11px;margin-top:-4px;}
 /* === Climate cards === */
 .clim-card{background:#fff;border-radius:14px;padding:14px;box-shadow:0 2px 8px rgba(0,0,0,.08);margin-bottom:14px;}
 body.dark .clim-card{background:#2d2d44;}
@@ -7297,6 +7309,12 @@ var T={
     soilOcLow:"Low organic matter — cow dung, compost or Gliricidia loppings will lift both fertility and water holding.",
     soilCecLow:"Holds nutrients poorly — split fertiliser into smaller, more frequent doses.",
     soilDense:"Dense for its texture — avoid working the soil when wet, and keep traffic off the palm basins.",
+    chatNeedPoint:"Tell me where your land is first — open the Weather tab and tap Use my location, or drop a pin on the map.",
+    chatOpenWeather:"Open the Weather tab once with a connection so the rainfall figures for your land are saved.",
+    landTitle:"Your land here",landApprox:"Approximate — centre of this zone. Drop a pin on the map for your own block.",
+    irrigTitle:"Irrigation guide",irrigNone:"Rainfall meets the crop through the year — no routine irrigation needed.",
+    irrigNeed:"Likely to need irrigation in",irrigLitres:"litres per palm per week during those months",
+    irrigAssume:"Assumes {demand} mm/month crop demand and a soil holding {awc} mm in the root zone.",
     soilTitle:"Soil at this point",soilPh:"pH",soilAwc:"mm water held",soilSand:"sand",
     soilTexture:"texture",soilTexSandy:"Sandy",soilTexSandyLoam:"Sandy loam",soilTexLoam:"Loam",soilTexClayLoam:"Clay loam",
     soilPhAcid:"Acidic — dolomite or lime will help nutrient uptake.",
@@ -7396,6 +7414,12 @@ var T={
     soilOcLow:"කාබනික ද්‍රව්‍ය අඩුයි — ගොම, කොම්පෝස්ට් හෝ ග්ලිරිසීඩියා කොළ යෙදීමෙන් සාරවත් බව හා ජල රඳවා ගැනීම වැඩි වේ.",
     soilCecLow:"පෝෂක රඳවා ගැනීම අඩුයි — පොහොර කුඩා ප්‍රමාණවලින් නිතර යොදන්න.",
     soilDense:"පස තද වී ඇත — තෙත් විට පස කැපීමෙන් වළකින්න, බේසම මත ගමනාගමනය අඩු කරන්න.",
+    chatNeedPoint:"පළමුව ඔබේ ඉඩම කොහෙදැයි කියන්න — කාලගුණ ටැබයේ 'මගේ ස්ථානය' තට්ටු කරන්න, නැතහොත් සිතියමේ ලකුණු කරන්න.",
+    chatOpenWeather:"ඔබේ ඉඩමේ වර්ෂාපතන දත්ත සුරැකීමට වරක් සම්බන්ධතාවයක් සමඟ කාලගුණ ටැබය විවෘත කරන්න.",
+    landTitle:"ඔබේ ඉඩම මෙහි",landApprox:"ආසන්න — මෙම කලාපයේ මධ්‍යය. ඔබේ ඉඩම සඳහා සිතියමේ ලකුණු කරන්න.",
+    irrigTitle:"වාරිමාර්ග මාර්ගෝපදේශය",irrigNone:"වර්ෂාපතනය වසර පුරා ප්‍රමාණවත් — නිත්‍ය වාරිමාර්ග අවශ්‍ය නැත.",
+    irrigNeed:"වාරිමාර්ග අවශ්‍ය විය හැකි මාස",irrigLitres:"එම මාසවලදී ගසකට සතියකට ලීටර්",
+    irrigAssume:"මාසිකව මි.මී. {demand} බෝග ජල අවශ්‍යතාවය සහ මුල් කලාපයේ මි.මී. {awc} ජලය රඳවන පසක් ලෙස ගණන් ගනී.",
     soilTitle:"මෙම ස්ථානයේ පස",soilPh:"pH",soilAwc:"මි.මී. ජලය",soilSand:"වැලි",
     soilTexture:"වයනය",soilTexSandy:"වැලි සහිත",soilTexSandyLoam:"වැලි ලෝම්",soilTexLoam:"ලෝම්",soilTexClayLoam:"මැටි ලෝම්",
     soilPhAcid:"අම්ලිකයි — ඩොලමයිට් හෝ හුණු යෙදීමෙන් පෝෂක උරාගැනීම වැඩි වේ.",
@@ -7495,6 +7519,12 @@ var T={
     soilOcLow:"கரிமப் பொருள் குறைவு — மாட்டு எரு, கம்போஸ்ட் அல்லது கிளிரிசீடியா இலைகள் வளத்தையும் நீர் தேக்கத்தையும் அதிகரிக்கும்.",
     soilCecLow:"ஊட்டச்சத்தைத் தக்கவைப்பது குறைவு — உரத்தைச் சிறிய அளவில் அடிக்கடி இடவும்.",
     soilDense:"மண் இறுக்கமாக உள்ளது — ஈரமாக இருக்கும்போது உழவு செய்யாதீர்கள்; தளங்களில் நடமாட்டத்தைக் குறைக்கவும்.",
+    chatNeedPoint:"முதலில் உங்கள் நிலம் எங்கே என்று சொல்லுங்கள் — வானிலைத் தாவலில் 'எனது இருப்பிடம்' தட்டவும், அல்லது வரைபடத்தில் குறியிடவும்.",
+    chatOpenWeather:"உங்கள் நிலத்தின் மழைத் தரவு சேமிக்கப்பட, இணைப்புடன் ஒரு முறை வானிலைத் தாவலைத் திறக்கவும்.",
+    landTitle:"உங்கள் நிலம் இங்கே",landApprox:"தோராயமானது — இந்த மண்டலத்தின் மையம். உங்கள் நிலத்திற்கு வரைபடத்தில் குறியிடவும்.",
+    irrigTitle:"நீர்ப்பாசன வழிகாட்டி",irrigNone:"மழை ஆண்டு முழுவதும் போதுமானது — வழக்கமான நீர்ப்பாசனம் தேவையில்லை.",
+    irrigNeed:"நீர்ப்பாசனம் தேவைப்படக்கூடிய மாதங்கள்",irrigLitres:"அந்த மாதங்களில் ஒரு மரத்திற்கு வாரத்திற்கு லிட்டர்",
+    irrigAssume:"மாதம் {demand} மி.மீ. பயிர் தேவை மற்றும் வேர் மண்டலத்தில் {awc} மி.மீ. நீர் தேக்கம் எனக் கணக்கிடப்பட்டது.",
     soilTitle:"இந்த இடத்தின் மண்",soilPh:"pH",soilAwc:"மி.மீ. நீர்",soilSand:"மணல்",
     soilTexture:"அமைப்பு",soilTexSandy:"மணல்",soilTexSandyLoam:"மணல் களிமண்",soilTexLoam:"களிமண்",soilTexClayLoam:"கனிமண் களிமண்",
     soilPhAcid:"அமிலத்தன்மை — டோலமைட் அல்லது சுண்ணாம்பு ஊட்டச்சத்து உறிஞ்சுதலை மேம்படுத்தும்.",
@@ -7771,7 +7801,7 @@ function dropPin(lat,lng){
     var p=feat.properties;
     document.getElementById('ghint').textContent=t('youAreIn')+' '+p.ZONE+' — '+zoneTerm(climKind(p.CLIMATIC_Z));
     marker.bindPopup('<b>'+p.ZONE+'</b><br>'+esc(zoneTerm(p.AGRO_ECO_Z))+
-      '<br><a href="#" onclick="openDossier('+p.FINAL_ID+');return false;">'+t('viewGuide')+'</a>'+
+      '<br><a href="#" onclick="openDossier('+p.FINAL_ID+','+lat+','+lng+');return false;">'+t('viewGuide')+'</a>'+
       '<div id="'+pid+'"></div>',{maxWidth:300}).openPopup();
     powerLoadInto(lat,lng,pid);
   }else{
@@ -7914,7 +7944,7 @@ function cropBlock(name,c){
   return '<details class="crop"><summary><span class="em">'+em+'</span>'+esc(cropLabel(name))+'<span class="arr">▾</span></summary><div class="body">'+(rows||'<div class="r muted">'+t('noExtra')+'</div>')+'</div></details>';
 }
 
-var currentFid=null;
+var currentFid=null,currentPoint=null;
 // Per-climate-zone varieties and yields (CRI recommendations). The Dry Zone list is
 // deliberately shorter: only these two are recommended for dry conditions.
 var CLIM_VARIETIES={
@@ -7935,8 +7965,9 @@ var CLIM_VARIETIES={
 };
 CLIM_VARIETIES['Intermediate Zone']=CLIM_VARIETIES['Wet Zone'];
 var currentClimName=null;
-function openDossier(fid){
+function openDossier(fid,lat,lng){
   currentFid=fid;
+  currentPoint=dossierPoint(fid,lat,lng);
   currentClimName=null;
   var feat=null;
   for(var i=0;i<AGRO.features.length;i++){if(AGRO.features[i].properties.FINAL_ID===fid){feat=AGRO.features[i];break;}}
@@ -7988,11 +8019,13 @@ function openDossier(fid){
   for(var nm in ic){ icHtml+=cropBlock(nm,ic[nm]); }
   if(icHtml){ html+='<div class="card"><h3>🌾 '+t('intercropOptions')+' — '+esc(zoneTerm(kind))+'</h3><p class="muted" style="margin-top:-4px">'+t('intercropHint')+'</p>'+icHtml+'</div>'; }
 
+  html+='<div id="dLand"></div>';
   html+='<div style="display:flex;gap:8px;flex-wrap:wrap"><button class="sharebtn" onclick="shareZone()">📤 '+t('shareBtn')+'</button><button class="printbtn" style="flex:1" onclick="printReport()">'+t('printBtn')+'</button></div>';
   html+='<button class="sharebtn" style="width:100%;justify-content:center;margin-top:8px;background:#2196F3;" onclick="document.getElementById(\'feedbackOverlay\').classList.add(\'open\')">💬 '+t('fbTitle')+'</button>';
   document.getElementById('dCon').innerHTML=html;
   document.getElementById('dCon').scrollTop=0;
   openSheet();
+  dossierLandInto(currentPoint,'dLand');
 }
 function fact(l,v){return '<div class="fact"><span class="fl">'+l+'</span><span>'+esc(v)+'</span></div>';}
 
@@ -8077,10 +8110,52 @@ function printReport(){
     });
     icHtml+='</tbody></table></div>';
   }
+  // Land page, built from what is already cached so printing stays synchronous. Skipped
+  // entirely when the grower has not looked at a point yet, rather than printing blanks.
+  var pgLand='';
+  if(currentPoint){
+    var sIns=soilInsights(soilAt(currentPoint.lat,currentPoint.lng));
+    var cIns=powerInsights(powerCached(currentPoint.lat,currentPoint.lng));
+    var plan=irrigationPlan(sIns,cIns);
+    if(sIns||cIns){
+      pgLand='<div class="psheet"><div class="phead"><h1>'+esc(t('printHeader'))+'</h1><div class="pz">'+
+             t('landTitle')+' · '+currentPoint.lat.toFixed(3)+', '+currentPoint.lng.toFixed(3)+
+             '</div></div><div class="pbody">';
+      if(cIns){
+        pgLand+='<h2>'+t('weatherTitle')+'</h2>'+ptbl([
+          {label:t('climAnnualRain'),value:Math.round(cIns.annualRain)+' mm'},
+          {label:t('climDryMonths'),value:String(cIns.dryMonths.length)},
+          {label:t('climMeanTemp'),value:cIns.meanTemp!==null?cIns.meanTemp.toFixed(1)+' °C':'—'},
+          {label:t('climHumidity'),value:cIns.meanHumidity!==null?Math.round(cIns.meanHumidity)+' %':'—'}]);
+      }
+      if(sIns){
+        pgLand+='<h2>'+t('soilTitle')+'</h2>'+ptbl([
+          {label:t('soilPh'),value:sIns.ph!==null?sIns.ph.toFixed(1):'—'},
+          {label:t('soilOc'),value:sIns.oc!==null?sIns.oc.toFixed(1)+' %':'—'},
+          {label:t('soilCec'),value:sIns.cec!==null?sIns.cec.toFixed(0):'—'},
+          {label:t('soilAwc'),value:sIns.awc!==null?sIns.awc+' mm':'—'},
+          {label:t('soilTexture'),value:sIns.texture?t('soilTex'+sIns.texture.charAt(0).toUpperCase()+sIns.texture.slice(1)):'—'}]);
+        if(sIns.notes.length){
+          pgLand+='<h2>'+t('pestTreatment')+'</h2><ul>';
+          sIns.notes.forEach(function(n){pgLand+='<li>'+esc(t(n.k))+'</li>';});
+          pgLand+='</ul>';
+        }
+      }
+      if(plan){
+        var mn=t('monthNames').split(',');
+        pgLand+='<h2>'+t('irrigTitle')+'</h2><p>'+(plan.needMonths.length
+          ? esc(t('irrigNeed'))+' <b>'+plan.needMonths.map(function(i){return mn[i];}).join(', ')+
+            '</b><br>≈ <b>'+plan.litresPerPalmPerWeek+'</b> '+esc(t('irrigLitres'))
+          : esc(t('irrigNone')))+'</p>';
+      }
+      pgLand+=footer(today);
+    }
+  }
+
   var pg3='';
   if(icHtml){ pg3='<div class="psheet"><div class="phead"><h1>'+esc(t('printHeader'))+'</h1><div class="pz">'+t('intercropOptions')+' · '+esc(zoneTerm(kind))+'</div></div><div class="pbody">'+icHtml+footer(today); }
 
-  document.getElementById('printArea').innerHTML=pg1+pg2+pg3;
+  document.getElementById('printArea').innerHTML=pg1+pg2+pgLand+pg3;
   setTimeout(function(){window.print();},120);
 }
 function footer(today){ return '<div class="pfooter"><span>'+t('generatedOn')+' '+today+' · Pol Sathkara</span><span class="pn">'+t('page')+' </span></div></div></div>'; }
@@ -8262,7 +8337,7 @@ var CHAT_WORDS={
   where:/\b(where|nearest|closest|near me|nearby|address|located|location|find|contact|phone|call)\b|කොහෙද|ළඟම|ලිපිනය|දුරකථන|எங்கே|அருகில்|முகவரி|தொலைபேசி/i,
   price:/\b(price|prices|cost|rate|rates|selling|sell for|market|how much)\b|මිල|මිලක්|වෙළඳපොළ|விலை|சந்தை/i,
   packet:/\b(packet|packets|sachet|where.*mite|mite.*where|get.*mite)\b|පැකට්|පொதி/i,
-  guide:/\b(guide|leaflet|pdf|booklet|how to grow|cultivat)\b|මාර්ගෝපදේශ|வழிகாட்டி/i
+  guide:/\b(guide|leaflet|pdf|booklet)\b|how to grow|cultivat|මාර්ගෝපදේශ|வழிகாட்டி/i
 };
 var OFC_WORDS=[
   {type:'Nursery', re:/\b(nursery|nurseries|seedling|seed nut|plant)\b|තවාන|පැළ|நாற்றங்கால்|நாற்று/i},
@@ -8351,9 +8426,50 @@ function chatCropGuideAnswer(q){
     '[📄 '+t('cropGuide')+'](intercrop-pdfs/'+encodeURIComponent(crop)+'.pdf)';
 }
 
+// Soil and irrigation questions. These need a location, so they use whatever the app
+// already knows — the saved Weather-tab point or a GPS fix from the Offices tab — and
+// otherwise say plainly what to do rather than guessing at a coordinate.
+function chatLandAnswer(q){
+  var soilQ=/\b(soil|ph|acidic|alkaline|texture|sandy|clay|organic|fertile|fertility)\b|පස|පාංශු|අම්ල|මැටි|වැලි|කාබනික|மண்|அமில|களிமண்|மணல்|கரிம/i.test(q);
+  // Stems are matched without a trailing boundary: "irrigat\b" never matches
+  // "irrigate", which is how most people actually phrase the question.
+  var irrigQ=/irrigat|\bwater(ing)?\b|dry spell|drought|\bmoisture\b|වාරිමාර්ග|ජලය|නියඟ|நீர்ப்பாசன|நீர்|வறட்சி/i.test(q);
+  if(!soilQ&&!irrigQ)return null;
+  var pt=climPoint||((typeof ofcUserLat==='number'&&ofcUserLat!==null)?{lat:ofcUserLat,lng:ofcUserLng}:null);
+  if(!pt)return '**'+t(soilQ?'soilTitle':'irrigTitle')+'**\n\n'+t('chatNeedPoint');
+  var soil=soilInsights(soilAt(pt.lat,pt.lng));
+  if(!soil&&!irrigQ)return '**'+t('soilTitle')+'**\n\n'+t('climNoData');
+  var out='';
+  if(soilQ&&soil){
+    out+='**'+t('soilTitle')+'**\n';
+    if(soil.ph!==null)out+='\n• '+t('soilPh')+': **'+soil.ph.toFixed(1)+'**';
+    if(soil.oc!==null)out+='\n• '+t('soilOc')+': **'+soil.oc.toFixed(1)+'%**';
+    if(soil.cec!==null)out+='\n• '+t('soilCec')+': **'+soil.cec.toFixed(0)+'**';
+    if(soil.awc!==null)out+='\n• '+t('soilAwc')+': **'+soil.awc+'**';
+    if(soil.texture)out+='\n• '+t('soilTexture')+': **'+t('soilTex'+soil.texture.charAt(0).toUpperCase()+soil.texture.slice(1))+'**';
+    soil.notes.forEach(function(n){out+='\n\n'+t(n.k);});
+  }
+  if(irrigQ){
+    // Only answerable with rainfall, which may not have been fetched yet.
+    var clim=powerInsights(powerCached(pt.lat,pt.lng));
+    var plan=irrigationPlan(soil,clim);
+    if(plan){
+      var names=t('monthNames').split(',');
+      out+=(out?'\n\n':'')+'**'+t('irrigTitle')+'**\n';
+      out+=plan.needMonths.length
+        ? '\n'+t('irrigNeed')+' **'+plan.needMonths.map(function(i){return names[i];}).join(', ')+
+          '**\n≈ **'+plan.litresPerPalmPerWeek+'** '+t('irrigLitres')
+        : '\n'+t('irrigNone');
+    }else if(!soilQ){
+      out+='**'+t('irrigTitle')+'**\n\n'+t('chatOpenWeather');
+    }
+  }
+  return out||null;
+}
 // Order matters: the most specific question wins.
 function chatLiveAnswer(q){
-  return chatMiteAnswer(q)||chatOfficeAnswer(q)||chatCropGuideAnswer(q)||chatPriceAnswer(q);
+  return chatMiteAnswer(q)||chatOfficeAnswer(q)||chatCropGuideAnswer(q)||
+         chatLandAnswer(q)||chatPriceAnswer(q);
 }
 // Sinhala and Tamil terms mapped onto the English keywords the knowledge base already
 // carries. The KB holds only one or two local-language keywords per article, so a
@@ -8998,6 +9114,120 @@ function soilHtml(ins){
   });
   h+='<div class="pt-src">'+t('soilSource')+'</div></div>';
   return h;
+}
+// ---- Irrigation need, from soil water and rainfall ----
+// The two datasets are only fully useful together: rainfall says how much water
+// arrives, available water capacity says how much of it the soil can hold for the palm
+// to draw on afterwards. A month is short of water when rainfall falls below demand,
+// and the palm rides that out only while the shortfall is smaller than the buffer the
+// soil holds. Neither figure alone answers "do I need to irrigate, and when".
+//
+// Demand is taken at 130 mm/month (~4.3 mm/day), which is the mid-range figure CRI
+// uses for a bearing palm; the basin area is the ~10 m2 a mature palm's basin covers.
+// Both are stated in the output, because they are assumptions a grower may want to
+// adjust rather than precise constants.
+var IRRIG_DEMAND_MM=130, IRRIG_BASIN_M2=10;
+
+function irrigationPlan(soil,climate){
+  if(!soil||soil.awc===null||!climate||!climate.monthlyRain)return null;
+  var rain=climate.monthlyRain, awc=soil.awc, months=[], carry=0, need=[];
+  // Spin up over a preceding year before recording anything. Starting cold in January
+  // with an empty profile discards the Oct-Dec recharge, which is exactly the water a
+  // palm lives on through the following dry season - without this the soil made no
+  // difference to the answer in the dry zone.
+  for(var w=0;w<12;w++){
+    var b0=rain[w]-IRRIG_DEMAND_MM;
+    if(b0<0)carry=Math.max(0,carry+b0); else carry=Math.min(awc,carry+b0);
+  }
+  for(var i=0;i<12;i++){
+    var bal=rain[i]-IRRIG_DEMAND_MM;
+    var short=0;
+    if(bal<0){
+      // Draw the shortfall from what the soil is holding, and only the remainder has
+      // to be irrigated. The store must be spent before it is reduced, or the deficit
+      // gets charged against it twice and the soil stops mattering to the answer.
+      var draw=Math.min(carry,-bal);
+      carry-=draw;
+      short=-bal-draw;
+    }else{
+      carry=Math.min(awc,carry+bal);   // recharge, never beyond what the soil can hold
+    }
+    months.push({rain:Math.round(rain[i]),deficit:Math.round(Math.max(0,-bal)),
+                 store:Math.round(carry),irrigate:Math.round(short)});
+    if(short>0)need.push(i);
+  }
+  var total=months.reduce(function(a,m){return a+m.irrigate;},0);
+  return {months:months,needMonths:need,totalMm:Math.round(total),
+          litresPerPalmPerWeek:Math.round(total/Math.max(need.length,1)*IRRIG_BASIN_M2/4.3),
+          awc:awc};
+}
+
+function irrigationHtml(plan){
+  if(!plan)return '';
+  var names=t('monthNames').split(',');
+  var h='<div class="card irrig"><h3>💧 '+t('irrigTitle')+'</h3>';
+  if(!plan.needMonths.length){
+    h+='<p class="irrig-ok">'+t('irrigNone')+'</p>';
+  }else{
+    h+='<p>'+t('irrigNeed')+' <b>'+plan.needMonths.map(function(i){return names[i];}).join(', ')+'</b></p>';
+    h+='<p class="irrig-rate">≈ <b>'+plan.litresPerPalmPerWeek+'</b> '+t('irrigLitres')+'</p>';
+  }
+  var max=Math.max.apply(null,plan.months.map(function(m){return Math.max(m.rain,IRRIG_DEMAND_MM);}));
+  h+='<div class="irrig-chart">';
+  for(var i=0;i<12;i++){
+    var m=plan.months[i];
+    var rh=Math.round(m.rain/max*100), dh=Math.round(IRRIG_DEMAND_MM/max*100);
+    h+='<div class="irb" title="'+names[i]+': '+m.rain+' mm">'+
+       '<div class="irb-col"><div class="irb-rain'+(m.irrigate>0?' short':'')+'" style="height:'+Math.max(rh,2)+'%"></div>'+
+       '<div class="irb-line" style="bottom:'+dh+'%"></div></div><span>'+names[i].charAt(0)+'</span></div>';
+  }
+  h+='</div><div class="irrig-note">'+t('irrigAssume')
+     .replace('{demand}',IRRIG_DEMAND_MM).replace('{awc}',plan.awc)+'</div></div>';
+  return h;
+}
+// The dossier is opened from a zone polygon, but soil and climate are point values.
+// Prefer the exact spot the grower tapped, then the location they saved on the Weather
+// tab, and fall back to the middle of the zone so the panel is never simply absent.
+function zoneCentroid(fid){
+  for(var i=0;i<AGRO.features.length;i++){
+    var f=AGRO.features[i];
+    if(f.properties.FINAL_ID!==fid)continue;
+    var g=f.geometry,rings=(g.type==='Polygon')?[g.coordinates]:g.coordinates;
+    var sx=0,sy=0,n=0;
+    rings.forEach(function(poly){
+      poly[0].forEach(function(pt){sx+=pt[0];sy+=pt[1];n++;});
+    });
+    if(n)return {lat:sy/n,lng:sx/n,approx:true};
+  }
+  return null;
+}
+function dossierPoint(fid,lat,lng){
+  if(isFinite(lat)&&isFinite(lng))return {lat:lat,lng:lng,approx:false};
+  if(climPoint)return {lat:climPoint.lat,lng:climPoint.lng,approx:false};
+  return zoneCentroid(fid);
+}
+
+// Soil, climate and the irrigation plan for the dossier, loaded after the sheet paints.
+function dossierLandInto(pt,elId){
+  var el=document.getElementById(elId);
+  if(!el||!pt)return;
+  el.innerHTML='<div class="card"><p class="muted">'+t('climLoading')+'</p></div>';
+  Promise.all([soilGridLoad(),powerFetch(pt.lat,pt.lng)]).then(function(res){
+    var target=document.getElementById(elId);
+    if(!target)return;                       // dossier closed or re-rendered meanwhile
+    var soil=soilInsights(soilAt(pt.lat,pt.lng));
+    var clim=powerInsights(res[1]);
+    var html='';
+    if(soil||clim){
+      html+='<div class="card"><h3>📍 '+t('landTitle')+'</h3>';
+      if(pt.approx)html+='<p class="muted land-approx">'+t('landApprox')+'</p>';
+      if(clim)html+=powerPointHtml(clim,pt.lat,pt.lng);
+      if(soil)html+=soilHtml(soil);
+      html+='</div>';
+    }
+    html+=irrigationHtml(irrigationPlan(soil,clim));
+    target.innerHTML=html;
+  });
 }
 // ====== NASA POWER climate data ======
 // POWER gives 30-year monthly climatology for any coordinate, which lets the app

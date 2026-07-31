@@ -17,6 +17,7 @@ repository, and it keeps working once loaded even with no signal.
 | **Weather** | Rainfall by zone and month, plus a seasonal calendar |
 | **Pests** | Pests and diseases side by side, a photo comparison aid, and where to collect mite packets by district |
 | **Offices** | CRI stations, CCB regional offices, nurseries, training centres, model gardens and CDA offices, sorted by distance from your GPS position |
+| **Your land** | Soil and climate for a chosen point, and an irrigation guide derived from the two together |
 
 Also: trilingual interface, an offline assistant, dark mode, adjustable text size,
 printable zone reports, and per-crop CRI guides as PDFs.
@@ -37,6 +38,23 @@ tools/data/*.csv        source records for offices and mite packets
 They are inline on purpose: it keeps the app to a single request and makes offline
 caching trivial. Coordinates are already at 5 decimal places, so there is nothing to
 reclaim by trimming precision.
+
+## Irrigation guidance
+
+The one thing neither dataset answers alone. Rainfall says how much water arrives;
+available water capacity says how much of it the soil holds for the palm to draw on
+afterwards. Running a monthly balance over the two gives the months where rainfall
+falls short *and* the soil store is already spent — which is when irrigation is
+actually needed, rather than simply when it is dry.
+
+The balance is spun up over a preceding year before anything is reported. Starting
+cold in January discards the October–December recharge, which is exactly the water a
+palm lives on through the following dry season; without the spin-up the soil made no
+difference to the result at all.
+
+Two assumptions are stated in the output rather than hidden: crop demand of 130 mm per
+month, and a 10 m² basin when converting the shortfall to litres per palm. Both are
+mid-range CRI figures and easy to adjust at the top of the function.
 
 ## Soil grid
 
