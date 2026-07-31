@@ -60,7 +60,9 @@ CDA_OFFICES = [
 def clean(s):
     s = re.sub(r"\s+", " ", (s or "")).strip().strip(",")
     for bad, good in SPELLING.items():
-        s = s.replace(bad, good)
+        # Whole words only. A bare replace would turn a future "Mulativu" into
+        # "Mullaitivuu", since "Mulativ" is a prefix of it.
+        s = re.sub(r"\b%s\b" % re.escape(bad), good, s)
     return s
 
 

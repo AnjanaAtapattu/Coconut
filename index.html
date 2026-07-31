@@ -7486,7 +7486,6 @@ var SPELLING_VARIANTS={
   kilinochchi:'kilinochi', kilinochi:'kilinochchi',
   batticaloa:'battico', vavuniya:'vavuniya'
 };
-function expandSpelling(q){return q;}
 function matchesSpelling(hay,q){
   if(hay.indexOf(q)>=0)return true;
   var alt=SPELLING_VARIANTS[q];
@@ -8160,7 +8159,7 @@ function chatApplyLang(){
     // a town, a district — so they lead the results.
     var ofcHits=[];
     if(typeof OFFICES!=='undefined'){
-      var lq=expandSpelling(q.toLowerCase());
+      var lq=q.toLowerCase();
       var scored=[];
       for(var oi=0;oi<OFFICES.length;oi++){
         var o=OFFICES[oi];
@@ -8745,8 +8744,8 @@ function ttsStop(){
 (function initFeedback(){
   var overlay=document.getElementById('feedbackOverlay');
   var rating=0;
-  var fbToggle=document.getElementById('feedbackToggle');
-  if(fbToggle) fbToggle.onclick=function(){overlay.classList.add('open');};
+  // Opened from the button at the foot of the zone dossier; there is no longer a
+  // header launcher, so nothing to bind here.
   overlay.addEventListener('click',function(e){if(e.target===overlay)overlay.classList.remove('open');});
   document.addEventListener('keydown',function(e){if(e.key==='Escape'&&overlay.classList.contains('open'))overlay.classList.remove('open');});
   document.querySelectorAll('.fb-face').forEach(function(btn){

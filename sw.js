@@ -13,11 +13,16 @@
    a subpath (GitHub Pages project sites are served at /<repo>/).
 */
 
+// Only the shell is versioned. Map tiles and crop guides are immutable content keyed
+// by URL, and they are the expensive things to reacquire: a grower who cached them
+// for field use would otherwise lose the lot on every release, exactly when there may
+// be no signal to fetch them again. They persist across upgrades instead.
 var VERSION = 'v5';
 var SHELL_CACHE = 'pol-shell-' + VERSION;
-var ASSET_CACHE = 'pol-assets-' + VERSION;
-var TILE_CACHE = 'pol-tiles-' + VERSION;
+var ASSET_CACHE = 'pol-assets';
+var TILE_CACHE = 'pol-tiles';
 var TILE_LIMIT = 400;
+var KEEP = [SHELL_CACHE, ASSET_CACHE, TILE_CACHE];
 
 // Leaflet and its marker images are part of the shell, not optional extras: without
 // them the map tabs cannot render at all, so they are precached alongside the HTML.
@@ -53,7 +58,9 @@ self.addEventListener('activate', function (e) {
   e.waitUntil(
     caches.keys().then(function (keys) {
       return Promise.all(keys.map(function (k) {
-        if (k !== SHELL_CACHE && k !== ASSET_CACHE && k !== TILE_CACHE) return caches.delete(k);
+        // Drop superseded shells, and the older versioned asset/tile caches from
+        // before these were made version-independent.
+        if (KEEP.indexOf(k) === -1) return caches.delete(k);
       }));
     }).then(function () { return self.clients.claim(); })
   );
