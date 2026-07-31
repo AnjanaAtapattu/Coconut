@@ -7670,10 +7670,56 @@ document.querySelectorAll('nav.tabs button').forEach(function(b){
 });
 
 // ---- Dossier ----
+// ---- Fertilizer and manure labels ----
+// A closed set of 15 labels, so these are mapped whole rather than assembled from
+// terms: the unit suffixes ("(g/palm)", "moisture 20-30%") have to move with them.
+// APM/YPM stay as codes because that is how the CRI mixtures are labelled on the sack,
+// and the chemical names are transliterated rather than translated, because that is
+// what a grower reads on the bag when buying them.
+var FERT_LABELS={
+  si:{
+    'Urea':'යූරියා',
+    'Phosphate Source':'පොස්පේට් ප්‍රභවය',
+    'Phosphate (g/palm)':'පොස්පේට් (ග්‍රෑම්/ගසකට)',
+    'Muriate of Potash (g/palm)':'මියුරියේට් ඔෆ් පොටෑෂ් (ග්‍රෑම්/ගසකට)',
+    'Dolomite (g/palm)':'ඩොලමයිට් (ග්‍රෑම්/ගසකට)',
+    'APM-W (kg)':'APM-W (කි.ග්‍රෑ.)','APM-D (kg)':'APM-D (කි.ග්‍රෑ.)',
+    'YPM-W (kg)':'YPM-W (කි.ග්‍රෑ.)','YPM-D (kg)':'YPM-D (කි.ග්‍රෑ.)',
+    'Cow Dung Manure – moisture 20-30% (kg)':'ගොම පොහොර – තෙතමනය 20-30% (කි.ග්‍රෑ.)',
+    'Cow Dung Manure – moisture 20-30% / alt (kg)':'ගොම පොහොර – තෙතමනය 20-30% / විකල්ප (කි.ග්‍රෑ.)',
+    'Eppawala Rock Phosphate (kg)':'එප්පාවල පාෂාණ පොස්පේට් (කි.ග්‍රෑ.)',
+    'Eppawala Rock Phosphate':'එප්පාවල පාෂාණ පොස්පේට්',
+    'Dolomite (kg)':'ඩොලමයිට් (කි.ග්‍රෑ.)',
+    'Chicken Manure – moisture 20-30%':'කුකුළු පොහොර – තෙතමනය 20-30%',
+    'Agricultural Compost':'කෘෂිකාර්මික කොම්පෝස්ට්',
+    'Gliricidia':'ග්ලිරිසීඩියා (වැටමාර)'
+  },
+  ta:{
+    'Urea':'யூரியா',
+    'Phosphate Source':'பாஸ்பேட் மூலம்',
+    'Phosphate (g/palm)':'பாஸ்பேட் (கிராம்/மரம்)',
+    'Muriate of Potash (g/palm)':'மியூரியேட் ஆஃப் பொட்டாஷ் (கிராம்/மரம்)',
+    'Dolomite (g/palm)':'டோலமைட் (கிராம்/மரம்)',
+    'APM-W (kg)':'APM-W (கி.கி.)','APM-D (kg)':'APM-D (கி.கி.)',
+    'YPM-W (kg)':'YPM-W (கி.கி.)','YPM-D (kg)':'YPM-D (கி.கி.)',
+    'Cow Dung Manure – moisture 20-30% (kg)':'மாட்டு எரு – ஈரப்பதம் 20-30% (கி.கி.)',
+    'Cow Dung Manure – moisture 20-30% / alt (kg)':'மாட்டு எரு – ஈரப்பதம் 20-30% / மாற்று (கி.கி.)',
+    'Eppawala Rock Phosphate (kg)':'எப்பாவல பாறை பாஸ்பேட் (கி.கி.)',
+    'Eppawala Rock Phosphate':'எப்பாவல பாறை பாஸ்பேட்',
+    'Dolomite (kg)':'டோலமைட் (கி.கி.)',
+    'Chicken Manure – moisture 20-30%':'கோழி எரு – ஈரப்பதம் 20-30%',
+    'Agricultural Compost':'விவசாய கம்போஸ்ட்',
+    'Gliricidia':'கிளிரிசீடியா (சீமைக்கொன்றை)'
+  }
+};
+function fertLabel(s){
+  var d=FERT_LABELS[lang];
+  return (d&&d[s])||s;
+}
 function tbl(rows){
   if(!rows||!rows.length)return '<p class="muted">'+t('notSpecified')+'</p>';
   var h='<table class="dt"><tbody>';
-  rows.forEach(function(r){h+='<tr><td>'+esc(r.label)+'</td><td><b>'+esc(r.value)+'</b></td></tr>';});
+  rows.forEach(function(r){h+='<tr><td>'+esc(fertLabel(r.label))+'</td><td><b>'+esc(r.value)+'</b></td></tr>';});
   return h+'</tbody></table>';
 }
 // Escapes quotes as well as angle brackets: esc() is interpolated into attribute
@@ -7834,7 +7880,7 @@ function openClimDossier(name){
 document.getElementById('dClose').onclick=function(){document.getElementById('sheet').classList.remove('open');};
 
 // ---- PRINT REPORT ----
-function ptbl(rows){ if(!rows||!rows.length)return ''; var h='<table><tbody>'; rows.forEach(function(r){h+='<tr><td style="width:50%;font-weight:600">'+esc(r.label)+'</td><td>'+esc(r.value)+'</td></tr>';}); return h+'</tbody></table>'; }
+function ptbl(rows){ if(!rows||!rows.length)return ''; var h='<table><tbody>'; rows.forEach(function(r){h+='<tr><td style="width:50%;font-weight:600">'+esc(fertLabel(r.label))+'</td><td>'+esc(r.value)+'</td></tr>';}); return h+'</tbody></table>'; }
 function printReport(){
   var d=currentFid!=null?zoneInfo(currentFid):null;
   var feat=null;
