@@ -142,7 +142,26 @@ self.addEventListener('fetch', function (e) {
     return;
   }
 
-  // 4. Crop guide PDFs: cached on first open, never precached. Together they are
+  // 4. Department of Agriculture reference data: administrative divisions and season
+  // definitions, which change rarely. Cache-first, and fall back to the cached copy if
+  // the service is down, so a locality picker still works in the field.
+  if (/(^|\.)doa\.gov\.lk$/.test(url.host)) {
+    e.respondWith(
+      caches.match(req).then(function (hit) {
+        if (hit) return hit;
+        return fetch(req).then(function (res) {
+          if (res && res.status === 200) {
+            var copy = res.clone();
+            caches.open(ASSET_CACHE).then(function (c) { c.put(req, copy); });
+          }
+          return res;
+        }).catch(function () { return hit; });
+      })
+    );
+    return;
+  }
+
+  // 5. Crop guide PDFs: cached on first open, never precached. Together they are
   // several megabytes, and a grower needs only the crops they actually grow — but
   // once opened, the guide must still be there in the field with no signal.
   if(/\/intercrop-pdfs\/.+\.pdf$/i.test(url.pathname)){
@@ -161,7 +180,7 @@ self.addEventListener('fetch', function (e) {
     return;
   }
 
-  // 5. Same-origin assets: cache first.
+  // 6. Same-origin assets: cache first.
   if (url.origin === self.location.origin) {
     e.respondWith(
       caches.match(req).then(function (hit) {
@@ -178,7 +197,7 @@ self.addEventListener('fetch', function (e) {
     return;
   }
 
-  // 6. Cross-origin libraries/fonts: stale-while-revalidate.
+  // 7. Cross-origin libraries/fonts: stale-while-revalidate.
   e.respondWith(
     caches.match(req).then(function (hit) {
       var net = fetch(req).then(function (res) {

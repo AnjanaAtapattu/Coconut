@@ -75,6 +75,39 @@ The only outbound requests left are map tiles, which cannot be bundled, and Goog
 Fonts. Blocking the fonts degrades typography but not legibility — Sinhala and Tamil
 still render through system fallback.
 
+## External data services
+
+Three services are used, and none of them is required for the app to work — every one
+degrades to built-in data if it is unreachable, because the audience is offline often.
+
+**NASA POWER** (`power.larc.nasa.gov`) supplies 30-year monthly climatology per
+coordinate: rainfall, temperature, humidity, solar radiation and wind. No key, and the
+service is CORS-enabled. Responses are cached in `localStorage` by rounded coordinate
+and by the service worker. Falls back to the built-in three-zone climatology.
+
+**CROPIX** (Department of Agriculture) supplies administrative divisions — districts,
+DS divisions, GN divisions and Agrarian Service Centres — used for the locality picker
+in the Offices tab. Endpoint paths come from the published public API listing.
+
+> **Known blocker:** the listing gives the base URL as `http://data.doa.gov.lk`, over
+> plain HTTP. This app is served over HTTPS, and browsers block plain-HTTP requests
+> from an HTTPS page outright, so `https://data.doa.gov.lk` is requested instead. If
+> that host does not answer on TLS these calls will fail and the picker will quietly
+> fall back to the district list bundled with the app. Confirm whether the gateway
+> serves HTTPS before relying on it; if it does not, the options are a proxy or asking
+> the department to enable TLS.
+
+The CROPIX public API has **no weather or agro-meteorological endpoints** — it covers
+geography, crops, seasons, soil, seed certification and crop-look statistics. The
+weekly agro-met advisory at `doa.gov.lk/agro-met-advisory/` is a web page rather than
+a feed and does not send CORS headers, so the app links out to it rather than
+attempting to read it.
+
+Response shapes are not documented in the listing, so records are read tolerantly: the
+array may arrive bare or wrapped in `data`, `result.content` and similar, and a name
+may be `name`, `nameEn`, `districtName` and so on. Anything unrecognised is skipped
+rather than guessed at.
+
 ## Deploying
 
 Pushing to `main` publishes via GitHub Actions (`.github/workflows/deploy-pages.yml`).

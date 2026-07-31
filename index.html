@@ -292,6 +292,14 @@ body.dark .pt-stats span,body.dark .pt-src{color:#999;}
 .clim-mine .pt-bars .ptb span{font-size:10px;padding-top:2px;}
 .clim-mine .pt-verdict{font-size:13px;padding:5px 14px;}
 .clim-mine .pt-note{font-size:12px;}
+/* === DOA locality picker === */
+.loc-picker{background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin-bottom:12px;}
+body.dark .loc-picker{background:#2d2d44;border-color:#3a3a50;}
+.loc-picker label{display:block;font-size:11px;font-weight:700;color:#777;margin:4px 0 3px;text-transform:uppercase;letter-spacing:.3px;}
+body.dark .loc-picker label{color:#9a9a9a;}
+.loc-picker select{width:100%;border:2px solid var(--line);border-radius:10px;padding:8px 10px;font-size:13px;font-family:'Manrope';background:#fff;color:var(--ink);}
+body.dark .loc-picker select{background:#1a1a2e;color:#e0e0e0;border-color:#3a3a50;}
+.loc-note{font-size:10px;color:#999;margin-top:6px;}
 /* === Climate cards === */
 .clim-card{background:#fff;border-radius:14px;padding:14px;box-shadow:0 2px 8px rgba(0,0,0,.08);margin-bottom:14px;}
 body.dark .clim-card{background:#2d2d44;}
@@ -7274,6 +7282,10 @@ var T={
     pestSymptoms:"Symptoms",pestTreatment:"Treatment",pestInsects:"Pests",pestDiseases:"Diseases",
     rainfallDist:"Rainfall Distribution",zoneComparison:"Zone Comparison",noOffices:"No offices found",
     agroClimZone:"Agro-Climatic Zone of Sri Lanka",
+    locDistrict:"District",locDsDivision:"DS Division",locChoose:"Choose…",
+    filterASC:"Agrarian Service Centres",
+    locSourceDoa:"Locality list from the Department of Agriculture",
+    locSourceLocal:"Offline — showing the districts stored in this app",
     climMyLocation:"Climate at your location",
     climPointHint:"Get climate figures for your own land — rainfall, temperature and dry months — from NASA POWER.",
     climUseMyLocation:"📍 Use my location",climLoading:"Loading climate data…",
@@ -7358,6 +7370,10 @@ var T={
     pestSymptoms:"රෝග ලක්ෂණ",pestTreatment:"ප්‍රතිකාර",pestInsects:"පළිබෝධ",pestDiseases:"රෝග",
     rainfallDist:"වර්ෂාපතන ව්‍යාප්තිය",zoneComparison:"කලාප සංසන්දනය",noOffices:"කාර්යාල හමු නොවීය",
     agroClimZone:"ශ්‍රී ලංකාවේ කෘෂි-දේශගුණික කලාපය",
+    locDistrict:"දිස්ත්‍රික්කය",locDsDivision:"ප්‍රාදේශීය ලේකම් කොට්ඨාසය",locChoose:"තෝරන්න…",
+    filterASC:"ගොවිජන සේවා මධ්‍යස්ථාන",
+    locSourceDoa:"ස්ථාන ලැයිස්තුව කෘෂිකර්ම දෙපාර්තමේන්තුවෙන්",
+    locSourceLocal:"නොබැඳි — යෙදුමේ ඇති දිස්ත්‍රික්ක පෙන්වයි",
     climMyLocation:"ඔබේ ස්ථානයේ දේශගුණය",
     climPointHint:"ඔබේ ඉඩමේ වර්ෂාපතනය, උෂ්ණත්වය සහ වියළි මාස NASA POWER වෙතින් ලබාගන්න.",
     climUseMyLocation:"📍 මගේ ස්ථානය",climLoading:"දේශගුණ දත්ත ලබාගනිමින්…",
@@ -7442,6 +7458,10 @@ var T={
     pestSymptoms:"அறிகுறிகள்",pestTreatment:"சிகிச்சை",pestInsects:"பூச்சிகள்",pestDiseases:"நோய்கள்",
     rainfallDist:"மழைப்பொழிவு விநியோகம்",zoneComparison:"மண்டல ஒப்பீடு",noOffices:"அலுவலகங்கள் காணப்படவில்லை",
     agroClimZone:"இலங்கையின் வேளாண்-காலநிலை மண்டலம்",
+    locDistrict:"மாவட்டம்",locDsDivision:"பிரதேச செயலகப் பிரிவு",locChoose:"தேர்வுசெய்க…",
+    filterASC:"கமநல சேவை நிலையங்கள்",
+    locSourceDoa:"இடப்பட்டியல் விவசாயத் திணைக்களத்திடமிருந்து",
+    locSourceLocal:"ஆஃப்லைன் — செயலியில் உள்ள மாவட்டங்கள் காட்டப்படுகின்றன",
     climMyLocation:"உங்கள் இருப்பிடத்தின் காலநிலை",
     climPointHint:"உங்கள் நிலத்தின் மழைப்பொழிவு, வெப்பநிலை மற்றும் வறண்ட மாதங்களை NASA POWER மூலம் பெறுங்கள்.",
     climUseMyLocation:"📍 எனது இருப்பிடம்",climLoading:"காலநிலைத் தரவு ஏற்றப்படுகிறது…",
@@ -8580,6 +8600,188 @@ function chatApplyLang(){
     });
   });
 })();
+// ====== CROPIX — Department of Agriculture open API ======
+// Endpoint paths are taken from the published public API listing (14 groups, 102
+// endpoints). Two things about it shape everything below.
+//
+// First, the listing gives the base URL as http://data.doa.gov.lk. This app is served
+// over HTTPS, and browsers block plain-HTTP subresources from an HTTPS page outright,
+// so https is requested against the same host. If the host does not answer on TLS,
+// every call here fails and the app falls back to its built-in data - which is why
+// nothing depends on a response arriving.
+//
+// Second, the listing documents paths but not response bodies, so field names are
+// read tolerantly rather than assumed: a record's name might arrive as name, nameEn,
+// description or title, and the array might be at the top level or under data/result.
+var DOA_BASE='https://data.doa.gov.lk';
+var DOA_PATHS={
+  districts:'/cropix/api/v1/admin-divisions/districts',
+  dsByDistrict:'/cropix/api/v1/admin-divisions/districts/{code}/ds-divisions',
+  gnByDs:'/cropix/api/v1/admin-divisions/ds-divisions/{code}/gn-divisions',
+  ascDivisions:'/cropix/api/v1/admin-divisions/asc-divisions',
+  seasons:'/cropix/api/v1/geo-data/agriculture-seasons/all-seasons',
+  soilTypes:'/cropix/api/v1/soil-types'
+};
+var DOA_TTL=1000*60*60*24*30;   // administrative boundaries change rarely
+
+function doaCacheGet(k){
+  try{
+    var o=JSON.parse(localStorage.getItem('polDoa:'+k)||'null');
+    if(!o||Date.now()-o.t>DOA_TTL)return null;
+    return o.d;
+  }catch(e){return null;}
+}
+function doaCacheSet(k,d){
+  try{localStorage.setItem('polDoa:'+k,JSON.stringify({t:Date.now(),d:d}));}catch(e){}
+}
+
+// Pull the array out of whatever envelope the service uses.
+function doaList(json){
+  if(Array.isArray(json))return json;
+  if(!json||typeof json!=='object')return [];
+  var keys=['data','result','results','content','items','payload','records'];
+  for(var i=0;i<keys.length;i++){
+    var v=json[keys[i]];
+    if(Array.isArray(v))return v;
+    if(v&&typeof v==='object'){
+      for(var j=0;j<keys.length;j++)if(Array.isArray(v[keys[j]]))return v[keys[j]];
+    }
+  }
+  return [];
+}
+function doaName(o){
+  if(typeof o==='string')return o;
+  if(!o||typeof o!=='object')return '';
+  var keys=['name','nameEn','name_en','englishName','description','title','divisionName',
+            'districtName','dsDivisionName','gnDivisionName','ascName','seasonName','soilType'];
+  for(var i=0;i<keys.length;i++)if(o[keys[i]])return String(o[keys[i]]);
+  return '';
+}
+function doaCode(o){
+  if(!o||typeof o!=='object')return '';
+  var keys=['code','id','districtId','districtCode','dsDivisionId','dsCode','gnCode',
+            'ascId','seasonId','divisionCode'];
+  for(var i=0;i<keys.length;i++)if(o[keys[i]]!==undefined&&o[keys[i]]!==null)return String(o[keys[i]]);
+  return '';
+}
+
+function doaFetch(key,path){
+  var cached=doaCacheGet(key);
+  if(cached)return Promise.resolve(cached);
+  if(!navigator.onLine)return Promise.resolve(null);
+  var ctrl=('AbortController' in window)?new AbortController():null;
+  var timer=ctrl?setTimeout(function(){ctrl.abort();},10000):null;
+  return fetch(DOA_BASE+path,ctrl?{signal:ctrl.signal}:undefined)
+    .then(function(r){if(!r.ok)throw new Error('HTTP '+r.status);return r.json();})
+    .then(function(j){
+      if(timer)clearTimeout(timer);
+      var list=doaList(j).map(function(o){
+        return {code:doaCode(o),name:doaName(o),raw:o};
+      }).filter(function(x){return x.name;});
+      if(!list.length)return null;
+      doaCacheSet(key,list);
+      return list;
+    })
+    .catch(function(){if(timer)clearTimeout(timer);return null;});
+}
+
+function doaDistricts(){return doaFetch('districts',DOA_PATHS.districts);}
+function doaDsDivisions(code){
+  return doaFetch('ds:'+code,DOA_PATHS.dsByDistrict.replace('{code}',encodeURIComponent(code)));
+}
+function doaGnDivisions(code){
+  return doaFetch('gn:'+code,DOA_PATHS.gnByDs.replace('{code}',encodeURIComponent(code)));
+}
+function doaAscDivisions(){return doaFetch('asc',DOA_PATHS.ascDivisions);}
+function doaSeasons(){return doaFetch('seasons',DOA_PATHS.seasons);}
+// District → DS division picker, backed by the DOA administrative hierarchy. The
+// built-in district list only knows the 25 districts the mite-packet sheet mentions;
+// this gives the official list and one level down, which is how a grower actually
+// describes where they are. Falls back to the built-in list when the service is
+// unreachable, so the control is never dead.
+var doaLoc={district:null,districtName:null,ds:null};
+(function restoreDoaLoc(){
+  try{var s=localStorage.getItem('polDoaLoc');if(s)doaLoc=JSON.parse(s);}catch(e){}
+})();
+function doaLocSave(){try{localStorage.setItem('polDoaLoc',JSON.stringify(doaLoc));}catch(e){}}
+
+function doaLocalityHtml(){
+  var h='<div class="loc-picker" id="locPicker">';
+  h+='<label>'+t('locDistrict')+'</label><select id="locDistrict" onchange="doaPickDistrict(this.value)">';
+  h+='<option value="">'+t('locChoose')+'</option></select>';
+  h+='<label id="locDsLabel" style="display:none">'+t('locDsDivision')+'</label>';
+  h+='<select id="locDs" style="display:none" onchange="doaPickDs(this.value)"></select>';
+  h+='<div class="loc-note" id="locNote"></div></div>';
+  return h;
+}
+
+function doaFillDistricts(){
+  var sel=document.getElementById('locDistrict');
+  if(!sel)return;
+  doaDistricts().then(function(list){
+    var target=document.getElementById('locDistrict');
+    if(!target)return;
+    var official=!!list;
+    // Without the service, offer the districts the app already knows about.
+    if(!list)list=Object.keys(MITE_PACKETS).map(function(d){return {code:d,name:d};});
+    target.innerHTML='<option value="">'+t('locChoose')+'</option>'+
+      list.map(function(d){
+        var sel2=(doaLoc.district===d.code)?' selected':'';
+        return '<option value="'+esc(d.code)+'"'+sel2+'>'+esc(d.name)+'</option>';
+      }).join('');
+    var note=document.getElementById('locNote');
+    if(note)note.textContent=official?t('locSourceDoa'):t('locSourceLocal');
+    if(doaLoc.district)doaPickDistrict(doaLoc.district,true);
+  });
+}
+
+function doaPickDistrict(code,keep){
+  doaLoc.district=code||null;
+  var sel=document.getElementById('locDistrict');
+  doaLoc.districtName=sel&&sel.selectedOptions[0]?sel.selectedOptions[0].textContent:code;
+  if(!keep)doaLoc.ds=null;
+  doaLocSave();
+  var lbl=document.getElementById('locDsLabel'),ds=document.getElementById('locDs');
+  if(!code){if(lbl)lbl.style.display='none';if(ds)ds.style.display='none';return;}
+  // A district name also drives the mite-packet lookup, so keep the two in step.
+  if(doaLoc.districtName&&MITE_PACKETS[doaLoc.districtName])setMiteDistrict(doaLoc.districtName);
+  doaDsDivisions(code).then(function(list){
+    var lbl=document.getElementById('locDsLabel'),ds=document.getElementById('locDs');
+    if(!ds||!lbl)return;
+    if(!list||!list.length){lbl.style.display='none';ds.style.display='none';return;}
+    lbl.style.display='';ds.style.display='';
+    ds.innerHTML='<option value="">'+t('locChoose')+'</option>'+
+      list.map(function(d){
+        return '<option value="'+esc(d.code)+'"'+(doaLoc.ds===d.code?' selected':'')+'>'+esc(d.name)+'</option>';
+      }).join('');
+  });
+}
+function doaPickDs(code){doaLoc.ds=code||null;doaLocSave();}
+
+// Agrarian Service Centres are where a Coconut Development Officer is stationed. The
+// earlier hardcoded list was removed because its phone numbers were not sourced from
+// any record; this restores the network from the department's own data when reachable.
+function doaLoadAscOffices(){
+  doaAscDivisions().then(function(list){
+    if(!list||!list.length)return;
+    var added=0;
+    list.forEach(function(a){
+      var r=a.raw||{};
+      var lat=parseFloat(r.latitude||r.lat||r.Latitude);
+      var lng=parseFloat(r.longitude||r.lng||r.Longitude);
+      if(isNaN(lat)||isNaN(lng))return;          // no coordinate, nothing to place
+      if(OFFICES.some(function(o){return o.type==='ASC'&&o.name===a.name;}))return;
+      OFFICES.push({name:a.name,type:'ASC',lat:lat,lng:lng,
+        addr:r.address||r.addr||a.name,phone:String(r.contactNo||r.phone||r.telephone||''),
+        icon:'🌾',district:r.districtName||r.district||''});
+      added++;
+    });
+    if(added){
+      if(OFC_TYPES.indexOf('ASC')===-1)OFC_TYPES.push('ASC');
+      if(document.getElementById('view-offices').classList.contains('active'))renderOffices();
+    }
+  });
+}
 // ====== NASA POWER climate data ======
 // POWER gives 30-year monthly climatology for any coordinate, which lets the app
 // answer "what is the climate where I actually farm" rather than only "which of three
@@ -9143,6 +9345,7 @@ function renderOffices(){
     html+='<option value="'+f+'"'+(ofcFilter===f?' selected':'')+'>'+t('filter'+f)+'</option>';
   });
   html+='</select></div>';
+  html+=doaLocalityHtml();
   html+='<div class="ofc-grid">';
   filtered.forEach(function(o){
     var hl=(ofcHighlight&&o.name===ofcHighlight)?' highlight':'';
@@ -9163,6 +9366,7 @@ function renderOffices(){
   if(filtered.length===0)html+='<div style="text-align:center;padding:20px;color:#888">'+t('noOffices')+'</div>';
   html+='</div>';
   el.innerHTML=html;
+  doaFillDistricts();
   if(ofcHighlight){
     var card=el.querySelector('.ofc-card.highlight');
     if(card)card.scrollIntoView({behavior:'smooth',block:'center'});
@@ -9377,6 +9581,7 @@ renderPests=function(){
 // when that request fails the map init below throws — previously taking switchLang
 // with it and leaving Sinhala/Tamil users stuck on English.
 switchLang(lang);
+try{doaLoadAscOffices();}catch(e){}
 
 if(typeof L==='undefined'){
   // No mapping library available (offline first load, or CDN blocked). Keep every
@@ -9401,6 +9606,8 @@ window.selectPestMatch=selectPestMatch;
 window.setMiteDistrict=setMiteDistrict;
 window.climLocate=climLocate;
 window.climSetPoint=climSetPoint;
+window.doaPickDistrict=doaPickDistrict;
+window.doaPickDs=doaPickDs;
 window.ttsSpeak=ttsSpeak;
 window.ttsStop=ttsStop;
 
