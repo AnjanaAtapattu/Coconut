@@ -13,6 +13,13 @@ So the rasters are reduced here, once, to four bytes per cell:
     silt %    depth-weighted mean over 0-30 cm
     AWC mm    plant-available water over the full 0-100 cm profile,
               summed as (drainage upper limit - wilting point) x layer thickness
+    OC %      organic carbon, 0-30 cm mean, stored x 50
+    CEC       cation exchange capacity cmol(+)/kg, 0-30 cm mean, stored x 10
+    BD        bulk density g/cm3, 0-30 cm mean, stored x 100
+
+Clay is deliberately not stored. The three texture fractions are a closed
+composition here - measured clay equals 100 - sand - silt exactly across every cell -
+so a clay byte would cost 26 kB and carry no information the reader cannot derive.
 
 The top 30 cm is used for pH and texture because that is where fertiliser and
 amendments are worked in, while available water is summed over the whole metre
@@ -50,7 +57,14 @@ DOWNSAMPLE = 2
 NODATA = 255
 
 PREFIX = {"ph": "PHOX", "sand": "SNDPPT", "silt": "SLTPPT",
-          "dul": "VMC(DUL)", "wp": "VMC(WP)"}
+          "dul": "VMC(DUL)", "wp": "VMC(WP)",
+          "oc": "ORGCBN", "cec": "CEC", "bd": "BD"}
+
+# Byte offset and the multiplier each value is stored at. The multipliers are chosen so
+# the observed national range fills the byte without ever reaching the 255 sentinel.
+CHANNELS = [("ph", 0, 20), ("sand", 1, 1), ("silt", 2, 1), ("awc", 3, 1),
+            ("oc", 4, 50), ("cec", 5, 10), ("bd", 6, 100)]
+STRIDE = len(CHANNELS)
 
 
 def read_geotiff(path):
@@ -119,24 +133,24 @@ def weighted(layers, weights, y, x):
 
 
 def build(rasters):
-    print("reading 25 rasters…")
+    print("reading %d rasters…" % (len(PREFIX) * 5))
     data = {k: [read_geotiff(find(rasters, p, i)) for i in range(1, 6)]
             for k, p in PREFIX.items()}
     ref = data["ph"][0]
     w, h = ref["w"], ref["h"]
 
     ow, oh = (w + DOWNSAMPLE - 1) // DOWNSAMPLE, (h + DOWNSAMPLE - 1) // DOWNSAMPLE
-    out = bytearray([NODATA]) * (ow * oh * 4)
+    out = bytearray([NODATA]) * (ow * oh * STRIDE)
 
     for oy in range(oh):
         for ox in range(ow):
-            acc = {"ph": [], "sand": [], "silt": [], "awc": []}
+            acc = dict((name, []) for name, _, _ in CHANNELS)
             for dy in range(DOWNSAMPLE):
                 for dx in range(DOWNSAMPLE):
                     y, x = oy * DOWNSAMPLE + dy, ox * DOWNSAMPLE + dx
                     if y >= h or x >= w:
                         continue
-                    for key in ("ph", "sand", "silt"):
+                    for key in ("ph", "sand", "silt", "oc", "cec", "bd"):
                         v = weighted(data[key][:3], TOP_W, y, x)
                         if v is not None:
                             acc[key].append(v)
@@ -152,17 +166,13 @@ def build(rasters):
                     if ok:
                         acc["awc"].append(mm)
 
-            base = (oy * ow + ox) * 4
-            if acc["ph"]:
-                out[base] = min(int(round(sum(acc["ph"]) / len(acc["ph"]) * 20)), 254)
-            if acc["sand"]:
-                out[base + 1] = min(int(round(sum(acc["sand"]) / len(acc["sand"]))), 254)
-            if acc["silt"]:
-                out[base + 2] = min(int(round(sum(acc["silt"]) / len(acc["silt"]))), 254)
-            if acc["awc"]:
-                out[base + 3] = min(int(round(sum(acc["awc"]) / len(acc["awc"]))), 254)
+            base = (oy * ow + ox) * STRIDE
+            for name, offset, mult in CHANNELS:
+                vals = acc[name]
+                if vals:
+                    out[base + offset] = min(int(round(sum(vals) / len(vals) * mult)), 254)
 
-    meta = {"w": ow, "h": oh,
+    meta = {"w": ow, "h": oh, "stride": STRIDE,
             "originX": round(ref["originX"], 8), "originY": round(ref["originY"], 8),
             "px": round(ref["px"] * DOWNSAMPLE, 10), "py": round(ref["py"] * DOWNSAMPLE, 10)}
     return bytes(out), meta
@@ -195,7 +205,7 @@ def main():
         if not m:
             sys.exit("SOIL_GRID_META not found in index.html")
         meta = json.loads(m.group(1))
-        expected = meta["w"] * meta["h"] * 4
+        expected = meta["w"] * meta["h"] * meta.get("stride", 4)
         actual = OUT.stat().st_size
         if expected != actual:
             sys.exit("soil-grid.bin is %d bytes, metadata implies %d" % (actual, expected))
@@ -205,8 +215,8 @@ def main():
     blob, meta = build(args.rasters)
     OUT.write_bytes(blob)
     patch_index(meta, len(blob))
-    print("wrote %s (%d bytes, %dx%d cells at %.4f deg)" %
-          (OUT.name, len(blob), meta["w"], meta["h"], meta["px"]))
+    print("wrote %s (%d bytes, %dx%d cells x %d channels at %.4f deg)" %
+          (OUT.name, len(blob), meta["w"], meta["h"], STRIDE, meta["px"]))
 
 
 if __name__ == "__main__":

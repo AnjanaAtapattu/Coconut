@@ -40,9 +40,10 @@ reclaim by trimming precision.
 
 ## Soil grid
 
-`soil-grid.bin` holds four bytes per cell — pH, sand %, silt %, and plant-available
-water in mm over the top metre — on a ~2 km grid covering the island. It is built from
-25 national soil rasters (five properties at five depths, about 13 MB) by:
+`soil-grid.bin` holds seven bytes per cell — pH, sand %, silt %, plant-available water
+in mm over the top metre, organic carbon %, cation exchange capacity and bulk density —
+on a ~2 km grid covering the island. It is built from 45 national soil rasters (nine
+properties at five depths, about 23 MB) by:
 
 ```bash
 python3 tools/build_soilgrid.py --rasters DIR   # rebuild from the .tif rasters
@@ -57,9 +58,16 @@ water is summed over the full 0–100 cm, because a palm draws on the whole prof
 between rains. The file is precached with the app shell, so soil lookups work with no
 signal.
 
-Thresholds for the advice shown against a reading are calibrated to this grid, not to
-textbook figures — these soils hold 32–76 mm per metre (median 52), so a generic
-"under 150 mm is low" would have labelled nearly every holding in the country poor.
+Clay is not stored. The three texture fractions are a closed composition in this
+dataset — measured clay equals `100 − sand − silt` exactly in every cell — so a clay
+channel would cost 26 kB and tell the reader nothing it cannot derive.
+
+Available-water thresholds are calibrated to this grid rather than to textbook figures:
+these soils hold 32–76 mm per metre (median 52), so a generic "under 150 mm is low"
+would have labelled nearly every holding in the country poor. Organic carbon keeps its
+standard agronomic breaks, because unlike available water 1% carbon means the same
+thing anywhere, and these soils genuinely are low in it. Bulk density is judged against
+texture, since a sand can carry a density that would already restrict roots in a clay.
 
 ## Updating office data
 

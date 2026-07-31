@@ -305,7 +305,8 @@ body.dark .loc-picker select{background:#1a1a2e;color:#e0e0e0;border-color:#3a3a
 .pt-stats b.warn{color:#c62828;}
 .pt-stats b.txt{font-size:12px;}
 .pt-note.info{color:#1565c0;}
-.clim-mine .pt-soil .pt-stats{max-width:520px;}
+.clim-mine .pt-soil .pt-stats{max-width:760px;}
+.pt-soil .pt-stats{grid-template-columns:repeat(auto-fit,minmax(58px,1fr));}
 /* === Climate cards === */
 .clim-card{background:#fff;border-radius:14px;padding:14px;box-shadow:0 2px 8px rgba(0,0,0,.08);margin-bottom:14px;}
 body.dark .clim-card{background:#2d2d44;}
@@ -7292,6 +7293,10 @@ var T={
     filterASC:"Agrarian Service Centres",
     locSourceDoa:"Locality list from the Department of Agriculture",
     locSourceLocal:"Offline — showing the districts stored in this app",
+    soilOc:"organic C",soilCec:"CEC",soilClay:"clay",
+    soilOcLow:"Low organic matter — cow dung, compost or Gliricidia loppings will lift both fertility and water holding.",
+    soilCecLow:"Holds nutrients poorly — split fertiliser into smaller, more frequent doses.",
+    soilDense:"Dense for its texture — avoid working the soil when wet, and keep traffic off the palm basins.",
     soilTitle:"Soil at this point",soilPh:"pH",soilAwc:"mm water held",soilSand:"sand",
     soilTexture:"texture",soilTexSandy:"Sandy",soilTexSandyLoam:"Sandy loam",soilTexLoam:"Loam",soilTexClayLoam:"Clay loam",
     soilPhAcid:"Acidic — dolomite or lime will help nutrient uptake.",
@@ -7387,6 +7392,10 @@ var T={
     filterASC:"ගොවිජන සේවා මධ්‍යස්ථාන",
     locSourceDoa:"ස්ථාන ලැයිස්තුව කෘෂිකර්ම දෙපාර්තමේන්තුවෙන්",
     locSourceLocal:"නොබැඳි — යෙදුමේ ඇති දිස්ත්‍රික්ක පෙන්වයි",
+    soilOc:"කාබනික C",soilCec:"CEC",soilClay:"මැටි",
+    soilOcLow:"කාබනික ද්‍රව්‍ය අඩුයි — ගොම, කොම්පෝස්ට් හෝ ග්ලිරිසීඩියා කොළ යෙදීමෙන් සාරවත් බව හා ජල රඳවා ගැනීම වැඩි වේ.",
+    soilCecLow:"පෝෂක රඳවා ගැනීම අඩුයි — පොහොර කුඩා ප්‍රමාණවලින් නිතර යොදන්න.",
+    soilDense:"පස තද වී ඇත — තෙත් විට පස කැපීමෙන් වළකින්න, බේසම මත ගමනාගමනය අඩු කරන්න.",
     soilTitle:"මෙම ස්ථානයේ පස",soilPh:"pH",soilAwc:"මි.මී. ජලය",soilSand:"වැලි",
     soilTexture:"වයනය",soilTexSandy:"වැලි සහිත",soilTexSandyLoam:"වැලි ලෝම්",soilTexLoam:"ලෝම්",soilTexClayLoam:"මැටි ලෝම්",
     soilPhAcid:"අම්ලිකයි — ඩොලමයිට් හෝ හුණු යෙදීමෙන් පෝෂක උරාගැනීම වැඩි වේ.",
@@ -7482,6 +7491,10 @@ var T={
     filterASC:"கமநல சேவை நிலையங்கள்",
     locSourceDoa:"இடப்பட்டியல் விவசாயத் திணைக்களத்திடமிருந்து",
     locSourceLocal:"ஆஃப்லைன் — செயலியில் உள்ள மாவட்டங்கள் காட்டப்படுகின்றன",
+    soilOc:"கரிமக் கார்பன்",soilCec:"CEC",soilClay:"களிமண்",
+    soilOcLow:"கரிமப் பொருள் குறைவு — மாட்டு எரு, கம்போஸ்ட் அல்லது கிளிரிசீடியா இலைகள் வளத்தையும் நீர் தேக்கத்தையும் அதிகரிக்கும்.",
+    soilCecLow:"ஊட்டச்சத்தைத் தக்கவைப்பது குறைவு — உரத்தைச் சிறிய அளவில் அடிக்கடி இடவும்.",
+    soilDense:"மண் இறுக்கமாக உள்ளது — ஈரமாக இருக்கும்போது உழவு செய்யாதீர்கள்; தளங்களில் நடமாட்டத்தைக் குறைக்கவும்.",
     soilTitle:"இந்த இடத்தின் மண்",soilPh:"pH",soilAwc:"மி.மீ. நீர்",soilSand:"மணல்",
     soilTexture:"அமைப்பு",soilTexSandy:"மணல்",soilTexSandyLoam:"மணல் களிமண்",soilTexLoam:"களிமண்",soilTexClayLoam:"கனிமண் களிமண்",
     soilPhAcid:"அமிலத்தன்மை — டோலமைட் அல்லது சுண்ணாம்பு ஊட்டச்சத்து உறிஞ்சுதலை மேம்படுத்தும்.",
@@ -8870,7 +8883,7 @@ function soilTerm(s){
 // pH (x20), sand %, silt %, and plant-available water in mm over the top metre. The
 // rasters themselves are ~13 MB; this is about 100 kB, which is small enough to sit
 // alongside the app shell so the lookup works with no signal. 255 means no data.
-var SOIL_GRID_META={"w":126,"h":208,"originX":79.51709091,"originY":9.83572081,"px":0.0188555908,"py":0.0188555908};
+var SOIL_GRID_META={"w":126,"h":208,"stride":7,"originX":79.51709091,"originY":9.83572081,"px":0.0188555908,"py":0.0188555908};
 var soilGrid=null,soilGridTried=false;
 
 function soilGridLoad(){
@@ -8890,19 +8903,20 @@ function soilGridLoad(){
 
 function soilAt(lat,lng){
   if(!soilGrid)return null;
-  var m=SOIL_GRID_META;
+  var m=SOIL_GRID_META,S=m.stride||7;
   var col=Math.floor((lng-m.originX)/m.px);
   var row=Math.floor((m.originY-lat)/m.py);
   if(col<0||row<0||col>=m.w||row>=m.h)return null;
-  var i=(row*m.w+col)*4;
-  var ph=soilGrid[i],sand=soilGrid[i+1],silt=soilGrid[i+2],awc=soilGrid[i+3];
-  if(ph===255&&sand===255&&awc===255)return null;
+  var i=(row*m.w+col)*S;
+  var g=function(o,mult){var v=soilGrid[i+o];return v===255?null:v/mult;};
+  var ph=g(0,20),sand=g(1,1),silt=g(2,1),awc=g(3,1);
+  if(ph===null&&sand===null&&awc===null)return null;
   return {
-    ph: ph===255?null:ph/20,
-    sand: sand===255?null:sand,
-    silt: silt===255?null:silt,
-    clay: (sand===255||silt===255)?null:Math.max(0,100-sand-silt),
-    awc: awc===255?null:awc
+    ph:ph, sand:sand, silt:silt,
+    // Clay is derived rather than stored: the three fractions sum to 100 in this
+    // dataset, so a stored clay channel would repeat what sand and silt already say.
+    clay:(sand===null||silt===null)?null:Math.max(0,Math.round(100-sand-silt)),
+    awc:awc, oc:g(4,50), cec:g(5,10), bd:g(6,100)
   };
 }
 
@@ -8933,8 +8947,31 @@ function soilInsights(s){
     texture=(s.sand>=85)?'sandy':(s.sand>=70)?'sandyLoam':(s.sand>=50)?'loam':'clayLoam';
     if(texture==='sandy')notes.push({k:'soilSandy',bad:false});
   }
+  // Organic carbon keeps its standard agronomic breaks rather than being fitted to the
+  // national spread: unlike available water, 1% carbon means the same thing anywhere,
+  // and these soils really are low in it - which is why CRI presses organic manure.
+  var ocClass=null;
+  if(s.oc!==null){
+    ocClass=(s.oc<1)?'low':(s.oc<2)?'moderate':'good';
+    if(ocClass==='low')notes.push({k:'soilOcLow',bad:true});
+  }
+  var cecClass=null;
+  if(s.cec!==null){
+    cecClass=(s.cec<10)?'low':(s.cec<20)?'moderate':'good';
+    if(cecClass==='low')notes.push({k:'soilCecLow',bad:true});
+  }
+  // What counts as compacted depends on texture: a sand can carry a density that would
+  // already be root-restricting in a clay.
+  var bdClass=null;
+  if(s.bd!==null&&texture){
+    var limit=(texture==='sandy')?1.70:(texture==='sandyLoam')?1.60:(texture==='loam')?1.50:1.45;
+    bdClass=(s.bd>=limit)?'dense':'ok';
+    if(bdClass==='dense')notes.push({k:'soilDense',bad:true});
+  }
   return {ph:ph,phClass:phClass,awc:awc,awcClass:awcClass,texture:texture,
-          sand:s.sand,silt:s.silt,clay:s.clay,notes:notes};
+          sand:s.sand,silt:s.silt,clay:s.clay,
+          oc:s.oc,ocClass:ocClass,cec:s.cec,cecClass:cecClass,bd:s.bd,bdClass:bdClass,
+          notes:notes};
 }
 
 function soilHtml(ins){
@@ -8942,7 +8979,10 @@ function soilHtml(ins){
   var h='<div class="pt-soil"><div class="pt-soil-head">🪨 '+t('soilTitle')+'</div><div class="pt-stats">';
   if(ins.ph!==null)h+='<div><b class="'+(ins.phClass==='ok'?'':'warn')+'">'+ins.ph.toFixed(1)+'</b><span>'+t('soilPh')+'</span></div>';
   if(ins.awc!==null)h+='<div><b class="'+(ins.awcClass==='low'?'warn':'')+'">'+ins.awc+'</b><span>'+t('soilAwc')+'</span></div>';
+  if(ins.oc!==null)h+='<div><b class="'+(ins.ocClass==='low'?'warn':'')+'">'+ins.oc.toFixed(1)+'%</b><span>'+t('soilOc')+'</span></div>';
+  if(ins.cec!==null)h+='<div><b class="'+(ins.cecClass==='low'?'warn':'')+'">'+ins.cec.toFixed(0)+'</b><span>'+t('soilCec')+'</span></div>';
   if(ins.sand!==null)h+='<div><b>'+ins.sand+'%</b><span>'+t('soilSand')+'</span></div>';
+  if(ins.clay!==null)h+='<div><b>'+ins.clay+'%</b><span>'+t('soilClay')+'</span></div>';
   if(ins.texture)h+='<div><b class="txt">'+t('soilTex'+ins.texture.charAt(0).toUpperCase()+ins.texture.slice(1))+'</b><span>'+t('soilTexture')+'</span></div>';
   h+='</div>';
   ins.notes.forEach(function(n){
