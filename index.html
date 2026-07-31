@@ -173,6 +173,9 @@ table.dt tr:last-child td{border-bottom:none;}
 .cinput button:hover{background:#3a7d2c;}
 .cinput button:disabled{opacity:.5;cursor:not-allowed;}
 .cpowered{text-align:center;font-size:9px;color:#aaa;padding:2px 10px 6px;background:#fff;}
+.cbubble .clink{color:#0b7285;font-weight:700;text-decoration:none;border-bottom:1px solid rgba(11,114,133,.4);}
+.cbubble .clink:hover{border-bottom-style:solid;opacity:.8;}
+body.dark .cbubble .clink{color:#63d8e8;border-bottom-color:rgba(99,216,232,.4);}
 /* === Dark Mode === */
 body.dark{--green:#4caf50;--green800:#4caf50;--sand:#1a1a2e;--ink:#e0e0e0;--line:#3a3a50;--wet:#4caf50;--int:#e0a030;--dry:#e07040;background:#1a1a2e;color:#e0e0e0;}
 body.dark .card,.dark table.dt th,.dark .crop summary,.dark .crop .body{background:#2d2d44;border-color:#3a3a50;}
@@ -7233,6 +7236,10 @@ var T={
     pestSymptoms:"Symptoms",pestTreatment:"Treatment",pestInsects:"Pests",pestDiseases:"Diseases",
     rainfallDist:"Rainfall Distribution",zoneComparison:"Zone Comparison",noOffices:"No offices found",
     agroClimZone:"Agro-Climatic Zone of Sri Lanka",
+    chatNearest:"Nearest to you",chatOfficesFound:"Here are some you can contact",
+    chatUseLocate:"Open the Offices tab and tap Find My Location for the ones nearest you.",
+    chatPriceTitle:"Latest market prices",chatWhichDistrict:"Which district are you in?",
+    chatCropGuideIntro:"Here is the CRI guide for this crop.",
     suitableVarieties:"Suitable Coconut Varieties",
     showOffices:"🏢 Show offices",
     cropGuide:"Open crop guide (PDF)",
@@ -7302,6 +7309,10 @@ var T={
     pestSymptoms:"රෝග ලක්ෂණ",pestTreatment:"ප්‍රතිකාර",pestInsects:"පළිබෝධ",pestDiseases:"රෝග",
     rainfallDist:"වර්ෂාපතන ව්‍යාප්තිය",zoneComparison:"කලාප සංසන්දනය",noOffices:"කාර්යාල හමු නොවීය",
     agroClimZone:"ශ්‍රී ලංකාවේ කෘෂි-දේශගුණික කලාපය",
+    chatNearest:"ඔබට ළඟම",chatOfficesFound:"ඔබට සම්බන්ධ විය හැකි ස්ථාන",
+    chatUseLocate:"ඔබට ළඟම ඒවා සොයාගැනීමට කාර්යාල ටැබය තුළ 'මගේ ස්ථානය' තට්ටු කරන්න.",
+    chatPriceTitle:"නවතම වෙළඳපොළ මිල",chatWhichDistrict:"ඔබ සිටින්නේ කුමන දිස්ත්‍රික්කයේද?",
+    chatCropGuideIntro:"මෙම බෝගය සඳහා CRI මාර්ගෝපදේශය මෙන්න.",
     suitableVarieties:"සුදුසු පොල් ප්‍රභේද",
     showOffices:"🏢 කාර්යාල පෙන්වන්න",
     cropGuide:"බෝග මාර්ගෝපදේශය විවෘත කරන්න (PDF)",
@@ -7371,6 +7382,10 @@ var T={
     pestSymptoms:"அறிகுறிகள்",pestTreatment:"சிகிச்சை",pestInsects:"பூச்சிகள்",pestDiseases:"நோய்கள்",
     rainfallDist:"மழைப்பொழிவு விநியோகம்",zoneComparison:"மண்டல ஒப்பீடு",noOffices:"அலுவலகங்கள் காணப்படவில்லை",
     agroClimZone:"இலங்கையின் வேளாண்-காலநிலை மண்டலம்",
+    chatNearest:"உங்களுக்கு அருகில்",chatOfficesFound:"நீங்கள் தொடர்பு கொள்ளக்கூடியவை",
+    chatUseLocate:"உங்களுக்கு அருகில் உள்ளவற்றைக் காண, அலுவலகங்கள் தாவலில் 'எனது இருப்பிடம்' என்பதைத் தட்டவும்.",
+    chatPriceTitle:"சமீபத்திய சந்தை விலைகள்",chatWhichDistrict:"நீங்கள் எந்த மாவட்டத்தில் இருக்கிறீர்கள்?",
+    chatCropGuideIntro:"இந்தப் பயிருக்கான CRI வழிகாட்டி இதோ.",
     suitableVarieties:"பொருத்தமான தென்னை ரகங்கள்",
     showOffices:"🏢 அலுவலகங்களைக் காட்டு",
     cropGuide:"பயிர் வழிகாட்டியைத் திறக்க (PDF)",
@@ -8097,8 +8112,144 @@ en:"I'm sorry, I don't have specific information about that. For more help:\n\n�
 si:"සමාවන්න, ඒ ගැන විශේෂිත තොරතුරු මා සතුව නොමැත. වැඩිදුර උදව් සඳහා:\n\n• **පොල් පර්යේෂණ ආයතනය (CRI):** 031-2255500 | cri.gov.lk\n• **පොල් වගා මණ්ඩලය (CCB):** 011-2861331 | coconutsrilanka.lk\n• **පොල් සංවර්ධන අධිකාරිය (CDA):** cda.gov.lk\n• හෝ ඔබේ ප්‍රාදේශීය පොල් සංවර්ධන නිලධාරී අමතන්න. 🌴",
 ta:"மன்னிக்கவும், அது பற்றிய குறிப்பிட்ட தகவல்கள் என்னிடம் இல்லை. மேலும் உதவிக்கு:\n\n• **தென்னை ஆராய்ச்சி நிறுவனம் (CRI):** 031-2255500 | cri.gov.lk\n• **தென்னை பயிர்ச்செய்கை சபை (CCB):** 011-2861331 | coconutsrilanka.lk\n• **தென்னை அபிவிருத்தி அதிகாரசபை (CDA):** cda.gov.lk\n• அல்லது உங்கள் உள்ளூர் தென்னை அபிவிருத்தி அதிகாரியை தொடர்பு கொள்ளுங்கள். 🌴"};
 var CHAT_MIN_SCORE=3;
+// ====== Live-data answers ======
+// The knowledge base holds 38 written articles, but the app also carries 86 offices
+// with coordinates, current market prices, mite-packet points for 25 districts and 23
+// crop guides. Keyword scoring alone could not reach any of it: asked where the
+// nearest nursery was, the bot matched the word "nursery" and returned an article on
+// seed-nut selection. These intents run first and answer from the live data, and only
+// fire when the question is clearly asking for a fact rather than for advice.
+
+var CHAT_WORDS={
+  where:/\b(where|nearest|closest|near me|nearby|address|located|location|find|contact|phone|call)\b|කොහෙද|ළඟම|ලිපිනය|දුරකථන|எங்கே|அருகில்|முகவரி|தொலைபேசி/i,
+  price:/\b(price|prices|cost|rate|rates|selling|sell for|market|how much)\b|මිල|මිලක්|වෙළඳපොළ|விலை|சந்தை/i,
+  packet:/\b(packet|packets|sachet|where.*mite|mite.*where|get.*mite)\b|පැකට්|පொதி/i,
+  guide:/\b(guide|leaflet|pdf|booklet|how to grow|cultivat)\b|මාර්ගෝපදේශ|வழிகாட்டி/i
+};
+var OFC_WORDS=[
+  {type:'Nursery', re:/\b(nursery|nurseries|seedling|seed nut|plant)\b|තවාන|පැළ|நாற்றங்கால்|நாற்று/i},
+  {type:'CRI',     re:/\b(cri|research|institute|lunuwila)\b|පර්යේෂණ|ஆராய்ச்சி/i},
+  {type:'CCB',     re:/\b(ccb|cultivation board|regional office)\b|වගා මණ්ඩල|சாகுபடி சபை/i},
+  {type:'CDA',     re:/\b(cda|development authority)\b|සංවර්ධන අධිකාරි|அபிவிருத்தி/i},
+  {type:'Training',re:/\b(training|course|learn)\b|පුහුණු|பயிற்சி/i},
+  {type:'Garden',  re:/\b(model garden|demonstration)\b|ආදර්ශ උයන|மாதிரி தோட்டம்/i},
+  {type:null,      re:/\b(office|officer|cdo|help|advice)\b|කාර්යාල|அலுவலக/i}
+];
+
+function chatOfficeAnswer(q){
+  var wanted=null,matched=false;
+  for(var i=0;i<OFC_WORDS.length;i++){
+    if(OFC_WORDS[i].re.test(q)){wanted=OFC_WORDS[i].type;matched=true;break;}
+  }
+  if(!matched||!CHAT_WORDS.where.test(q))return null;
+  var list=OFFICES.filter(function(o){return !wanted||o.type===wanted;});
+  if(!list.length)return null;
+  // With a fix from the Offices tab the answer can be genuinely nearest; without one
+  // it still beats a canned article, so fall back to naming a few and how to sort them.
+  var located=(typeof ofcUserLat==='number'&&ofcUserLat!==null);
+  if(located){
+    list=list.map(function(o){
+      return {o:o,d:haversine(ofcUserLat,ofcUserLng,o.lat,o.lng)};
+    }).sort(function(a,b){return a.d-b.d;}).slice(0,3);
+  }else{
+    list=list.slice(0,3).map(function(o){return {o:o,d:null};});
+  }
+  var head=located?t('chatNearest'):t('chatOfficesFound');
+  var out='**'+head+'**\n';
+  list.forEach(function(x){
+    var o=x.o;
+    out+='\n'+o.icon+' **'+o.name+'**\n'+o.addr+'\n';
+    if(x.d!==null)out+='📍 '+x.d.toFixed(1)+' '+t('ofcKmAway')+'\n';
+    if(o.phone)out+='[📞 '+o.phone+'](tel:'+o.phone+')  ';
+    out+='[🗺️ '+t('ofcDirections')+'](https://www.google.com/maps/dir/?api=1&destination='+o.lat+','+o.lng+')\n';
+  });
+  if(!located)out+='\n'+t('chatUseLocate');
+  return out;
+}
+
+function chatPriceAnswer(q){
+  if(!CHAT_WORDS.price.test(q)||typeof CHAT_PRICES==='undefined')return null;
+  var ql=q.toLowerCase();
+  var picked=CHAT_PRICES.filter(function(p){
+    return ql.indexOf(p.name.toLowerCase())>=0||
+      (/copra/.test(ql)&&/copra/i.test(p.name))||
+      (/oil/.test(ql)&&/oil/i.test(p.name))||
+      (/poonac|cake/.test(ql)&&/poonac/i.test(p.name))||
+      (/\bdc\b|desiccated/.test(ql)&&/^DC /.test(p.name));
+  });
+  var rows=picked.length?picked:CHAT_PRICES;
+  var out='**'+t('chatPriceTitle')+'**\n';
+  rows.forEach(function(p){out+='\n• '+p.name+': **'+p.price+'**';});
+  out+='\n\n'+t('priceNote');
+  return out;
+}
+
+function chatMiteAnswer(q){
+  if(typeof MITE_PACKETS==='undefined')return null;
+  var isMite=/mite|මයිට|මකුණ|பேன்|சிலந்தி/i.test(q);
+  if(!isMite||!(CHAT_WORDS.packet.test(q)||CHAT_WORDS.where.test(q)))return null;
+  var ql=q.toLowerCase(),found=null;
+  for(var d in MITE_PACKETS){if(ql.indexOf(d.toLowerCase())>=0){found=d;break;}}
+  if(!found&&mitePacketDistrict)found=mitePacketDistrict;
+  if(!found)return '**'+t('mitePacketTitle')+'**\n\n'+t('chatWhichDistrict')+'\n'+
+    Object.keys(MITE_PACKETS).join(', ');
+  var out='**'+t('mitePacketTitle')+' — '+found+'**\n';
+  MITE_PACKETS[found].forEach(function(o){
+    out+='\n• **'+o.n+'**\n';
+    if(o.p)out+='[📞 '+o.p+'](tel:'+o.p+')  ';
+    out+='[🗺️ '+t('ofcDirections')+'](https://www.google.com/maps/dir/?api=1&destination='+o.lat+','+o.lng+')\n';
+  });
+  return out;
+}
+
+function chatCropGuideAnswer(q){
+  if(typeof INTERCROP_PDFS==='undefined')return null;
+  var ql=q.toLowerCase();
+  var crop=INTERCROP_PDFS.filter(function(c){
+    return ql.indexOf(c.toLowerCase())>=0||ql.indexOf(cropLabel(c).toLowerCase())>=0;
+  })[0];
+  if(!crop||!CHAT_WORDS.guide.test(q))return null;
+  return '**'+cropLabel(crop)+'**\n\n'+t('chatCropGuideIntro')+'\n\n'+
+    '[📄 '+t('cropGuide')+'](intercrop-pdfs/'+encodeURIComponent(crop)+'.pdf)';
+}
+
+// Order matters: the most specific question wins.
+function chatLiveAnswer(q){
+  return chatMiteAnswer(q)||chatOfficeAnswer(q)||chatCropGuideAnswer(q)||chatPriceAnswer(q);
+}
+// Sinhala and Tamil terms mapped onto the English keywords the knowledge base already
+// carries. The KB holds only one or two local-language keywords per article, so a
+// grower typing a plain Sinhala noun - තවාන, නියඟ - matched nothing at all. Expanding
+// the query is far less brittle than editing 38 keyword lists by hand.
+var CHAT_SYNONYMS={
+  'තවාන':'nursery','පැළ':'nursery','බීජ':'seed nut',
+  'අන්තර් බෝග':'intercrop','අතුරු බෝග':'intercrop',
+  'නියඟ':'drought','නියං':'drought','වතුර':'water','ජලය':'water',
+  'පොහොර':'fertilizer','යූරියා':'urea','කාබනික':'organic','ගොම':'cow dung',
+  'ප්‍රභේද':'variety','අස්වැන්න':'harvest','අස්වනු':'harvest',
+  'පළිබෝධ':'pest','රතු පණුවා':'red palm weevil','කුරුමිණියා':'beetle','මකුණා':'mite',
+  'රෝග':'disease','කුණුවීම':'bud rot','ලේ ගැලීම':'stem bleeding',
+  'මිල':'price','වෙළඳපොළ':'market','කොප්පරා':'copra','තෙල්':'coconut oil',
+  'ණය':'loan','කප්රුක':'kapruka','පුහුණු':'training','පස':'soil','වර්ෂාපතන':'rainfall',
+  'ජලසම්පාදන':'irrigation','වල්':'weed','තැඹිලි':'king coconut','ඉඩක':'spacing',
+  'நாற்றங்கால்':'nursery','நாற்று':'nursery','விதை':'seed nut',
+  'ஊடுபயிர்':'intercrop','வறட்சி':'drought','நீர்':'water',
+  'உரம்':'fertilizer','யூரியா':'urea','இயற்கை':'organic','மாட்டு எரு':'cow dung',
+  'இரகம்':'variety','அறுவடை':'harvest','பூச்சி':'pest',
+  'சிவப்பு அந்துப்பூச்சி':'red palm weevil','வண்டு':'beetle','நோய்':'disease',
+  'விலை':'price','சந்தை':'market','கொப்பரை':'copra','எண்ணெய்':'coconut oil',
+  'கடன்':'loan','பயிற்சி':'training','மண்':'soil','மழை':'rainfall',
+  'நீர்ப்பாசனம்':'irrigation','களை':'weed','இளநீர்':'king coconut','இடைவெளி':'spacing'
+};
+function chatExpand(q){
+  var out=q;
+  for(var k in CHAT_SYNONYMS){
+    if(q.indexOf(k)>=0)out+=' '+CHAT_SYNONYMS[k];
+  }
+  return out;
+}
 function chatSearchAll(query){
-  var q=query.toLowerCase();
+  var q=chatExpand(query).toLowerCase();
   var results=[];
   for(var i=0;i<KB.length;i++){
     var score=0;var kw=KB[i].keywords;
@@ -8135,7 +8286,20 @@ function chatGetRelated(query){
   return related;
 }
 function chatEsc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
-function chatFmt(s){return chatEsc(s).replace(/\*\*(.+?)\*\*/g,'<b>$1</b>').replace(/\n/g,'<br>');}
+// Supports [label](url) so a data-backed answer can offer a real action - call the
+// office, open directions - instead of printing a number the reader must copy out.
+// Applied after escaping, and only tel:, mailto:, https: and in-app targets are
+// allowed through, so a crafted string cannot introduce javascript: or inline markup.
+function chatFmt(s){
+  return chatEsc(s)
+    .replace(/\*\*(.+?)\*\*/g,'<b>$1</b>')
+    .replace(/\[([^\]]+)\]\(([^)\s]+)\)/g,function(m,label,url){
+      if(!/^(tel:|mailto:|https:\/\/|intercrop-pdfs\/|#)/.test(url))return label;
+      var ext=/^https:\/\//.test(url)?' target="_blank" rel="noopener"':'';
+      return '<a href="'+url+'"'+ext+' class="clink">'+label+'</a>';
+    })
+    .replace(/\n/g,'<br>');
+}
 function chatTime(){var d=new Date();var h=d.getHours(),m=d.getMinutes();return (h<10?'0':'')+h+':'+(m<10?'0':'')+m;}
 var chatHistory=[];
 var chatBusy=false;
@@ -8199,8 +8363,12 @@ function chatHandle(text){
   chatBusy=true;
   chatSetInputEnabled(false);
   chatAddMsg(text,'user');
-  var hit=chatSearch(text);
-  var ans=hit?(hit.answer[lang]||hit.answer.en):(CHAT_FALLBACK[lang]||CHAT_FALLBACK.en);
+  // Live data first: these answer with the user's own district, prices and offices,
+  // which no static article can do.
+  var live=null;
+  try{live=chatLiveAnswer(text);}catch(e){live=null;}
+  var hit=live?null:chatSearch(text);
+  var ans=live||(hit?(hit.answer[lang]||hit.answer.en):(CHAT_FALLBACK[lang]||CHAT_FALLBACK.en));
   chatShowTyping();
   var delay=Math.min(400+ans.length*2,1500);
   setTimeout(function(){
@@ -8402,9 +8570,12 @@ function renderWeather(){
   html+='</div>';
   el.innerHTML=html;
 }
+// Published so the assistant can quote live figures rather than describing the
+// auction process when asked what coconuts are selling for.
+var CHAT_PRICES=null;
 // ====== FEATURE: Price Ticker ======
 (function initPriceTicker(){
-  var prices=[
+  var prices=CHAT_PRICES=[
     {name:'Kuliyapitiya',price:'Rs. 75/nut'},
     {name:'Mawathagama',price:'Rs. 85/nut'},
     {name:'Melsiripura',price:'Rs. 82.50/nut'},
