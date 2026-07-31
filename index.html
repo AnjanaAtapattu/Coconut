@@ -8668,8 +8668,11 @@ var DOA_TTL=1000*60*60*24*30;   // administrative boundaries change rarely
 function doaCacheGet(k){
   try{
     var o=JSON.parse(localStorage.getItem('polDoa:'+k)||'null');
-    if(!o||Date.now()-o.t>DOA_TTL)return null;
-    return o.d;
+    // Require the stored shape, not just parseable JSON: a bare array has no
+    // timestamp, so the age test silently passed and undefined came back as a "hit".
+    if(!o||typeof o!=='object'||!isFinite(o.t)||!Array.isArray(o.d))return null;
+    if(Date.now()-o.t>DOA_TTL)return null;
+    return o.d.length?o.d:null;
   }catch(e){return null;}
 }
 function doaCacheSet(k,d){
@@ -8884,21 +8887,26 @@ function soilTerm(s){
 // rasters themselves are ~13 MB; this is about 100 kB, which is small enough to sit
 // alongside the app shell so the lookup works with no signal. 255 means no data.
 var SOIL_GRID_META={"w":126,"h":208,"stride":7,"originX":79.51709091,"originY":9.83572081,"px":0.0188555908,"py":0.0188555908};
-var soilGrid=null,soilGridTried=false;
+var soilGrid=null,soilGridPending=null;
 
 function soilGridLoad(){
-  if(soilGrid||soilGridTried)return Promise.resolve(soilGrid);
-  soilGridTried=true;
-  return fetch('soil-grid.bin')
+  if(soilGrid)return Promise.resolve(soilGrid);
+  // Dedupe concurrent callers, but do not latch on failure: a grower who opens the app
+  // with no signal must still get soil data once a connection returns, without having
+  // to reload the page.
+  if(soilGridPending)return soilGridPending;
+  soilGridPending=fetch('soil-grid.bin')
     .then(function(r){if(!r.ok)throw new Error('HTTP '+r.status);return r.arrayBuffer();})
     .then(function(buf){
-      var need=SOIL_GRID_META.w*SOIL_GRID_META.h*4;
+      var need=SOIL_GRID_META.w*SOIL_GRID_META.h*(SOIL_GRID_META.stride||7);
       // A truncated or stale file would silently produce nonsense readings.
       if(buf.byteLength<need)throw new Error('short grid');
       soilGrid=new Uint8Array(buf);
+      soilGridPending=null;
       return soilGrid;
     })
-    .catch(function(){soilGrid=null;return null;});
+    .catch(function(){soilGridPending=null;soilGrid=null;return null;});
+  return soilGridPending;
 }
 
 function soilAt(lat,lng){
@@ -9041,6 +9049,7 @@ function powerParse(json){
 }
 
 function powerFetch(lat,lng){
+  if(!isFinite(lat)||!isFinite(lng))return Promise.resolve(null);
   var cached=powerCached(lat,lng);
   if(cached)return Promise.resolve(cached);
   if(!navigator.onLine)return Promise.resolve(null);
@@ -9147,7 +9156,14 @@ function climSetPoint(lat,lng,label){
   renderWeather();
 }
 (function restoreClimPoint(){
-  try{var s=localStorage.getItem('polClimPoint');if(s)climPoint=JSON.parse(s);}catch(e){}
+  // Validate rather than trust: a half-written or older-format value here used to
+  // throw inside the panel and take the whole Weather tab down with it.
+  try{
+    var o=JSON.parse(localStorage.getItem('polClimPoint')||'null');
+    if(o&&isFinite(o.lat)&&isFinite(o.lng)&&Math.abs(o.lat)<=90&&Math.abs(o.lng)<=180){
+      climPoint={lat:+o.lat,lng:+o.lng,label:o.label||null};
+    }
+  }catch(e){climPoint=null;}
 })();
 
 function climLocate(){
