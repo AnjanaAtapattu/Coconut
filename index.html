@@ -9,6 +9,13 @@
 <link rel="icon" href="icon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="icon-192.png">
 <meta name="description" content="Site-specific coconut growing guidance for Sri Lanka." />
+<!-- GitHub Pages cannot set response headers, so the policy is declared here. It is
+     restrictive by design: the app is self-contained apart from map tiles, the two
+     data services and Google Fonts, so anything else being fetched is a mistake.
+     frame-ancestors is deliberately absent — it is ignored when delivered by meta and
+     only produces a console warning, so clickjacking cover would need a real header. -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https://server.arcgisonline.com https://*.basemaps.cartocdn.com; connect-src 'self' https://power.larc.nasa.gov https://data.doa.gov.lk; base-uri 'self'; form-action 'none'">
+<meta name="referrer" content="strict-origin-when-cross-origin">
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&family=Noto+Sans+Sinhala:wght@400;600;700&family=Noto+Sans+Tamil:wght@400;600;700&display=swap" rel="stylesheet">

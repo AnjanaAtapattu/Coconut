@@ -163,10 +163,37 @@ array may arrive bare or wrapped in `data`, `result.content` and similar, and a 
 may be `name`, `nameEn`, `districtName` and so on. Anything unrecognised is skipped
 rather than guessed at.
 
+## Tests
+
+```bash
+npm test                  # everything: static, browser and mobile
+npm run test:static       # syntax, translations, data consistency — under a second
+node tests/run.js --filter soil
+```
+
+The suite serves the repo itself, so nothing needs starting first. It needs Playwright
+and a Chromium build (`npm ci && npx playwright install chromium`).
+
+Every check in `tests/run.js` exists because the thing it checks actually broke: a view
+that stopped re-rendering on a language switch, a chat panel stranded under the
+dossier, a soil grid that never retried after a failed load, an intent regex whose
+trailing word boundary meant the stem never matched "irrigate". Adding a check when
+fixing a bug is the point of the file.
+
+Static checks alone catch a JavaScript syntax error, a translation key missing from
+one language, generated data that has been hand-edited, a precached file that does not
+exist, an inline handler with no global behind it, and a duplicate element id.
+
 ## Deploying
 
-Pushing to `main` publishes via GitHub Actions (`.github/workflows/deploy-pages.yml`).
-There is no build step: what is committed is what is served.
+Pushing to `main` publishes via GitHub Actions (`.github/workflows/deploy-pages.yml`),
+**gated on the test suite** — deployment does not run unless CI passes. There is no
+build step: what is committed is what is served.
+
+A Content Security Policy is declared in `index.html` rather than as a header, since
+GitHub Pages cannot set headers. It allows only what the app genuinely uses: map tiles,
+NASA POWER, the DOA gateway and Google Fonts. The suite asserts that the policy blocks
+nothing the app needs, because a policy that is too tight fails only in production.
 
 ## Working on it locally
 

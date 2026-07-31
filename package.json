@@ -1,0 +1,21 @@
+{
+  "name": "pol-sathkara",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Pol Sathkara — Coconut Zone Guide for Sri Lanka. Offline-first single-page guide for coconut growers.",
+  "license": "MIT",
+  "scripts": {
+    "test": "node tests/run.js",
+    "test:static": "node tests/run.js --filter static",
+    "serve": "python3 -m http.server 8000",
+    "build:offices": "python3 tools/build_offices.py",
+    "build:soil": "python3 tools/build_soilgrid.py",
+    "check:data": "python3 tools/build_offices.py --check && python3 tools/build_soilgrid.py --check"
+  },
+  "devDependencies": {
+    "playwright": "1.56.1"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

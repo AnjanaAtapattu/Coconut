@@ -1,0 +1,37 @@
+name: CI
+
+# Runs on every push and pull request. Deployment waits for this: the app is used
+# offline in the field, so a broken build is not something a grower can refresh away.
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+  workflow_call:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      # Static checks alone catch a syntax error, a missing translation or
+      # hand-edited generated data, and they finish in under a second.
+      - name: Static checks
+        run: node tests/run.js --filter static
+
+      - name: Install Playwright Chromium
+        run: |
+          npm install --no-audit --no-fund playwright@1.56.1
+          npx playwright install --with-deps chromium
+
+      - name: Browser and mobile checks
+        run: node tests/run.js
