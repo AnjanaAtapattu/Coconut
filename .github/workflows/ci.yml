@@ -4,9 +4,17 @@ name: CI
 # offline in the field, so a broken build is not something a grower can refresh away.
 on:
   push:
-    branches: ["**"]
+    # main is deliberately excluded: the deploy workflow calls this one as its gate,
+    # so a push to main would otherwise run the same suite twice on the same commit.
+    branches-ignore: ["main"]
   pull_request:
   workflow_call:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  # Superseded feature-branch runs are worth cancelling. The run on main is the
+  # deploy gate, so it queues instead - cancelling it would fail the deployment.
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 
 jobs:
   test:
