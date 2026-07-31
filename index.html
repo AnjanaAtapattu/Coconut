@@ -7472,6 +7472,26 @@ function initGoogle(){
 // The office list carries real coordinates, so it is far more useful shown on the
 // map than only as a list: a grower can see which nursery is actually closest.
 var officeLayer=null;
+// Sri Lankan place names are transliterated inconsistently, and the office data is
+// re-imported from spreadsheets that spell them differently again. Map a typed name
+// onto whichever variant the data happens to use, so searching "Ratnapura" still
+// finds an office recorded as "Rathnapura".
+var SPELLING_VARIANTS={
+  ratnapura:'rathnapura', rathnapura:'ratnapura',
+  hambantota:'hambanthota', hambanthota:'hambantota',
+  trincomalee:'trincomelee', trincomelee:'trincomalee',
+  mullaitivu:'mulativ', mulativ:'mullaitivu',
+  anuradhapura:'anuradapura', anuradapura:'anuradhapura',
+  moneragala:'monaragala', monaragala:'moneragala',
+  kilinochchi:'kilinochi', kilinochi:'kilinochchi',
+  batticaloa:'battico', vavuniya:'vavuniya'
+};
+function expandSpelling(q){return q;}
+function matchesSpelling(hay,q){
+  if(hay.indexOf(q)>=0)return true;
+  var alt=SPELLING_VARIANTS[q];
+  return !!alt&&hay.indexOf(alt)>=0;
+}
 function officePopup(o){
   var dir='https://www.google.com/maps/dir/?api=1&destination='+o.lat+','+o.lng;
   return '<b>'+esc(o.name)+'</b><br>'+esc(o.addr)+
@@ -7609,6 +7629,10 @@ function openSheet(){
   }
   document.getElementById('sheet').classList.add('open');
 }
+// The crop keys come from the source dataset and the PDF filenames follow them, so
+// they stay as-is; only the label shown to growers is corrected.
+var CROP_LABELS={Cinnomon:'Cinnamon',Tumeric:'Turmeric',PassionFruit:'Passion Fruit',CO3:'CO-3 Fodder',Dragonfruit:'Dragon Fruit'};
+function cropLabel(n){return CROP_LABELS[n]||n;}
 function cropBlock(name,c){
   var em=EMOJI[name]||'🌱';
   var rows='';
@@ -7619,7 +7643,7 @@ function cropBlock(name,c){
   if(INTERCROP_PDFS.indexOf(name)>=0){
     rows+='<div class="r cropdoc"><a href="intercrop-pdfs/'+encodeURIComponent(name)+'.pdf" target="_blank" rel="noopener">📄 '+t('cropGuide')+'</a></div>';
   }
-  return '<details class="crop"><summary><span class="em">'+em+'</span>'+esc(name)+'<span class="arr">▾</span></summary><div class="body">'+(rows||'<div class="r muted">'+t('noExtra')+'</div>')+'</div></details>';
+  return '<details class="crop"><summary><span class="em">'+em+'</span>'+esc(cropLabel(name))+'<span class="arr">▾</span></summary><div class="body">'+(rows||'<div class="r muted">'+t('noExtra')+'</div>')+'</div></details>';
 }
 
 var currentFid=null;
@@ -8136,7 +8160,7 @@ function chatApplyLang(){
     // a town, a district — so they lead the results.
     var ofcHits=[];
     if(typeof OFFICES!=='undefined'){
-      var lq=q.toLowerCase();
+      var lq=expandSpelling(q.toLowerCase());
       var scored=[];
       for(var oi=0;oi<OFFICES.length;oi++){
         var o=OFFICES[oi];
@@ -8144,9 +8168,9 @@ function chatApplyLang(){
         // named after it, not one whose street address merely mentions it.
         var nm=o.name.toLowerCase(), rank=-1;
         if(nm.indexOf(lq)===0)rank=0;
-        else if(nm.indexOf(lq)>=0)rank=1;
-        else if((o.district||'').toLowerCase().indexOf(lq)>=0)rank=2;
-        else if((o.addr+' '+o.type).toLowerCase().indexOf(lq)>=0)rank=3;
+        else if(matchesSpelling(nm,lq))rank=1;
+        else if(matchesSpelling((o.district||'').toLowerCase(),lq))rank=2;
+        else if(matchesSpelling((o.addr+' '+o.type).toLowerCase(),lq))rank=3;
         if(rank>=0)scored.push({o:o,r:rank});
       }
       scored.sort(function(a,b){return a.r-b.r;});
@@ -8155,11 +8179,11 @@ function chatApplyLang(){
     var cropHits=[];
     if(typeof INTERCROP_PDFS!=='undefined'){
       var cq=q.toLowerCase();
-      cropHits=INTERCROP_PDFS.filter(function(c){return c.toLowerCase().indexOf(cq)>=0;});
+      cropHits=INTERCROP_PDFS.filter(function(c){return (c+' '+cropLabel(c)).toLowerCase().indexOf(cq)>=0;});
     }
     var html='';
     cropHits.slice(0,3).forEach(function(c){
-      html+='<div class="sr-item" data-crop="'+esc(c)+'"><b>'+(EMOJI[c]||'🌱')+' '+esc(c)+'</b>'+
+      html+='<div class="sr-item" data-crop="'+esc(c)+'"><b>'+(EMOJI[c]||'🌱')+' '+esc(cropLabel(c))+'</b>'+
             '<span class="sr-sub">'+esc(t('cropGuide'))+'</span></div>';
     });
     ofcHits.slice(0,4).forEach(function(o){
@@ -8337,7 +8361,7 @@ function renderWeather(){
 })();
 // Where mite control packets are collected, by district (CCB regional offices and
 // nurseries). Surfaced on the Coconut Mite card, which is where growers look.
-var MITE_PACKETS={"Ampara":[{"n":"CCB Ampara","p":"0632222477","lat":7.30007,"lng":81.67679}],"Anuradhapura":[{"n":"CCB Anuradhapura","p":"0252222543","lat":8.31762,"lng":80.39724}],"Badulla":[{"n":"Handapanagala Nursery","p":"0552274665","lat":6.6567,"lng":81.11817},{"n":"Welipitiya Nursery","p":"0552265720","lat":7.10004,"lng":81.26014},{"n":"CCB Monaragala","p":"0552276058","lat":6.85271,"lng":81.34173}],"Batticaloa":[{"n":"CCB Batticaloa","p":"0652240103","lat":7.76219,"lng":81.62364}],"Colombo":[{"n":"CCB Kalutara","p":"0342222732","lat":6.55993,"lng":79.97246}],"Galle":[{"n":"CCB Galle","p":"0912234501","lat":6.07061,"lng":80.23622}],"Gampaha":[{"n":"CCB Gampaha","p":"0332222037","lat":7.08197,"lng":80.01029}],"Hambantota":[{"n":"CCB Hambanthota","p":"0472220144","lat":6.12421,"lng":81.11903}],"Jaffna":[{"n":"Alampil Nursery","p":"0766904603","lat":9.17613,"lng":80.84848},{"n":"CCB Jaffna","p":"0212284501","lat":9.58715,"lng":80.35802}],"Kalutara":[{"n":"CCB Kalutara","p":"0342222732","lat":6.55993,"lng":79.97246}],"Kandy":[{"n":"CCB Matale","p":"0662222047","lat":7.45408,"lng":80.62971}],"Kegalle":[{"n":"CCB Kegalle","p":"0352222120","lat":7.25121,"lng":80.37088}],"Kilinochchi":[{"n":"Alampil Nursery","p":"0766904603","lat":9.17613,"lng":80.84848},{"n":"CCB Jaffna","p":"0212284501","lat":9.58715,"lng":80.35802}],"Kurunegala":[{"n":"CCB Kuliyapitiya","p":"0372281169","lat":7.46961,"lng":80.02612},{"n":"CCB Kurunegala","p":"0372222534","lat":7.47159,"lng":80.35285}],"Mannar":[{"n":"CCB Vavuniya","p":"0242050344","lat":8.78105,"lng":80.48375}],"Matale":[{"n":"CCB Matale","p":"0662222047","lat":7.45408,"lng":80.62971}],"Matara":[{"n":"CCB Matara","p":"0412222060","lat":5.94811,"lng":80.53275}],"Monaragala":[{"n":"Handapanagala Nursery","p":"0552274665","lat":6.6567,"lng":81.11817},{"n":"Welipitiya Nursery","p":"0552265720","lat":7.10004,"lng":81.26014},{"n":"CCB Monaragala","p":"0552276058","lat":6.85271,"lng":81.34173}],"Mullaitivu":[{"n":"Alampil Nursery","p":"0766904603","lat":9.17613,"lng":80.84848},{"n":"CCB Jaffna","p":"0212284501","lat":9.58715,"lng":80.35802}],"Nuwara Eliya":[{"n":"CCB Matale","p":"0662222047","lat":7.45408,"lng":80.62971}],"Polonnaruwa":[{"n":"CCB Polonnaruwa","p":"0272222377","lat":7.91517,"lng":81.00203}],"Puttalam":[{"n":"CCB Marawila","p":"0322254237","lat":7.39031,"lng":79.83221}],"Ratnapura":[{"n":"CCB Rathnapura","p":"0452228561","lat":6.71246,"lng":80.37901}],"Trincomalee":[{"n":"CCB Trincomalee","p":"0262054018","lat":8.74763,"lng":81.15575}],"Vavuniya":[{"n":"CCB Vavuniya","p":"0242050344","lat":8.78105,"lng":80.48375}]};
+var MITE_PACKETS={"Ampara":[{"n":"CCB Ampara","p":"0632222477","lat":7.30007,"lng":81.67679}],"Anuradhapura":[{"n":"CCB Anuradhapura","p":"0252222543","lat":8.31762,"lng":80.39724}],"Badulla":[{"n":"Handapanagala Nursery","p":"0552274665","lat":6.6567,"lng":81.11817},{"n":"Welipitiya Nursery","p":"0552265720","lat":7.10004,"lng":81.26014},{"n":"CCB Monaragala","p":"0552276058","lat":6.85271,"lng":81.34173}],"Batticaloa":[{"n":"CCB Batticaloa","p":"0652240103","lat":7.76219,"lng":81.62364}],"Colombo":[{"n":"CCB Kalutara","p":"0342222732","lat":6.55993,"lng":79.97246}],"Galle":[{"n":"CCB Galle","p":"0912234501","lat":6.07061,"lng":80.23622}],"Gampaha":[{"n":"CCB Gampaha","p":"0332222037","lat":7.08197,"lng":80.01029}],"Hambantota":[{"n":"CCB Hambantota","p":"0472220144","lat":6.12421,"lng":81.11903}],"Jaffna":[{"n":"Alampil Nursery","p":"0766904603","lat":9.17613,"lng":80.84848},{"n":"CCB Jaffna","p":"0212284501","lat":9.58715,"lng":80.35802}],"Kalutara":[{"n":"CCB Kalutara","p":"0342222732","lat":6.55993,"lng":79.97246}],"Kandy":[{"n":"CCB Matale","p":"0662222047","lat":7.45408,"lng":80.62971}],"Kegalle":[{"n":"CCB Kegalle","p":"0352222120","lat":7.25121,"lng":80.37088}],"Kilinochchi":[{"n":"Alampil Nursery","p":"0766904603","lat":9.17613,"lng":80.84848},{"n":"CCB Jaffna","p":"0212284501","lat":9.58715,"lng":80.35802}],"Kurunegala":[{"n":"CCB Kuliyapitiya","p":"0372281169","lat":7.46961,"lng":80.02612},{"n":"CCB Kurunegala","p":"0372222534","lat":7.47159,"lng":80.35285}],"Mannar":[{"n":"CCB Vavuniya","p":"0242050344","lat":8.78105,"lng":80.48375}],"Matale":[{"n":"CCB Matale","p":"0662222047","lat":7.45408,"lng":80.62971}],"Matara":[{"n":"CCB Matara","p":"0412222060","lat":5.94811,"lng":80.53275}],"Monaragala":[{"n":"Handapanagala Nursery","p":"0552274665","lat":6.6567,"lng":81.11817},{"n":"Welipitiya Nursery","p":"0552265720","lat":7.10004,"lng":81.26014},{"n":"CCB Monaragala","p":"0552276058","lat":6.85271,"lng":81.34173}],"Mullaitivu":[{"n":"Alampil Nursery","p":"0766904603","lat":9.17613,"lng":80.84848},{"n":"CCB Jaffna","p":"0212284501","lat":9.58715,"lng":80.35802}],"Nuwara Eliya":[{"n":"CCB Matale","p":"0662222047","lat":7.45408,"lng":80.62971}],"Polonnaruwa":[{"n":"CCB Polonnaruwa","p":"0272222377","lat":7.91517,"lng":81.00203}],"Puttalam":[{"n":"CCB Marawila","p":"0322254237","lat":7.39031,"lng":79.83221}],"Ratnapura":[{"n":"CCB Ratnapura","p":"0452228561","lat":6.71246,"lng":80.37901}],"Trincomalee":[{"n":"CCB Trincomalee","p":"0262054018","lat":8.74763,"lng":81.15575}],"Vavuniya":[{"n":"CCB Vavuniya","p":"0242050344","lat":8.78105,"lng":80.48375}]};
 // ====== FEATURE: Pest Gallery ======
 var PESTS=[
   {icon:'🪲',nameKey:'pestRPW',symKey:'pestRPWsym',txKey:'pestRPWtx'},
@@ -8455,36 +8479,36 @@ if('serviceWorker' in navigator){
 
 // === Office Finder Data ===
 var OFFICES=[
-{name:"Bandirippuwa Estate (Headquarters)",type:"CRI",lat:7.33139,lng:79.88028,addr:"Coconut Research Institute, Bandirippuwa Estate, Lunuwila, Sri Lanka",phone:"0312255300",icon:"🔬", district:"Puttalam"},
-{name:"Ratmalagara Research Centre",type:"CRI",lat:7.4954,lng:79.8414,addr:"Ratmalagara Research Substation, Madampe, Sri Lanka",phone:"0322240084",icon:"🔬", district:"Puttalam"},
-{name:"Ambakelle Isolated Seed Garden / GRC",type:"CRI",lat:7.69083,lng:79.89667,addr:"Ambakelle Isolated Seed Garden, Plantation Road, Ambakelle, Sri Lanka",phone:"0323329408",icon:"🔬", district:"Puttalam"},
-{name:"Pottukulama Research Centre",type:"CRI",lat:7.7009,lng:79.9149,addr:"Pottukulama Research Station, Pottukulama, Pallama, Sri Lanka",phone:"0325670125",icon:"🔬", district:"Puttalam"},
-{name:"Pallama Genetic Resource Centre",type:"CRI",lat:7.684,lng:79.918,addr:"Pallama Genetic Resource Centre, Magarankadawala, Pallama, Sri Lanka",phone:"0323329720",icon:"🔬", district:"Puttalam"},
-{name:"Makandura Research Center / Seed Garden",type:"CRI",lat:7.31617,lng:79.97756,addr:"Makandura Research Center, Makandura - Badalgama Rd, Makandura, Sri Lanka",phone:"0312299139",icon:"🔬", district:"Kurunegala"},
-{name:"Middeniya Research Centre",type:"CRI",lat:6.2514,lng:80.7642,addr:"Middeniya Research Centre, Thorakolayaya, Embilipitiya - Middeniya Rd, Middeniya, Sri Lanka",phone:"0475675049",icon:"🔬", district:"Hambantota"},
-{name:"Maduru-Oya Genetic Resource Centre",type:"CRI",lat:7.648,lng:81.213,addr:"Maduru Oya Genetic Resource Centre, Maduru Oya, Sri Lanka",phone:"0312255300",icon:"🔬", district:"Polonnaruwa"},
-{name:"Weligama Genetic Resource Centre",type:"CRI",lat:5.975,lng:80.4297,addr:"Weligama Genetic Resource Centre, Weligama, Sri Lanka",phone:"0312255300",icon:"🔬", district:"Matara"},
-{name:"Kinigama Seed Garden",type:"CRI",lat:7.6645,lng:80.012,addr:"Kinigama Seed Garden, Kinigama, Sri Lanka",phone:"0312255300",icon:"🔬", district:"Kurunegala"},
-{name:"CCB Ampara",type:"CCB",lat:7.30007,lng:81.67679,addr:"Regional Manager Coconut Cultivation Board,Dharmapala Mawatha,Ampara",phone:"0632222477",icon:"🏛️", district:"Ampara"},
-{name:"CCB Anuradhapura",type:"CCB",lat:8.31762,lng:80.39724,addr:"Regional Manager Coconut Cultivation Board,3rd Stage,Dahayyagama Junction,Anuradapura",phone:"0252222543",icon:"🏛️", district:"Anuradhapura"},
-{name:"CCB Monaragala",type:"CCB",lat:6.85271,lng:81.34173,addr:"Regional Manager Coconut Cultivation Board,Hulandawa South Road,Monaragala",phone:"0552276058",icon:"🏛️", district:"Badulla, Monaragala"},
-{name:"CCB Batticaloa",type:"CCB",lat:7.76219,lng:81.62364,addr:"Regional Manager Coconut Cultivation Board,Mylambavelly,Thannamunai,Batticaloa",phone:"0652240103",icon:"🏛️", district:"Batticaloa"},
-{name:"CCB Kalutara",type:"CCB",lat:6.55993,lng:79.97246,addr:"Regional Manager Coconut Cultivation Board,Nogoda,Kalutara",phone:"0342222732",icon:"🏛️", district:"Colombo, Kalutara"},
-{name:"CCB Galle",type:"CCB",lat:6.07061,lng:80.23622,addr:"Regional Manager Coconut Cultivation Board, Labuduwa,Akmeemana,Galle",phone:"0912234501",icon:"🏛️", district:"Galle"},
-{name:"CCB Gampaha",type:"CCB",lat:7.08197,lng:80.01029,addr:"Regional Manager Coconut Cultivation Board,Bendiyamulla,Gampaha",phone:"0332222037",icon:"🏛️", district:"Gampaha"},
-{name:"CCB Hambanthota",type:"CCB",lat:6.12421,lng:81.11903,addr:"Regional Manager Coconut Cultivation Board,No.27, Tangalle Rd,Hambantota",phone:"0472220144",icon:"🏛️", district:"Hambantoá¹­a"},
-{name:"CCB Jaffna",type:"CCB",lat:9.58715,lng:80.35802,addr:"Regional Manager Coconut Cultivation Board,Tharmakerny,A9 Road Palai,Kilinochchi",phone:"0212284501",icon:"🏛️", district:"Jaffna, Kilinochchi, Mullaitivu"},
-{name:"CCB Kandy",type:"CCB",lat:7.27694,lng:80.6175,addr:"74/2, Bodhiyangana Mawatha, Bowala, Kandy",phone:"0812222447",icon:"🏛️", district:"Kandy, Nuwara Eliya"},
-{name:"CCB Kegalle",type:"CCB",lat:7.25121,lng:80.37088,addr:"Regional Manager Coconut Cultivation Board,Warakaulla Walawwa,Karadupana, Kandy Rd,Kegalle",phone:"0352222120",icon:"🏛️", district:"Kegalle"},
-{name:"CCB Kurunegala",type:"CCB",lat:7.47159,lng:80.35285,addr:"Regional Manager Coconut Cultivation Board,Wehera,Kurunegala",phone:"0372222534",icon:"🏛️", district:"Kurunegala"},
-{name:"CCB Kuliyapitiya",type:"CCB",lat:7.46961,lng:80.02612,addr:"Regional Manager Coconut Cultivation Board,No.20,Meegahakatuwa Junction,Kuliyapitiya",phone:"0372281169",icon:"🏛️", district:"Kurunegala"},
-{name:"CCB Vavuniya",type:"CCB",lat:8.78105,lng:80.48375,addr:"Regional Manager Coconut Cultivation Board,Pathniyar Mahilam Kulame,Thendikulam,Vavuniya",phone:"0242050344",icon:"🏛️", district:"Mannar, Vavuniya"},
-{name:"CCB Matale",type:"CCB",lat:7.45408,lng:80.62971,addr:"Regional Manager Coconut Cultivation Board,Kandy Rd,Kohombiliwala Matale",phone:"0662222047",icon:"🏛️", district:"Matale"},
-{name:"CCB Matara",type:"CCB",lat:5.9492,lng:80.54092,addr:"Regional Manager Coconut Cultivation Board,No.332/9,Dharmapala Mawatha, Nupe,Matara",phone:"0412222060",icon:"🏛️", district:"Matara"},
-{name:"CCB Polonnaruwa",type:"CCB",lat:7.91517,lng:81.00203,addr:"Regional Manager Coconut Cultivation Board,New Town,Polonnaruwa",phone:"0272222377",icon:"🏛️", district:"Polonnaruwa"},
-{name:"CCB Marawila",type:"CCB",lat:7.39031,lng:79.83221,addr:"Regional Manager Coconut Cultivation Board, Mudukotuwa,Marawila",phone:"0322254237",icon:"🏛️", district:"Puttalam"},
-{name:"CCB Rathnapura",type:"CCB",lat:6.71246,lng:80.37901,addr:"Regional Manager Coconut Cultivation Board,New Town,Rathnapura",phone:"0452228561",icon:"🏛️", district:"Ratnapura"},
-{name:"CCB Trincomalee",type:"CCB",lat:8.74763,lng:81.15575,addr:"Regional Manager Coconut Cultivation Board,Kumburuppidi,Trincomalee",phone:"0262054018",icon:"🏛️", district:"Trincomalee"},
+{name:"Bandirippuwa Estate (Headquarters)",type:"CRI",lat:7.33139,lng:79.88028,addr:"Coconut Research Institute, Bandirippuwa Estate, Lunuwila, Sri Lanka",phone:"0312255300",icon:"🔬",district:"Puttalam"},
+{name:"Ratmalagara Research Centre",type:"CRI",lat:7.4954,lng:79.8414,addr:"Ratmalagara Research Substation, Madampe, Sri Lanka",phone:"0322240084",icon:"🔬",district:"Puttalam"},
+{name:"Ambakelle Isolated Seed Garden / GRC",type:"CRI",lat:7.69083,lng:79.89667,addr:"Ambakelle Isolated Seed Garden, Plantation Road, Ambakelle, Sri Lanka",phone:"0323329408",icon:"🔬",district:"Puttalam"},
+{name:"Pottukulama Research Centre",type:"CRI",lat:7.7009,lng:79.9149,addr:"Pottukulama Research Station, Pottukulama, Pallama, Sri Lanka",phone:"0325670125",icon:"🔬",district:"Puttalam"},
+{name:"Pallama Genetic Resource Centre",type:"CRI",lat:7.684,lng:79.918,addr:"Pallama Genetic Resource Centre, Magarankadawala, Pallama, Sri Lanka",phone:"0323329720",icon:"🔬",district:"Puttalam"},
+{name:"Makandura Research Center / Seed Garden",type:"CRI",lat:7.31617,lng:79.97756,addr:"Makandura Research Center, Makandura - Badalgama Rd, Makandura, Sri Lanka",phone:"0312299139",icon:"🔬",district:"Kurunegala"},
+{name:"Middeniya Research Centre",type:"CRI",lat:6.2514,lng:80.7642,addr:"Middeniya Research Centre, Thorakolayaya, Embilipitiya - Middeniya Rd, Middeniya, Sri Lanka",phone:"0475675049",icon:"🔬",district:"Hambantota"},
+{name:"Maduru-Oya Genetic Resource Centre",type:"CRI",lat:7.648,lng:81.213,addr:"Maduru Oya Genetic Resource Centre, Maduru Oya, Sri Lanka",phone:"0312255300",icon:"🔬",district:"Polonnaruwa"},
+{name:"Weligama Genetic Resource Centre",type:"CRI",lat:5.975,lng:80.4297,addr:"Weligama Genetic Resource Centre, Weligama, Sri Lanka",phone:"0312255300",icon:"🔬",district:"Matara"},
+{name:"Kinigama Seed Garden",type:"CRI",lat:7.6645,lng:80.012,addr:"Kinigama Seed Garden, Kinigama, Sri Lanka",phone:"0312255300",icon:"🔬",district:"Kurunegala"},
+{name:"CCB Ampara",type:"CCB",lat:7.30007,lng:81.67679,addr:"Regional Manager Coconut Cultivation Board,Dharmapala Mawatha,Ampara",phone:"0632222477",icon:"🏛️",district:"Ampara"},
+{name:"CCB Anuradhapura",type:"CCB",lat:8.31762,lng:80.39724,addr:"Regional Manager Coconut Cultivation Board,3rd Stage,Dahayyagama Junction,Anuradhapura",phone:"0252222543",icon:"🏛️",district:"Anuradhapura"},
+{name:"CCB Monaragala",type:"CCB",lat:6.85271,lng:81.34173,addr:"Regional Manager Coconut Cultivation Board,Hulandawa South Road,Monaragala",phone:"0552276058",icon:"🏛️",district:"Badulla, Monaragala"},
+{name:"CCB Batticaloa",type:"CCB",lat:7.76219,lng:81.62364,addr:"Regional Manager Coconut Cultivation Board,Mylambavelly,Thannamunai,Batticaloa",phone:"0652240103",icon:"🏛️",district:"Batticaloa"},
+{name:"CCB Kalutara",type:"CCB",lat:6.55993,lng:79.97246,addr:"Regional Manager Coconut Cultivation Board,Nogoda,Kalutara",phone:"0342222732",icon:"🏛️",district:"Colombo, Kalutara"},
+{name:"CCB Galle",type:"CCB",lat:6.07061,lng:80.23622,addr:"Regional Manager Coconut Cultivation Board, Labuduwa,Akmeemana,Galle",phone:"0912234501",icon:"🏛️",district:"Galle"},
+{name:"CCB Gampaha",type:"CCB",lat:7.08197,lng:80.01029,addr:"Regional Manager Coconut Cultivation Board,Bendiyamulla,Gampaha",phone:"0332222037",icon:"🏛️",district:"Gampaha"},
+{name:"CCB Hambantota",type:"CCB",lat:6.12421,lng:81.11903,addr:"Regional Manager Coconut Cultivation Board,No.27, Tangalle Rd,Hambantota",phone:"0472220144",icon:"🏛️",district:"Hambantoá¹­a"},
+{name:"CCB Jaffna",type:"CCB",lat:9.58715,lng:80.35802,addr:"Regional Manager Coconut Cultivation Board,Tharmakerny,A9 Road Palai,Kilinochchi",phone:"0212284501",icon:"🏛️",district:"Jaffna, Kilinochchi, Mullaitivu"},
+{name:"CCB Kandy",type:"CCB",lat:7.27694,lng:80.6175,addr:"74/2, Bodhiyangana Mawatha, Bowala, Kandy",phone:"0812222447",icon:"🏛️",district:"Kandy, Nuwara Eliya"},
+{name:"CCB Kegalle",type:"CCB",lat:7.25121,lng:80.37088,addr:"Regional Manager Coconut Cultivation Board,Warakaulla Walawwa,Karadupana, Kandy Rd,Kegalle",phone:"0352222120",icon:"🏛️",district:"Kegalle"},
+{name:"CCB Kurunegala",type:"CCB",lat:7.47159,lng:80.35285,addr:"Regional Manager Coconut Cultivation Board,Wehera,Kurunegala",phone:"0372222534",icon:"🏛️",district:"Kurunegala"},
+{name:"CCB Kuliyapitiya",type:"CCB",lat:7.46961,lng:80.02612,addr:"Regional Manager Coconut Cultivation Board,No.20,Meegahakatuwa Junction,Kuliyapitiya",phone:"0372281169",icon:"🏛️",district:"Kurunegala"},
+{name:"CCB Vavuniya",type:"CCB",lat:8.78105,lng:80.48375,addr:"Regional Manager Coconut Cultivation Board,Pathniyar Mahilam Kulame,Thendikulam,Vavuniya",phone:"0242050344",icon:"🏛️",district:"Mannar, Vavuniya"},
+{name:"CCB Matale",type:"CCB",lat:7.45408,lng:80.62971,addr:"Regional Manager Coconut Cultivation Board,Kandy Rd,Kohombiliwala Matale",phone:"0662222047",icon:"🏛️",district:"Matale"},
+{name:"CCB Matara",type:"CCB",lat:5.9492,lng:80.54092,addr:"Regional Manager Coconut Cultivation Board,No.332/9,Dharmapala Mawatha, Nupe,Matara",phone:"0412222060",icon:"🏛️",district:"Matara"},
+{name:"CCB Polonnaruwa",type:"CCB",lat:7.91517,lng:81.00203,addr:"Regional Manager Coconut Cultivation Board,New Town,Polonnaruwa",phone:"0272222377",icon:"🏛️",district:"Polonnaruwa"},
+{name:"CCB Marawila",type:"CCB",lat:7.39031,lng:79.83221,addr:"Regional Manager Coconut Cultivation Board, Mudukotuwa,Marawila",phone:"0322254237",icon:"🏛️",district:"Puttalam"},
+{name:"CCB Ratnapura",type:"CCB",lat:6.71246,lng:80.37901,addr:"Regional Manager Coconut Cultivation Board,New Town,Ratnapura",phone:"0452228561",icon:"🏛️",district:"Ratnapura"},
+{name:"CCB Trincomalee",type:"CCB",lat:8.74763,lng:81.15575,addr:"Regional Manager Coconut Cultivation Board,Kumburuppidi,Trincomalee",phone:"0262054018",icon:"🏛️",district:"Trincomalee"},
 {name:"Kalawewa Nursery",type:"Nursery",lat:8.0226,lng:80.53204,addr:"Kalawewa, Vijithapura",phone:"0252264194",icon:"🌱"},
 {name:"Uhana Nursery",type:"Nursery",lat:7.35951,lng:81.64813,addr:"Palamkandawura, Uhana",phone:"0632250119",icon:"🌱"},
 {name:"Korosduwa Nursery",type:"Nursery",lat:6.65305,lng:79.9536,addr:"Korosduwa, Wadduwa",phone:"0382295126",icon:"🌱"},
@@ -8497,7 +8521,7 @@ var OFFICES=[
 {name:"Dodangaslanda Nursery",type:"Nursery",lat:7.5729,lng:80.51882,addr:"Balawattala Estate, Dodangaslanda",phone:"0372252625",icon:"🌱"},
 {name:"Polgahawela Nursery",type:"Nursery",lat:7.32743,lng:80.3183,addr:"Serapiiswatta, Panaliya, Polgahawela",phone:"0372244367",icon:"🌱"},
 {name:"Bingiriya Nursery",type:"Nursery",lat:7.61148,lng:79.96746,addr:"Prasannagama, Bingiriya",phone:"0322246425",icon:"🌱"},
-{name:"Kandetiya Nusery",type:"Nursery",lat:7.32411,lng:80.00077,addr:"Kandetiya,Makandura,Gonawila",phone:"0312299386",icon:"🌱"},
+{name:"Kandetiya Nursery",type:"Nursery",lat:7.32411,lng:80.00077,addr:"Kandetiya,Makandura,Gonawila",phone:"0312299386",icon:"🌱"},
 {name:"Hettipola Nursery",type:"Nursery",lat:7.57839,lng:80.0688,addr:"Malagane,Hettipola",phone:"0372291332",icon:"🌱"},
 {name:"Diyadora Nursery",type:"Nursery",lat:7.44275,lng:80.0584,addr:"Pahala Diyadora",phone:"0372282537",icon:"🌱"},
 {name:"Mahayaya Nursery",type:"Nursery",lat:7.3198,lng:79.99763,addr:"Mahayaya",phone:"0312299938",icon:"🌱"},
@@ -8505,23 +8529,23 @@ var OFFICES=[
 {name:"Kirindiwela Nursery",type:"Nursery",lat:7.047,lng:80.13346,addr:"Kirindiwela",phone:"0332267704",icon:"🌱"},
 {name:"Baddegama Nursery",type:"Nursery",lat:6.16815,lng:80.15895,addr:"Pedasroowatta, Halpathota, Baddegama, Galle",phone:"0912292745",icon:"🌱"},
 {name:"Labuduwa Nursery",type:"Nursery",lat:6.06994,lng:80.23484,addr:"Labuduwa, Akmeemana, Galle",phone:"0912234501",icon:"🌱"},
-{name:"Kumburuppidi Nursery",type:"Nursery",lat:8.74763,lng:81.15575,addr:"Kumburuppidi, Trincomelee",phone:"0263207044",icon:"🌱"},
+{name:"Kumburuppidi Nursery",type:"Nursery",lat:8.74763,lng:81.15575,addr:"Kumburuppidi, Trincomalee",phone:"0263207044",icon:"🌱"},
 {name:"Parakrama Samudraya Nursery",type:"Nursery",lat:7.88658,lng:80.9838,addr:"Richard Aluvihare Garden, Parakrama Samudraya",phone:"0272224304",icon:"🌱"},
 {name:"Ulhitiya Nursery",type:"Nursery",lat:7.35951,lng:81.05314,addr:"Ulhitiya Estate, Girandurukotte",phone:"0273279230",icon:"🌱"},
 {name:"Mailambaweli Nursery",type:"Nursery",lat:7.7646,lng:81.62227,addr:"Mailambaweli, Thannamunei, Batticaloa",phone:"0652240924",icon:"🌱"},
 {name:"Pallekele Nursery",type:"Nursery",lat:7.27445,lng:80.71874,addr:"Pallekele, Balagolla, Kengalla",phone:"0815040595",icon:"🌱"},
 {name:"Kirimatiyana Nursery",type:"Nursery",lat:7.36166,lng:79.86522,addr:"Kirimatiyana, Lunuwila",phone:"0312257504",icon:"🌱"},
-{name:"Wilpotha Nursery",type:"Nursery",lat:7.75162,lng:79.84526,addr:"Wilpotha, Baththuluoya",phone:"0325671077",icon:"🌱"},
+{name:"Wilpotha Nursery",type:"Nursery",lat:7.75162,lng:79.84526,addr:"Wilpotha, Battuluoya",phone:"0325671077",icon:"🌱"},
 {name:"Attawilluwa Nursery",type:"Nursery",lat:8.00956,lng:79.87626,addr:"Attawilluwa, Kurunegala Road, Puttalam",phone:"0312257504",icon:"🌱"},
 {name:"Handapanagala Nursery",type:"Nursery",lat:6.6567,lng:81.11817,addr:"Handapanagala, Veherayaya",phone:"0552274665",icon:"🌱"},
 {name:"Welipitiya Nursery",type:"Nursery",lat:7.10004,lng:81.26014,addr:"Welipitiya Estate, Nanpurawa, Bibila",phone:"0552265720",icon:"🌱"},
 {name:"Kilinochchi Nursery",type:"Nursery",lat:9.40611,lng:80.44275,addr:"D3, Pannankinni, Kilinochchi",phone:"0766904602",icon:"🌱"},
-{name:"Devipuram Nursery",type:"Nursery",lat:9.35305,lng:80.66038,addr:"No 29/ASlot, Devipuram, Pudukudirippu, Mulativ",phone:"0212226014",icon:"🌱"},
+{name:"Devipuram Nursery",type:"Nursery",lat:9.35305,lng:80.66038,addr:"No 29/ASlot, Devipuram, Pudukudirippu, Mullaitivu",phone:"0212226014",icon:"🌱"},
 {name:"Achchuveli Nursery",type:"Nursery",lat:9.78157,lng:80.1008,addr:"Wasawilan Road, Achchuveli, Jaffna",phone:"0771110709",icon:"🌱"},
-{name:"Alampil Nursery",type:"Nursery",lat:9.17613,lng:80.84848,addr:"Alampil, Mulativ",phone:"0766904603",icon:"🌱"},
+{name:"Alampil Nursery",type:"Nursery",lat:9.17613,lng:80.84848,addr:"Alampil, Mullaitivu",phone:"0766904603",icon:"🌱"},
 {name:"Embilipitiya Nursery",type:"Nursery",lat:6.29557,lng:80.87274,addr:"Thunkama, Embilipitiya",phone:"0472230569",icon:"🌱"},
 {name:"Medamulana Nursery",type:"Nursery",lat:6.18332,lng:80.76676,addr:"Medamulana, Weeraketiya",phone:"0472246359",icon:"🌱"},
-{name:"Mayurapura Nursery",type:"Nursery",lat:6.23339,lng:81.02159,addr:"Mayurapura, Hambanotota",phone:"0766904558",icon:"🌱"},
+{name:"Mayurapura Nursery",type:"Nursery",lat:6.23339,lng:81.02159,addr:"Mayurapura, Hambantota",phone:"0766904558",icon:"🌱"},
 {name:"Madhu nursery",type:"Nursery",lat:8.82195,lng:80.20678,addr:"157/2, Kudiyiruppu Road, Poonthottam, Vavuniya.",phone:"0242050344",icon:"🌱"},
 {name:"Lunuwila Training Centre",type:"Training",lat:7.355,lng:79.835,addr:"Coconut Development Training Center, Coconut Cultivation Board, Bandirippu Estate, Lunuwila.",phone:"0312255048",icon:"🎓"},
 {name:"Medamulana South Sri Lanka Coconut Development Training Center",type:"Training",lat:6.1835,lng:80.7679,addr:"Medamulana,Weeraketiya",phone:"0472257534",icon:"🎓"},
@@ -8538,9 +8562,9 @@ var OFFICES=[
 {name:"Korrei Model Garden",type:"Garden",lat:7.1232,lng:81.8167,addr:"Thirukkowil",phone:"0673694530",icon:"🌴"},
 {name:"Passikudha Model Garden",type:"Garden",lat:7.9297,lng:81.5635,addr:"Kalkuda, Pasikuda",phone:"0652050224",icon:"🌴"},
 {name:"Pallei Model Garden",type:"Garden",lat:9.6632,lng:80.3039,addr:"Kandy road, Pallei",phone:"0212050013",icon:"🌴"},
-{name:"Coconut Development Authority (Head Office)",type:"CDA",lat:6.8909,lng:79.8766,addr:"54, Nawala Road, Narahenpita, Colombo 05",phone:"0112502502",icon:"🏢", district:"Colombo"},
-{name:"CDA Fort Office",type:"CDA",lat:6.9365,lng:79.8448,addr:"11, Duke Street, Colombo 01",phone:"0112421028",icon:"🏢", district:"Colombo"},
-{name:"CDA Regional Office Kurunegala",type:"CDA",lat:7.4863,lng:80.3647,addr:"Kurunegala",phone:"0372222534",icon:"🏢", district:"Kurunegala"}
+{name:"Coconut Development Authority (Head Office)",type:"CDA",lat:6.8909,lng:79.8766,addr:"54, Nawala Road, Narahenpita, Colombo 05",phone:"0112502502",icon:"🏢",district:"Colombo"},
+{name:"CDA Fort Office",type:"CDA",lat:6.9365,lng:79.8448,addr:"11, Duke Street, Colombo 01",phone:"0112421028",icon:"🏢",district:"Colombo"},
+{name:"CDA Regional Office Kurunegala",type:"CDA",lat:7.4863,lng:80.3647,addr:"Kurunegala",phone:"0372222534",icon:"🏢",district:"Kurunegala"}
 ];
 var OFC_TYPES=['All','CRI','CCB','Nursery','Training','Garden','CDA'];
 var ofcUserLat=null,ofcUserLng=null,ofcFilter='All',ofcHighlight=null;
