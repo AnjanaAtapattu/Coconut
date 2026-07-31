@@ -7911,7 +7911,7 @@ function openDossier(fid){
 
   var terrain=zoneTerm((d&&d.terrain)||p.TERRAIN)||'—';
   var rain=(d&&d.annual_rainfall)||((p.AnualRFmm||'')+' mm');
-  var soils=(d&&d.major_soils)||p.MAJOR_SOIL||'—';
+  var soils=soilTerm((d&&d.major_soils)||p.MAJOR_SOIL)||'—';
   var land=zoneTerm((d&&d.land_use)||p.LAND_USE)||'—';
 
   var html='';
@@ -8002,7 +8002,7 @@ function printReport(){
   var title=document.getElementById('dTitle').textContent;
   var kind=climKind(p.CLIMATIC_Z||(d&&d.climatic_agro_label)||title);
   var today=new Date().toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'});
-  var terrain=zoneTerm((d&&d.terrain)||p.TERRAIN)||'—', rain=(d&&d.annual_rainfall)||((p.AnualRFmm||'')+' mm'), soils=(d&&d.major_soils)||p.MAJOR_SOIL||'—', land=zoneTerm((d&&d.land_use)||p.LAND_USE)||'—';
+  var terrain=zoneTerm((d&&d.terrain)||p.TERRAIN)||'—', rain=(d&&d.annual_rainfall)||((p.AnualRFmm||'')+' mm'), soils=soilTerm((d&&d.major_soils)||p.MAJOR_SOIL)||'—', land=zoneTerm((d&&d.land_use)||p.LAND_USE)||'—';
 
   // Page 1: zone info
   var pg1='<div class="psheet"><div class="phead"><h1>'+esc(t('printHeader'))+'</h1><div class="pz">'+esc(title)+'</div><span class="pbadge">'+esc(kind.toUpperCase())+(p.ZONE?(' · '+esc(p.ZONE)):'')+'</span></div><div class="pbody">';
@@ -8620,7 +8620,8 @@ var DOA_PATHS={
   gnByDs:'/cropix/api/v1/admin-divisions/ds-divisions/{code}/gn-divisions',
   ascDivisions:'/cropix/api/v1/admin-divisions/asc-divisions',
   seasons:'/cropix/api/v1/geo-data/agriculture-seasons/all-seasons',
-  soilTypes:'/cropix/api/v1/soil-types'
+  soilTypes:'/cropix/api/v1/soil-types',
+  soilSubTypes:'/cropix/api/v1/soil-sub-types'
 };
 var DOA_TTL=1000*60*60*24*30;   // administrative boundaries change rarely
 
@@ -8781,6 +8782,61 @@ function doaLoadAscOffices(){
       if(document.getElementById('view-offices').classList.contains('active'))renderOffices();
     }
   });
+}
+// ---- Soil vocabulary ----
+// Soil names were deliberately left in English: "Red Yellow Podzolic", "Low Humic
+// Gley" and the like are international taxonomy that extension officers use in
+// English, and coining local equivalents risked misleading a grower comparing notes
+// with an officer. The department publishes its own soil vocabulary, so if that
+// carries Sinhala or Tamil names they are authoritative and get used; if it does not,
+// the English is kept exactly as now.
+var SOIL_TERMS=null;
+function doaSoilTypes(){return doaFetch('soil',DOA_PATHS.soilTypes);}
+function doaSoilSubTypes(){return doaFetch('soilsub',DOA_PATHS.soilSubTypes);}
+
+function doaLocalName(raw){
+  if(!raw||typeof raw!=='object')return null;
+  var keys=lang==='si'
+    ? ['nameSi','name_si','sinhalaName','sinhala','descriptionSi','siName']
+    : lang==='ta'
+    ? ['nameTa','name_ta','tamilName','tamil','descriptionTa','taName']
+    : [];
+  for(var i=0;i<keys.length;i++)if(raw[keys[i]])return String(raw[keys[i]]);
+  return null;
+}
+
+function doaLoadSoils(){
+  Promise.all([doaSoilTypes(),doaSoilSubTypes()]).then(function(res){
+    var map={},any=false;
+    (res[0]||[]).concat(res[1]||[]).forEach(function(s){
+      var local=doaLocalName(s.raw);
+      if(local&&s.name){map[s.name.toLowerCase()]=local;any=true;}
+    });
+    SOIL_TERMS=any?map:{};
+    if(any&&document.getElementById('sheet').classList.contains('open'))render();
+  });
+}
+
+// Soil descriptions are compound ("Red Yellow Podzolic & Low Humic Gley Soils"), so
+// each named soil is substituted where a local name exists and the rest left alone.
+var SOIL_WORDS={si:{soils:'පාංශු',soil:'පාංශු',and:'සහ'},ta:{soils:'மண் வகைகள்',soil:'மண்',and:'மற்றும்'}};
+function soilTerm(s){
+  if(!s||lang==='en')return s||'';
+  var out=String(s);
+  if(SOIL_TERMS){
+    for(var k in SOIL_TERMS){
+      if(!k)continue;
+      var re=new RegExp(k.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),'ig');
+      out=out.replace(re,SOIL_TERMS[k]);
+    }
+  }
+  // The generic tail of the phrase is safe to translate either way: "Soils" and "&"
+  // are ordinary words, not taxonomy, and leaving them stranded reads badly.
+  var w=SOIL_WORDS[lang];
+  if(w){
+    out=out.replace(/\bSoills\b|\bSoils\b/ig,w.soils).replace(/\s&\s/g,' '+w.and+' ');
+  }
+  return out;
 }
 // ====== NASA POWER climate data ======
 // POWER gives 30-year monthly climatology for any coordinate, which lets the app
@@ -9581,7 +9637,7 @@ renderPests=function(){
 // when that request fails the map init below throws — previously taking switchLang
 // with it and leaving Sinhala/Tamil users stuck on English.
 switchLang(lang);
-try{doaLoadAscOffices();}catch(e){}
+try{doaLoadAscOffices();doaLoadSoils();}catch(e){}
 
 if(typeof L==='undefined'){
   // No mapping library available (offline first load, or CDN blocked). Keep every

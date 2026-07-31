@@ -87,7 +87,13 @@ and by the service worker. Falls back to the built-in three-zone climatology.
 
 **CROPIX** (Department of Agriculture) supplies administrative divisions — districts,
 DS divisions, GN divisions and Agrarian Service Centres — used for the locality picker
-in the Offices tab. Endpoint paths come from the published public API listing.
+in the Offices tab, and the soil vocabulary (`/soil-types`, `/soil-sub-types`).
+Endpoint paths come from the published public API listing.
+
+Soil names are the one case where the app defers entirely to this service. They are
+international taxonomy that extension officers use in English, so the app never coins
+its own Sinhala or Tamil equivalents: if the department's records carry local names
+those are used, and if they do not the English is kept.
 
 > **Known blocker:** the listing gives the base URL as `http://data.doa.gov.lk`, over
 > plain HTTP. This app is served over HTTPS, and browsers block plain-HTTP requests
