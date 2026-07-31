@@ -38,6 +38,29 @@ They are inline on purpose: it keeps the app to a single request and makes offli
 caching trivial. Coordinates are already at 5 decimal places, so there is nothing to
 reclaim by trimming precision.
 
+## Soil grid
+
+`soil-grid.bin` holds four bytes per cell — pH, sand %, silt %, and plant-available
+water in mm over the top metre — on a ~2 km grid covering the island. It is built from
+25 national soil rasters (five properties at five depths, about 13 MB) by:
+
+```bash
+python3 tools/build_soilgrid.py --rasters DIR   # rebuild from the .tif rasters
+python3 tools/build_soilgrid.py --check         # verify the file and metadata agree
+```
+
+The rasters themselves are not committed: they are large, and the app only needs the
+reduction. Keep them somewhere retrievable if the grid ever has to be rebuilt.
+
+pH and texture are averaged over 0–30 cm, where amendments are worked in; available
+water is summed over the full 0–100 cm, because a palm draws on the whole profile
+between rains. The file is precached with the app shell, so soil lookups work with no
+signal.
+
+Thresholds for the advice shown against a reading are calibrated to this grid, not to
+textbook figures — these soils hold 32–76 mm per metre (median 52), so a generic
+"under 150 mm is low" would have labelled nearly every holding in the country poor.
+
 ## Updating office data
 
 The office list and the mite-packet district lookup are **generated**. Edit the CSVs

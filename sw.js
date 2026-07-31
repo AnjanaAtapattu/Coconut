@@ -17,7 +17,7 @@
 // by URL, and they are the expensive things to reacquire: a grower who cached them
 // for field use would otherwise lose the lot on every release, exactly when there may
 // be no signal to fetch them again. They persist across upgrades instead.
-var VERSION = 'v5';
+var VERSION = 'v6';
 var SHELL_CACHE = 'pol-shell-' + VERSION;
 var ASSET_CACHE = 'pol-assets';
 var TILE_CACHE = 'pol-tiles';
@@ -39,7 +39,9 @@ var SHELL_URLS = [
   './vendor/leaflet/images/marker-icon-2x.png',
   './vendor/leaflet/images/marker-shadow.png',
   './vendor/leaflet/images/layers.png',
-  './vendor/leaflet/images/layers-2x.png'
+  './vendor/leaflet/images/layers-2x.png',
+  // ~100 kB, and the whole point of it is to answer soil questions with no signal.
+  './soil-grid.bin'
 ];
 
 self.addEventListener('install', function (e) {

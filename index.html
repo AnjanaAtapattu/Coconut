@@ -300,6 +300,12 @@ body.dark .loc-picker label{color:#9a9a9a;}
 .loc-picker select{width:100%;border:2px solid var(--line);border-radius:10px;padding:8px 10px;font-size:13px;font-family:'Manrope';background:#fff;color:var(--ink);}
 body.dark .loc-picker select{background:#1a1a2e;color:#e0e0e0;border-color:#3a3a50;}
 .loc-note{font-size:10px;color:#999;margin-top:6px;}
+.pt-soil{margin-top:10px;padding-top:8px;border-top:1px solid var(--line);}
+.pt-soil-head{font-weight:800;font-size:12px;color:var(--green);margin-bottom:6px;}
+.pt-stats b.warn{color:#c62828;}
+.pt-stats b.txt{font-size:12px;}
+.pt-note.info{color:#1565c0;}
+.clim-mine .pt-soil .pt-stats{max-width:520px;}
 /* === Climate cards === */
 .clim-card{background:#fff;border-radius:14px;padding:14px;box-shadow:0 2px 8px rgba(0,0,0,.08);margin-bottom:14px;}
 body.dark .clim-card{background:#2d2d44;}
@@ -7286,6 +7292,13 @@ var T={
     filterASC:"Agrarian Service Centres",
     locSourceDoa:"Locality list from the Department of Agriculture",
     locSourceLocal:"Offline — showing the districts stored in this app",
+    soilTitle:"Soil at this point",soilPh:"pH",soilAwc:"mm water held",soilSand:"sand",
+    soilTexture:"texture",soilTexSandy:"Sandy",soilTexSandyLoam:"Sandy loam",soilTexLoam:"Loam",soilTexClayLoam:"Clay loam",
+    soilPhAcid:"Acidic — dolomite or lime will help nutrient uptake.",
+    soilPhAlkaline:"Alkaline — micronutrient lock-up is possible; use organic matter.",
+    soilAwcLow:"Holds little water — irrigate more often in dry spells, and mulch the basin.",
+    soilSandy:"Free-draining. Split fertiliser into smaller, more frequent doses so it is not leached.",
+    soilSource:"Source: national soil rasters, 0–30 cm (pH, texture) and 0–100 cm (water)",
     climMyLocation:"Climate at your location",
     climPointHint:"Get climate figures for your own land — rainfall, temperature and dry months — from NASA POWER.",
     climUseMyLocation:"📍 Use my location",climLoading:"Loading climate data…",
@@ -7374,6 +7387,13 @@ var T={
     filterASC:"ගොවිජන සේවා මධ්‍යස්ථාන",
     locSourceDoa:"ස්ථාන ලැයිස්තුව කෘෂිකර්ම දෙපාර්තමේන්තුවෙන්",
     locSourceLocal:"නොබැඳි — යෙදුමේ ඇති දිස්ත්‍රික්ක පෙන්වයි",
+    soilTitle:"මෙම ස්ථානයේ පස",soilPh:"pH",soilAwc:"මි.මී. ජලය",soilSand:"වැලි",
+    soilTexture:"වයනය",soilTexSandy:"වැලි සහිත",soilTexSandyLoam:"වැලි ලෝම්",soilTexLoam:"ලෝම්",soilTexClayLoam:"මැටි ලෝම්",
+    soilPhAcid:"අම්ලිකයි — ඩොලමයිට් හෝ හුණු යෙදීමෙන් පෝෂක උරාගැනීම වැඩි වේ.",
+    soilPhAlkaline:"ක්ෂාරීයයි —ක්ෂුද්‍ර පෝෂක හිඟ විය හැක; කාබනික ද්‍රව්‍ය යොදන්න.",
+    soilAwcLow:"ජලය රඳවා ගැනීම අඩුයි — වියළි කාලයේ නිතර ජලය දෙන්න, බේසම වසන්න.",
+    soilSandy:"ජලය වහා බැස යයි. පොහොර කුඩා ප්‍රමාණවලින් නිතර යොදන්න.",
+    soilSource:"මූලාශ්‍රය: ජාතික පාංශු දත්ත, සෙ.මී. 0–30 (pH, වයනය) සහ 0–100 (ජලය)",
     climMyLocation:"ඔබේ ස්ථානයේ දේශගුණය",
     climPointHint:"ඔබේ ඉඩමේ වර්ෂාපතනය, උෂ්ණත්වය සහ වියළි මාස NASA POWER වෙතින් ලබාගන්න.",
     climUseMyLocation:"📍 මගේ ස්ථානය",climLoading:"දේශගුණ දත්ත ලබාගනිමින්…",
@@ -7462,6 +7482,13 @@ var T={
     filterASC:"கமநல சேவை நிலையங்கள்",
     locSourceDoa:"இடப்பட்டியல் விவசாயத் திணைக்களத்திடமிருந்து",
     locSourceLocal:"ஆஃப்லைன் — செயலியில் உள்ள மாவட்டங்கள் காட்டப்படுகின்றன",
+    soilTitle:"இந்த இடத்தின் மண்",soilPh:"pH",soilAwc:"மி.மீ. நீர்",soilSand:"மணல்",
+    soilTexture:"அமைப்பு",soilTexSandy:"மணல்",soilTexSandyLoam:"மணல் களிமண்",soilTexLoam:"களிமண்",soilTexClayLoam:"கனிமண் களிமண்",
+    soilPhAcid:"அமிலத்தன்மை — டோலமைட் அல்லது சுண்ணாம்பு ஊட்டச்சத்து உறிஞ்சுதலை மேம்படுத்தும்.",
+    soilPhAlkaline:"கார்த்தன்மை — நுண்ணூட்டச்சத்து பற்றாக்குறை ஏற்படலாம்; இயற்கை உரம் இடவும்.",
+    soilAwcLow:"நீரைத் தக்கவைப்பது குறைவு — வறண்ட காலத்தில் அடிக்கடி நீர் பாய்ச்சி, தளத்தை மூடவும்.",
+    soilSandy:"நீர் விரைவாக வடியும். உரத்தைச் சிறிய அளவில் அடிக்கடி இடவும்.",
+    soilSource:"ஆதாரம்: தேசிய மண் தரவு, 0–30 செ.மீ (pH, அமைப்பு), 0–100 செ.மீ (நீர்)",
     climMyLocation:"உங்கள் இருப்பிடத்தின் காலநிலை",
     climPointHint:"உங்கள் நிலத்தின் மழைப்பொழிவு, வெப்பநிலை மற்றும் வறண்ட மாதங்களை NASA POWER மூலம் பெறுங்கள்.",
     climUseMyLocation:"📍 எனது இருப்பிடம்",climLoading:"காலநிலைத் தரவு ஏற்றப்படுகிறது…",
@@ -8838,6 +8865,92 @@ function soilTerm(s){
   }
   return out;
 }
+// ====== Soil grid ======
+// Four bytes per cell, built from the national soil rasters by tools/build_soilgrid.py:
+// pH (x20), sand %, silt %, and plant-available water in mm over the top metre. The
+// rasters themselves are ~13 MB; this is about 100 kB, which is small enough to sit
+// alongside the app shell so the lookup works with no signal. 255 means no data.
+var SOIL_GRID_META={"w":126,"h":208,"originX":79.51709091,"originY":9.83572081,"px":0.0188555908,"py":0.0188555908};
+var soilGrid=null,soilGridTried=false;
+
+function soilGridLoad(){
+  if(soilGrid||soilGridTried)return Promise.resolve(soilGrid);
+  soilGridTried=true;
+  return fetch('soil-grid.bin')
+    .then(function(r){if(!r.ok)throw new Error('HTTP '+r.status);return r.arrayBuffer();})
+    .then(function(buf){
+      var need=SOIL_GRID_META.w*SOIL_GRID_META.h*4;
+      // A truncated or stale file would silently produce nonsense readings.
+      if(buf.byteLength<need)throw new Error('short grid');
+      soilGrid=new Uint8Array(buf);
+      return soilGrid;
+    })
+    .catch(function(){soilGrid=null;return null;});
+}
+
+function soilAt(lat,lng){
+  if(!soilGrid)return null;
+  var m=SOIL_GRID_META;
+  var col=Math.floor((lng-m.originX)/m.px);
+  var row=Math.floor((m.originY-lat)/m.py);
+  if(col<0||row<0||col>=m.w||row>=m.h)return null;
+  var i=(row*m.w+col)*4;
+  var ph=soilGrid[i],sand=soilGrid[i+1],silt=soilGrid[i+2],awc=soilGrid[i+3];
+  if(ph===255&&sand===255&&awc===255)return null;
+  return {
+    ph: ph===255?null:ph/20,
+    sand: sand===255?null:sand,
+    silt: silt===255?null:silt,
+    clay: (sand===255||silt===255)?null:Math.max(0,100-sand-silt),
+    awc: awc===255?null:awc
+  };
+}
+
+// Coconut-specific reading. CRI puts the workable pH range at about 5.2-8.0, with
+// 5.5-7.0 preferred; below that liming is the usual correction. Available water is
+// what decides whether a palm rides out a dry spell, so it is judged over the metre
+// the roots actually occupy.
+function soilInsights(s){
+  if(!s)return null;
+  var notes=[],ph=s.ph,awc=s.awc;
+  var phClass=null;
+  if(ph!==null){
+    phClass=(ph<5.2)?'acid':(ph>8.0)?'alkaline':'ok';
+    if(phClass==='acid')notes.push({k:'soilPhAcid',bad:true});
+    else if(phClass==='alkaline')notes.push({k:'soilPhAlkaline',bad:true});
+  }
+  var awcClass=null;
+  if(awc!==null){
+    // Calibrated against the national grid rather than a textbook figure. These soils
+    // run 32-76 mm over the metre (median 52), so a generic "under 150 mm is low"
+    // would have told nearly every grower in the country that their soil was poor.
+    // The breaks sit near the 15th and 75th percentiles.
+    awcClass=(awc<45)?'low':(awc<60)?'moderate':'good';
+    if(awcClass==='low')notes.push({k:'soilAwcLow',bad:true});
+  }
+  var texture=null;
+  if(s.sand!==null){
+    texture=(s.sand>=85)?'sandy':(s.sand>=70)?'sandyLoam':(s.sand>=50)?'loam':'clayLoam';
+    if(texture==='sandy')notes.push({k:'soilSandy',bad:false});
+  }
+  return {ph:ph,phClass:phClass,awc:awc,awcClass:awcClass,texture:texture,
+          sand:s.sand,silt:s.silt,clay:s.clay,notes:notes};
+}
+
+function soilHtml(ins){
+  if(!ins)return '';
+  var h='<div class="pt-soil"><div class="pt-soil-head">🪨 '+t('soilTitle')+'</div><div class="pt-stats">';
+  if(ins.ph!==null)h+='<div><b class="'+(ins.phClass==='ok'?'':'warn')+'">'+ins.ph.toFixed(1)+'</b><span>'+t('soilPh')+'</span></div>';
+  if(ins.awc!==null)h+='<div><b class="'+(ins.awcClass==='low'?'warn':'')+'">'+ins.awc+'</b><span>'+t('soilAwc')+'</span></div>';
+  if(ins.sand!==null)h+='<div><b>'+ins.sand+'%</b><span>'+t('soilSand')+'</span></div>';
+  if(ins.texture)h+='<div><b class="txt">'+t('soilTex'+ins.texture.charAt(0).toUpperCase()+ins.texture.slice(1))+'</b><span>'+t('soilTexture')+'</span></div>';
+  h+='</div>';
+  ins.notes.forEach(function(n){
+    h+='<div class="pt-note'+(n.bad?'':' info')+'">'+t(n.k)+'</div>';
+  });
+  h+='<div class="pt-src">'+t('soilSource')+'</div></div>';
+  return h;
+}
 // ====== NASA POWER climate data ======
 // POWER gives 30-year monthly climatology for any coordinate, which lets the app
 // answer "what is the climate where I actually farm" rather than only "which of three
@@ -8971,10 +9084,12 @@ function powerPointHtml(ins,lat,lng){
 function powerLoadInto(lat,lng,elId){
   var el=document.getElementById(elId);
   if(el)el.innerHTML='<div class="pt-clim pt-clim-load">'+t('climLoading')+'</div>';
+  soilGridLoad();   // usually already cached; kicks off the one-time load if not
   powerFetch(lat,lng).then(function(d){
     var target=document.getElementById(elId);
     if(!target)return;                       // popup closed while the request was in flight
-    target.innerHTML=powerPointHtml(powerInsights(d),lat,lng);
+    target.innerHTML=powerPointHtml(powerInsights(d),lat,lng)+
+                     soilHtml(soilInsights(soilAt(lat,lng)));
   });
 }
 // ====== FEATURE: Weather View ======
