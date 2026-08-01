@@ -8868,7 +8868,18 @@ function doaSeasons(){return doaFetch('seasons',DOA_PATHS.seasons);}
 // unreachable, so the control is never dead.
 var doaLoc={district:null,districtName:null,ds:null};
 (function restoreDoaLoc(){
-  try{var s=localStorage.getItem('polDoaLoc');if(s)doaLoc=JSON.parse(s);}catch(e){}
+  // Validate the shape, not just that it parses. A stored "null" or a bare number is
+  // valid JSON, and assigning it left doaLoc non-object: selecting a district then
+  // threw "Cannot set properties of null" and killed the picker. Same trap the saved
+  // Weather-tab location fell into.
+  try{
+    var o=JSON.parse(localStorage.getItem('polDoaLoc')||'null');
+    if(o&&typeof o==='object'&&!Array.isArray(o)){
+      doaLoc={district:o.district||null,
+              districtName:typeof o.districtName==='string'?o.districtName:null,
+              ds:o.ds||null};
+    }
+  }catch(e){}
 })();
 function doaLocSave(){try{localStorage.setItem('polDoaLoc',JSON.stringify(doaLoc));}catch(e){}}
 
@@ -9005,10 +9016,12 @@ function soilTerm(s){
   return out;
 }
 // ====== Soil grid ======
-// Four bytes per cell, built from the national soil rasters by tools/build_soilgrid.py:
-// pH (x20), sand %, silt %, and plant-available water in mm over the top metre. The
-// rasters themselves are ~13 MB; this is about 100 kB, which is small enough to sit
-// alongside the app shell so the lookup works with no signal. 255 means no data.
+// Seven bytes per cell, built from the national soil rasters by tools/build_soilgrid.py:
+// pH (x20), sand %, silt %, plant-available water in mm over the top metre, organic
+// carbon (x50), CEC (x10) and bulk density (x100). Clay is not stored - it is exactly
+// 100 - sand - silt throughout this dataset. The rasters themselves are ~23 MB; this is
+// about 180 kB, small enough to sit alongside the app shell so the lookup works with no
+// signal. 255 means no data.
 var SOIL_GRID_META={"w":126,"h":208,"stride":7,"originX":79.51709091,"originY":9.83572081,"px":0.0188555908,"py":0.0188555908};
 var soilGrid=null,soilGridPending=null;
 
@@ -9136,8 +9149,13 @@ function soilHtml(ins){
 var IRRIG_DEMAND_MM=130, IRRIG_BASIN_M2=10;
 
 function irrigationPlan(soil,climate){
-  if(!soil||soil.awc===null||!climate||!climate.monthlyRain)return null;
+  // Tested with isFinite rather than against null: an absent awc is `undefined`, which
+  // slipped past a `===null` guard and then propagated as NaN through every figure.
+  // The rainfall series must be a full twelve months for the same reason.
+  if(!soil||!isFinite(soil.awc)||!climate||!Array.isArray(climate.monthlyRain)||
+     climate.monthlyRain.length!==12)return null;
   var rain=climate.monthlyRain, awc=soil.awc, months=[], carry=0, need=[];
+  for(var q=0;q<12;q++)if(!isFinite(rain[q]))return null;
   // Spin up over a preceding year before recording anything. Starting cold in January
   // with an empty profile discards the Oct-Dec recharge, which is exactly the water a
   // palm lives on through the following dry season - without this the soil made no
@@ -9254,12 +9272,33 @@ var POWER_MONTHS=['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','N
 
 function powerKey(lat,lng){return 'polPower:'+lat.toFixed(2)+','+lng.toFixed(2);}
 
+// A stored series is only usable if every parameter still carries twelve months.
+// Anything shorter silently produced NaN all the way through to the rendered
+// irrigation chart, which is worse than showing nothing: a grower cannot tell
+// broken output from advice.
+function powerSeriesOk(d){
+  if(!d||typeof d!=='object')return false;
+  var any=false;
+  for(var k in d){
+    if(!Object.prototype.hasOwnProperty.call(d,k))continue;
+    var v=d[k];
+    if(!Array.isArray(v)||v.length!==12)return false;
+    for(var i=0;i<12;i++)if(v[i]!==null&&!isFinite(v[i]))return false;
+    any=true;
+  }
+  return any;
+}
+
 function powerCached(lat,lng){
   try{
     var raw=localStorage.getItem(powerKey(lat,lng));
     if(!raw)return null;
     var o=JSON.parse(raw);
     if(!o||!o.t||Date.now()-o.t>POWER_TTL)return null;
+    // Validate the payload, not just the envelope. An entry written by an older
+    // build, or half-written when the tab was closed, parses fine and passes the
+    // age test while carrying a series the rest of the code cannot use.
+    if(!powerSeriesOk(o.d))return null;
     return o.d;
   }catch(e){return null;}
 }
@@ -9311,21 +9350,25 @@ function powerFetch(lat,lng){
 // Thresholds from CRI guidance: coconut wants ~1500mm+ well distributed, and a month
 // under 50mm is a moisture-stress month for a palm.
 function powerInsights(d){
-  if(!d||!d.PRECTOTCORR)return null;
-  var rain=d.PRECTOTCORR.map(function(v){return v===null?0:v;});
+  // Twelve months or nothing. Every consumer below indexes 0-11, so a shorter series
+  // yields NaN rather than an error, and NaN reaches the screen looking like a number.
+  if(!d||!Array.isArray(d.PRECTOTCORR)||d.PRECTOTCORR.length!==12)return null;
+  var rain=d.PRECTOTCORR.map(function(v){return (v===null||!isFinite(v))?0:v;});
   // POWER reports precipitation as a daily mean per month; convert to a monthly total.
   var days=[31,28,31,30,31,30,31,31,30,31,30,31];
   var monthly=rain.map(function(v,i){return v*days[i];});
   var annual=monthly.reduce(function(a,b){return a+b;},0);
   var dry=[],i;
   for(i=0;i<12;i++)if(monthly[i]<50)dry.push(i);
-  var t=d.T2M||[],tmax=d.T2M_MAX||[];
+  // Not named `t`: that is the translation function, and shadowing it here would
+  // silently break any translation lookup later added to this function.
+  var temp=d.T2M||[],tmax=d.T2M_MAX||[];
   var avg=function(a){var s=0,n=0;for(var k=0;k<a.length;k++)if(a[k]!==null){s+=a[k];n++;}return n?s/n:null;};
   return {
     monthlyRain:monthly,
     annualRain:annual,
     dryMonths:dry,
-    meanTemp:avg(t),
+    meanTemp:avg(temp),
     maxTemp:tmax.length?Math.max.apply(null,tmax.filter(function(x){return x!==null;})):null,
     meanHumidity:avg(d.RH2M||[]),
     meanSolar:avg(d.ALLSKY_SFC_SW_DWN||[]),

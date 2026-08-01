@@ -96,8 +96,15 @@ self.addEventListener('fetch', function (e) {
   if (req.mode === 'navigate') {
     e.respondWith(
       fetch(req).then(function (res) {
-        var copy = res.clone();
-        caches.open(SHELL_CACHE).then(function (c) { c.put('./index.html', copy); });
+        // Only a genuine 200 may replace the offline shell. Pages can serve a 404 or a
+        // 502 mid-deploy, and caching that would leave the installed app opening on an
+        // error page offline - persistently, since the fallback is only refreshed on a
+        // later successful navigation. A redirected response is refused too: it cannot
+        // legally satisfy a navigation request when replayed from the cache.
+        if (res && res.status === 200 && res.type === 'basic' && !res.redirected) {
+          var copy = res.clone();
+          caches.open(SHELL_CACHE).then(function (c) { c.put('./index.html', copy); });
+        }
         return res;
       }).catch(function () {
         return caches.match('./index.html').then(function (r) {
@@ -138,7 +145,10 @@ self.addEventListener('fetch', function (e) {
             caches.open(ASSET_CACHE).then(function (c) { c.put(req, copy); });
           }
           return res;
-        }).catch(function () { return hit; });
+        // `hit` is necessarily absent here - a cache hit returned above - so there is
+        // nothing to fall back to. Fail explicitly rather than resolving undefined,
+        // which makes respondWith throw a confusing TypeError instead.
+        }).catch(function () { return Response.error(); });
       })
     );
     return;
@@ -157,7 +167,10 @@ self.addEventListener('fetch', function (e) {
             caches.open(ASSET_CACHE).then(function (c) { c.put(req, copy); });
           }
           return res;
-        }).catch(function () { return hit; });
+        // `hit` is necessarily absent here - a cache hit returned above - so there is
+        // nothing to fall back to. Fail explicitly rather than resolving undefined,
+        // which makes respondWith throw a confusing TypeError instead.
+        }).catch(function () { return Response.error(); });
       })
     );
     return;

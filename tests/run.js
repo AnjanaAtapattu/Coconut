@@ -269,6 +269,56 @@ async function browserChecks(page, base) {
         `got ${irrig.drySand.litresPerPalmPerWeek} L/palm/week`);
   check('irrigation needs both inputs', irrig.noSoil === null && irrig.noRain === null);
 
+  // A malformed input must yield no plan rather than a plan full of NaN. NaN rendered
+  // into the chart and the litres-per-palm figure looks like advice, not like breakage.
+  const irrigBad = await page.evaluate(() => {
+    const full = new Array(12).fill(30);
+    const out = {
+      shortRain: irrigationPlan({ awc: 50 }, { monthlyRain: [10, 10] }),
+      nanRain: irrigationPlan({ awc: 50 }, { monthlyRain: full.map((v, i) => i === 4 ? NaN : v) }),
+      noAwc: irrigationPlan({}, { monthlyRain: full }),
+      undefAwc: irrigationPlan({ awc: undefined }, { monthlyRain: full }) };
+    const good = irrigationPlan({ awc: 50 }, { monthlyRain: full });
+    out.htmlClean = !/NaN/.test(irrigationHtml(good)) && irrigationHtml(null) === '';
+    return out;
+  });
+  check('malformed rainfall yields no plan, not a NaN plan',
+        irrigBad.shortRain === null && irrigBad.nanRain === null,
+        `short ${JSON.stringify(irrigBad.shortRain)}, nan ${JSON.stringify(irrigBad.nanRain)}`);
+  check('a missing awc is rejected like a null one',
+        irrigBad.noAwc === null && irrigBad.undefAwc === null,
+        'undefined slipped past a `=== null` guard and propagated as NaN');
+  check('irrigation markup carries no NaN', irrigBad.htmlClean);
+
+  // --- cached climate payloads
+  // The cache envelope used to be validated while the payload was trusted, so an entry
+  // from an older build flowed through to the screen as NaN.
+  const powerCache = await page.evaluate(() => {
+    const key = 'polPower:7.50,80.00';
+    const set = v => localStorage.setItem(key, JSON.stringify({ t: Date.now(), d: v }));
+    const full = () => new Array(12).fill(3);
+    const r = {};
+    set({ PRECTOTCORR: [1, 2, 3] });                 r.short = powerCached(7.5, 80.0);
+    set({ PRECTOTCORR: full(), T2M: [1, 2] });       r.raggedSibling = powerCached(7.5, 80.0);
+    // NaN cannot survive JSON.stringify (it becomes null, a legal missing month), so
+    // the case that actually reaches storage is a non-numeric value.
+    set({ PRECTOTCORR: full().map((v, i) => i ? v : 'abc') }); r.nan = powerCached(7.5, 80.0);
+    set('nonsense');                                 r.scalar = powerCached(7.5, 80.0);
+    set({ PRECTOTCORR: full() });                    r.valid = powerCached(7.5, 80.0);
+    localStorage.removeItem(key);
+    r.insightsShort = powerInsights({ PRECTOTCORR: [1, 2, 3] });
+    r.htmlClean = !/NaN/.test(powerPointHtml(powerInsights({ PRECTOTCORR: full() }), 7.5, 80));
+    return r;
+  });
+  check('a truncated cached climate series is rejected',
+        powerCache.short === null && powerCache.raggedSibling === null,
+        `short ${JSON.stringify(powerCache.short)}`);
+  check('a cached series carrying a non-number is rejected', powerCache.nan === null);
+  check('a non-object cached payload is rejected', powerCache.scalar === null);
+  check('a valid cached series is still returned', powerCache.valid !== null);
+  check('climate insights refuse a partial year', powerCache.insightsShort === null);
+  check('climate markup carries no NaN', powerCache.htmlClean);
+
   // --- language: every JS-rendered view must rebuild on a switch
   for (const view of ['weather', 'pests', 'offices']) {
     await page.click(`nav.tabs button[data-tab="${view}"]`);
@@ -397,6 +447,9 @@ async function browserChecks(page, base) {
   const resilience = await page.evaluate(() => {
     localStorage.setItem('polClimPoint', '{"lat":"abc","lng":null}');
     localStorage.setItem('polDoa:districts', '[]');
+    // Valid JSON, wrong shape. Assigned straight to doaLoc this left it non-object,
+    // and choosing a district then threw "Cannot set properties of null".
+    localStorage.setItem('polDoaLoc', 'null');
     return { power: powerCached(7.47, 80.04), doa: doaCacheGet('districts') };
   });
   eq('corrupt cache entries are rejected', resilience, { power: null, doa: null });
@@ -406,6 +459,11 @@ async function browserChecks(page, base) {
   await page.waitForTimeout(800);
   check('weather view survives a corrupt saved location',
         await page.evaluate(() => !!document.querySelector('.clim-mine')));
+  const locPicker = await page.evaluate(() => {
+    try { doaPickDistrict('Gampaha'); return 'ok'; }
+    catch (e) { return e.message; }
+  });
+  eq('district picker survives a corrupt saved locality', locPicker, 'ok');
 
   eq('content security policy blocks nothing the app needs', cspViolations, []);
   check('no page errors across the whole run', errors.length === 0, errors.slice(0, 5).join('; '));
